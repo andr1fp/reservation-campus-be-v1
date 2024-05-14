@@ -5,6 +5,7 @@ import com.enigmacamp.reservationcampus.model.response.PageResponseWrapper;
 import com.enigmacamp.reservationcampus.service.ImageStorageService;
 import com.enigmacamp.reservationcampus.service.ToolService;
 import com.enigmacamp.reservationcampus.utils.constant.APIPath;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -13,20 +14,21 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 
+import java.io.IOException;
 import java.util.List;
 
+@RequiredArgsConstructor
 @RestController
 @RequestMapping(APIPath.BASE_PATH + "/tools")
 public class ToolsController {
     ToolService toolService;
-    ImageStorageService imageStorageService;
 
     @Autowired
-    public ToolsController(ToolService toolService, ImageStorageService imageStorageService){
+    public ToolsController(ToolService toolService){
         this.toolService = toolService;
-        this.imageStorageService = imageStorageService;
     }
 
     @PostMapping
@@ -74,14 +76,36 @@ public class ToolsController {
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
-    @PostMapping("/upload")
-    public String uploadImage(@RequestParam(value = "picture") MultipartFile picture) {
-        try {
-            String fileName = imageStorageService.storeFile(picture);
-            return "File uploaded successfully: " + fileName;
-        } catch (Exception e) {
-            e.printStackTrace();
-            return "Failed to upload file";
-        }
-    }
+//    @PostMapping("/upload")
+//    public String uploadImage(@RequestParam(value = "picture") MultipartFile picture) {
+//        try {
+//            String fileName = imageStorageService.storeFile(picture);
+//            return "File uploaded successfully: " + fileName;
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//            return "Failed to upload file";
+//        }
+//    }
+
+//    @PostMapping("/add")
+//    public ResponseEntity<Tools> uploadTools(Tools tools, @RequestParam("file") MultipartFile picture) {
+//        Tools savedTools = toolService.uploadTools(tools, picture);
+//        return ResponseEntity.created(ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(savedTools.getId()).toUri()).body(savedTools);
+//    }
+
+    @PostMapping("/add")
+    public void uploadTools(@RequestParam("name") String name,
+                            @RequestParam("description") String description,
+                            @RequestParam("price") Integer price,
+                            @RequestParam("stock") Integer stock,
+                            @RequestParam("picture") MultipartFile picture) throws IOException {
+
+        Tools tools = new Tools();
+        tools.setName(name);
+        tools.setDescription(description);
+        tools.setPrice(price);
+        tools.setStock(stock);
+        tools.setPicture(picture.getBytes());
+        toolService.uploadTools(tools);
+                            }
 }

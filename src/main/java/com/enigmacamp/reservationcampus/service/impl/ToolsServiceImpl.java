@@ -8,13 +8,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.List;
 
 @Service
 @RequiredArgsConstructor
 public class ToolsServiceImpl implements ToolService {
-
     ToolsRepository toolsRepository;
 
     @Autowired
@@ -78,4 +82,23 @@ public class ToolsServiceImpl implements ToolService {
     public Page<Tools> getToolsPerPage(Pageable pageable, Tools tools) {
         return toolsRepository.findAll(pageable);
     }
+
+    @Override
+    public void uploadTools(Tools tools) {
+        toolsRepository.save(tools);
+    }
+
+//    @Override
+//    public Tools uploadTools(Tools tools, MultipartFile picture) {
+//        String fileName = picture.getOriginalFilename();
+//        assert fileName != null;
+//        Path targetLocation = this.fileStorageLocation.resolve(fileName);
+//        try{
+//            Files.copy(picture.getInputStream(), targetLocation, StandardCopyOption.REPLACE_EXISTING);
+//            tools.setPicture(fileName);
+//        }catch (Exception e) {
+//            throw new RuntimeException("Erorr occurred while storing file " + fileName, e);
+//        }
+//        return toolsRepository.save(tools);
+//    }
 }

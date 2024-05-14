@@ -2,11 +2,14 @@ package com.enigmacamp.reservationcampus.model.facilities;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.stereotype.Component;
 
 @Entity
 @Table(name = "mst_tools")
 @Getter
 @Setter
+@ConfigurationProperties(prefix = "file")
 public class Tools extends Facilities {
 
     @Id
@@ -14,8 +17,9 @@ public class Tools extends Facilities {
     @Column(name = "id_tool")
     private String id;
 
+    @Lob
     @Column(name = "picture")
-    private String picture;
+    private byte[] picture;
 
     @Column(name = "name")
     private String name;
