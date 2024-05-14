@@ -1,13 +1,15 @@
 package com.enigmacamp.reservationcampus.model.facilities;
 
-import com.enigmacamp.reservationcampus.model.entity.constant.Availability;
 import jakarta.persistence.*;
 import lombok.*;
+import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.stereotype.Component;
 
 @Entity
 @Table(name = "mst_tools")
 @Getter
 @Setter
+@ConfigurationProperties(prefix = "file")
 public class Tools extends Facilities {
 
     @Id
@@ -15,8 +17,9 @@ public class Tools extends Facilities {
     @Column(name = "id_tool")
     private String id;
 
+    @Lob
     @Column(name = "picture")
-    private String picture;
+    private byte[] picture;
 
     @Column(name = "name")
     private String name;
@@ -30,7 +33,22 @@ public class Tools extends Facilities {
     @Column(name = "stock")
     private Integer stock;
 
-    @ManyToOne
-    @JoinColumn(name = "id_avail")
-    private Availability availability;
+    private Boolean avaibility;
+
+    @PrePersist
+    public void setDefaultValue(){
+        if(this.stock > 0){
+            this.avaibility = true;
+        }else {
+            this.avaibility = false;
+        }
+//        TypeFacilities defaultFacility = new TypeFacilities();
+//        defaultFacility.setId("3");
+//        this.setFacility(defaultFacility);
+    }
+// =======
+//     @ManyToOne
+//     @JoinColumn(name = "id_avail")
+//     private Availability availability;
+// >>>>>>> src/main/java/com/enigmacamp/reservationcampus/model/facilities/Tools.java
 }
