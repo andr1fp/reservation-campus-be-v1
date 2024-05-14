@@ -30,7 +30,12 @@ public class Tools extends Facilities {
     @Column(name = "stock")
     private Integer stock;
 
-    @OneToOne
-    @JoinColumn(name = "id_avail")
-    private Availability availability;
+    private Boolean avaibility;
+
+    @PrePersist
+    public void setDefaultValue(){
+        if(this.stock > 0){
+            this.avaibility = true;
+        }
+    }
 }

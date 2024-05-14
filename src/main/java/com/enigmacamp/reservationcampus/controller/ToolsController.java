@@ -41,11 +41,6 @@ public class ToolsController {
         return toolService.getToolsById(id);
     }
 
-//    @PutMapping
-//    public Tools updateTools(@PathVariable String id,  @RequestBody Tools tools){
-//        return toolService.updateTools(tools);
-//    }
-
     @PutMapping("update/{id}")
     public ResponseEntity<Tools> updateTools(@PathVariable String id, @RequestBody Tools tools){
         for (Tools t : toolService.getAllTools()){
