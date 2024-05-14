@@ -6,9 +6,10 @@ import org.springframework.data.domain.Page;
 
 import java.util.List;
 
-@Setter
 @Getter
-public class PageResponseWrapper<T> {
+@Setter
+public class PageResponseWrapper<T>{
+
     private List<T> data;
     private Long totalElements;
     private Integer totalPages;
@@ -22,4 +23,5 @@ public class PageResponseWrapper<T> {
         this.page = page.getNumber();
         this.size = page.getSize();
     }
+
 }

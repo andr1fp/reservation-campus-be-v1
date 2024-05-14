@@ -14,7 +14,7 @@ import lombok.*;
 public class Role {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    @Column(name = "id_role")
+//    @Column(name = "id_role")
     private String id;
     @Enumerated(EnumType.STRING)
     private ERole name;

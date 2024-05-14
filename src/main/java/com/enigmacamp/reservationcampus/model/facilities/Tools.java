@@ -46,4 +46,9 @@ public class Tools extends Facilities {
 //        defaultFacility.setId("3");
 //        this.setFacility(defaultFacility);
     }
+// =======
+//     @ManyToOne
+//     @JoinColumn(name = "id_avail")
+//     private Availability availability;
+// >>>>>>> src/main/java/com/enigmacamp/reservationcampus/model/facilities/Tools.java
 }
