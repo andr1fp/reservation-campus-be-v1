@@ -1,4 +1,4 @@
-package com.enigmacamp.reservationcampus.service.impl;
+package com.enigmacamp.reservationcampus.service.Impl;
 
 import com.enigmacamp.reservationcampus.model.entity.AppUser;
 import com.enigmacamp.reservationcampus.model.entity.User;
@@ -12,7 +12,6 @@ import com.enigmacamp.reservationcampus.model.response.RegisterResponse;
 import com.enigmacamp.reservationcampus.repository.UserRepository;
 import com.enigmacamp.reservationcampus.security.JwtUtil;
 import com.enigmacamp.reservationcampus.service.AuthService;
-import com.enigmacamp.reservationcampus.service.ProfileService;
 import com.enigmacamp.reservationcampus.service.RoleService;
 import com.enigmacamp.reservationcampus.utils.constant.ERole;
 import lombok.RequiredArgsConstructor;
@@ -26,9 +25,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor

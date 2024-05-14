@@ -30,7 +30,7 @@ public class Vehicles extends Facilities {
     @Column(name = "no_police")
     private String noPolice;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "id_avail")
     private Availability availability;
 }

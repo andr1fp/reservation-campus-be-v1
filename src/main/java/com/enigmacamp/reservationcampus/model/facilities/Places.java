@@ -32,7 +32,7 @@ public class Places extends Facilities{
     @Column(name = "capacity")
     private Integer capacity;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "id_avail")
     private Availability availability;
 

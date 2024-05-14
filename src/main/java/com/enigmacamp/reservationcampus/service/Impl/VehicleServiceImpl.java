@@ -7,6 +7,9 @@ import com.enigmacamp.reservationcampus.model.facilities.Vehicles;
 import com.enigmacamp.reservationcampus.repository.VehicleRepository;
 import com.enigmacamp.reservationcampus.service.VehicleService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -82,5 +85,10 @@ public class VehicleServiceImpl implements VehicleService {
     @Override
     public List<Vehicles> getAllVehicles() {
         return vehicleRepository.findAll();
+    }
+
+    @Override
+    public Page<Vehicles> getAllVehiclesPages(Pageable pageable) {
+        return vehicleRepository.findAll(pageable);
     }
 }

@@ -23,7 +23,7 @@ public class Facilities {
     @Column(name = "id_fac")
     private String id;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "id_typefac")
     private TypeFacilities facility;
 

@@ -1,4 +1,4 @@
-package com.enigmacamp.reservationcampus.service.impl;
+package com.enigmacamp.reservationcampus.service.Impl;
 
 import com.enigmacamp.reservationcampus.model.entity.constant.Role;
 import com.enigmacamp.reservationcampus.repository.RoleRepository;
