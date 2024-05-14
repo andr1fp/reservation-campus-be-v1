@@ -13,7 +13,7 @@ import java.util.Date;
 @AllArgsConstructor
 @Builder
 public class AuthRequestStudent {
-    private Integer NIK;
+    private Integer NPM;
     private String email;
     private String password;
     private String firstName;

@@ -1,6 +1,7 @@
 package com.enigmacamp.reservationcampus.controller;
 
 import com.enigmacamp.reservationcampus.model.request.AuthRequestAdmin;
+import com.enigmacamp.reservationcampus.model.request.AuthRequestGeneral;
 import com.enigmacamp.reservationcampus.model.request.AuthRequestLogin;
 import com.enigmacamp.reservationcampus.model.response.CommonResponse;
 import com.enigmacamp.reservationcampus.model.response.LoginResponse;
@@ -24,7 +25,7 @@ public class AuthController {
 
     //REGIST
     @PostMapping(APIPath.REGIST + APIPath.ADMIN)
-    public ResponseEntity<?> register(@RequestBody AuthRequestAdmin authRequestAdmin){
+    public ResponseEntity<?> registerAdmin(@RequestBody AuthRequestAdmin authRequestAdmin){
         RegisterResponse registerResponse = authService.registerAdmin(authRequestAdmin);
 
         CommonResponse<RegisterResponse> response = CommonResponse.<RegisterResponse>builder()
@@ -37,8 +38,22 @@ public class AuthController {
                 .body(response);
     }
 
-    //LOGIN
-    @PostMapping(APIPath.LOGIN)
+    @PostMapping(APIPath.REGIST + APIPath.GENERAL)
+    public ResponseEntity<?> registerGeneral(@RequestBody AuthRequestGeneral authRequestGeneral){
+        RegisterResponse registerResponse = authService.registerGeneral(authRequestGeneral);
+
+        CommonResponse<RegisterResponse> response = CommonResponse.<RegisterResponse>builder()
+                .message("Successfully register new General")
+                .statusCode(HttpStatus.CREATED.value())
+                .data(registerResponse)
+                .build();
+        return ResponseEntity
+                .status(HttpStatus.CREATED)
+                .body(response);
+    }
+
+                                             //LOGIN
+                                              @PostMapping(APIPath.LOGIN)
     public ResponseEntity<?> loginCustomer(@RequestBody AuthRequestLogin request){
         LoginResponse loginResponse = authService.login(request);
         CommonResponse<LoginResponse> response = CommonResponse.<LoginResponse>builder()

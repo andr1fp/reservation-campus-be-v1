@@ -38,4 +38,14 @@ public class UserServiceImpl implements UserService {
                 .build();
     }
 
+    @Override
+    public User updateUser(String id, User user) {
+        return userRepository.save(user);
+    }
+
+    @Override
+    public void deleteUser(String id) {
+        userRepository.deleteById(id);
+    }
+
 }

@@ -10,5 +10,9 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 public interface UserService extends UserDetailsService {
     AppUser loadUserById(String id);
 
+    User updateUser(String id, User user);
+
+    void deleteUser(String id);
+
 
 }

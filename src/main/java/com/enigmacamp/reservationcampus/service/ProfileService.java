@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface ProfileService {
 
-    Profile saveProfile (Profile profile);
+    Profile saveProfile(Profile profile);
 
     List<Profile> getAllProfiles();
 
@@ -15,4 +15,6 @@ public interface ProfileService {
     Profile updateProfile(String id, Profile profile);
 
     void deleteProfile(String id);
+
+
 }

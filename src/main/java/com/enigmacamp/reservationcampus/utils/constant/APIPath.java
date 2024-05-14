@@ -9,4 +9,10 @@ public class APIPath {
     public static final String GENERAL = "/general";
     public static final String STUDENT = "/student";
     public static final String LOGIN = "/signin";
+    public static final String PROFILE = "/profile";
+
+    public static final String RESERVATION = "/reservation";
+
+
+
 }

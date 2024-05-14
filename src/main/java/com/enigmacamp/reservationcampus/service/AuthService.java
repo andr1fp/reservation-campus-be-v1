@@ -10,7 +10,7 @@ import com.enigmacamp.reservationcampus.model.response.RegisterResponse;
 public interface AuthService {
     RegisterResponse registerAdmin(AuthRequestAdmin authRequestAdmin);
 
-    RegisterResponse registerStudent(AuthRequestStudent authRequestStudent);
+
 
     RegisterResponse registerGeneral(AuthRequestGeneral authRequestGeneral);
 
