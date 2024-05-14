@@ -1,6 +1,5 @@
 package com.enigmacamp.reservationcampus.model.facilities;
 
-import com.enigmacamp.reservationcampus.model.entity.constant.Availability;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -36,6 +35,11 @@ public class Tools extends Facilities {
     public void setDefaultValue(){
         if(this.stock > 0){
             this.avaibility = true;
+        }else {
+            this.avaibility = false;
         }
+//        TypeFacilities defaultFacility = new TypeFacilities();
+//        defaultFacility.setId("3");
+//        this.setFacility(defaultFacility);
     }
 }

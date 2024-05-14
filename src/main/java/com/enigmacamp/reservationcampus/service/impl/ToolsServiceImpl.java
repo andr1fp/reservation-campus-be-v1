@@ -4,6 +4,8 @@ import com.enigmacamp.reservationcampus.model.facilities.Tools;
 import com.enigmacamp.reservationcampus.repository.ToolsRepository;
 import com.enigmacamp.reservationcampus.service.ToolService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -68,5 +70,10 @@ public class ToolsServiceImpl implements ToolService {
     @Override
     public void deleteToolsById(String id) {
         toolsRepository.deleteById(id);
+    }
+
+    @Override
+    public Page<Tools> getToolsPerPage(Pageable pageable, Tools tools) {
+        return toolsRepository.findAll(pageable);
     }
 }
