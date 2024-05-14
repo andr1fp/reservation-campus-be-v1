@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+
 @Builder
 @Data
 @NoArgsConstructor
@@ -14,3 +15,4 @@ public class CommonResponse<T> {
     private String message;
     private T data;
 }
+
