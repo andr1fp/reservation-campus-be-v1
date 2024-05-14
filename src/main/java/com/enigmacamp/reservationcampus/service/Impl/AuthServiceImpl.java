@@ -1,6 +1,7 @@
 package com.enigmacamp.reservationcampus.service.Impl;
 
 import com.enigmacamp.reservationcampus.model.entity.AppUser;
+import com.enigmacamp.reservationcampus.model.entity.Profile;
 import com.enigmacamp.reservationcampus.model.entity.User;
 import com.enigmacamp.reservationcampus.model.entity.constant.Role;
 import com.enigmacamp.reservationcampus.model.request.AuthRequestAdmin;
@@ -35,7 +36,7 @@ public class AuthServiceImpl implements AuthService  {
     private final AuthenticationManager authenticationManager;
     private final JwtUtil jwtUtil;
     private final PasswordEncoder passwordEncoder;
-//    private final ProfileService profileService;
+    private final ProfileService profileService;
 
 
     @Override
@@ -54,7 +55,6 @@ public class AuthServiceImpl implements AuthService  {
             userRepository.save(user);
 
             // TODO 3 : CREATE RESPONSE
-
             return RegisterResponse.builder()
                     .email(user.getEmail())
                     .role(role.getName())
@@ -64,14 +64,36 @@ public class AuthServiceImpl implements AuthService  {
         }
     }
 
-    @Override
-    public RegisterResponse registerStudent(AuthRequestStudent authRequestStudent) {
-        return null;
-    }
+
 
     @Override
     public RegisterResponse registerGeneral(AuthRequestGeneral authRequestGeneral) {
-        return null;
+        try{
+            // TODO 1 : SET ROLE
+            Role role = roleService.getOrSave(ERole.ROLE_GENERAL);
+
+            // TODO 2 : SET CREDENTIALS / USER
+            User user = User.builder()
+                   .email(authRequestGeneral.getEmail().toLowerCase())
+                   .password(passwordEncoder.encode(authRequestGeneral.getPassword()))
+                   .roles(role)
+                   .build();
+            userRepository.save(user);
+
+            // TODO 3 : SET PROFILE
+            Profile profile = Profile.builder()
+                    .user(user)
+                    .build();
+            profileService.saveProfile(profile);
+
+            // TODO 4 : CREATE RESPONSE
+            return RegisterResponse.builder()
+                   .email(user.getEmail())
+                   .role(role.getName())
+                   .build();
+        } catch (DataIntegrityViolationException e){
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "EMAIL ALREADY EXITS");
+        }
     }
 
     @Override
