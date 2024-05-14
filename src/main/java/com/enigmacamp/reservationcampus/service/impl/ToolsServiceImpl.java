@@ -3,6 +3,7 @@ package com.enigmacamp.reservationcampus.service.impl;
 import com.enigmacamp.reservationcampus.model.facilities.Tools;
 import com.enigmacamp.reservationcampus.repository.ToolsRepository;
 import com.enigmacamp.reservationcampus.service.ToolService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class ToolsServiceImpl implements ToolService {
 
     ToolsRepository toolsRepository;

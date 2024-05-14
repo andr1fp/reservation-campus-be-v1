@@ -2,17 +2,18 @@ package com.enigmacamp.reservationcampus.controller;
 
 import com.enigmacamp.reservationcampus.model.facilities.Tools;
 import com.enigmacamp.reservationcampus.model.response.PageResponseWrapper;
+import com.enigmacamp.reservationcampus.service.ImageStorageService;
 import com.enigmacamp.reservationcampus.service.ToolService;
 import com.enigmacamp.reservationcampus.utils.constant.APIPath;
-import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
 
 import java.util.List;
 
@@ -20,10 +21,12 @@ import java.util.List;
 @RequestMapping(APIPath.BASE_PATH + "/tools")
 public class ToolsController {
     ToolService toolService;
+    ImageStorageService imageStorageService;
 
     @Autowired
-    public ToolsController(ToolService toolService){
+    public ToolsController(ToolService toolService, ImageStorageService imageStorageService){
         this.toolService = toolService;
+        this.imageStorageService = imageStorageService;
     }
 
     @PostMapping
@@ -69,5 +72,16 @@ public class ToolsController {
             }
         }
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
+
+    @PostMapping("/upload")
+    public String uploadImage(@RequestParam(value = "picture") MultipartFile picture) {
+        try {
+            String fileName = imageStorageService.storeFile(picture);
+            return "File uploaded successfully: " + fileName;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "Failed to upload file";
+        }
     }
 }
