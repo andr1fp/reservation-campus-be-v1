@@ -30,7 +30,7 @@ public class Tools extends Facilities {
     @Column(name = "stock")
     private Integer stock;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "id_avail")
     private Availability availability;
 }
