@@ -20,7 +20,7 @@ import java.util.List;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping(APIPath.BASE_PATH + "/tools")
+@RequestMapping(APIPath.API + "/tools")
 public class ToolsController {
     ToolService toolService;
 
@@ -103,7 +103,7 @@ public class ToolsController {
         tools.setDescription(description);
         tools.setPrice(price);
         tools.setStock(stock);
-        tools.setPicture(picture.getBytes());
+//        tools.setPicture(picture);
         toolService.uploadTools(tools);
     }
 }
