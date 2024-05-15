@@ -1,9 +1,9 @@
-package com.enigmacamp.reservationcampus.service.Impl;
+package com.enigmacamp.reservationcampus.services.impl;
 
 import com.enigmacamp.reservationcampus.model.entity.AppUser;
 import com.enigmacamp.reservationcampus.model.entity.User;
 import com.enigmacamp.reservationcampus.repository.UserRepository;
-import com.enigmacamp.reservationcampus.service.UserService;
+import com.enigmacamp.reservationcampus.services.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;

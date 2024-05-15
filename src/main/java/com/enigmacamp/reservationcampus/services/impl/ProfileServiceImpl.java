@@ -1,8 +1,8 @@
-package com.enigmacamp.reservationcampus.service.impl;
+package com.enigmacamp.reservationcampus.services.impl;
 
 import com.enigmacamp.reservationcampus.model.entity.Profile;
 import com.enigmacamp.reservationcampus.repository.ProfileRepository;
-import com.enigmacamp.reservationcampus.service.ProfileService;
+import com.enigmacamp.reservationcampus.services.ProfileService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

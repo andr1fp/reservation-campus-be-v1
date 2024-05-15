@@ -1,9 +1,7 @@
-package com.enigmacamp.reservationcampus.service;
+package com.enigmacamp.reservationcampus.services;
 
 import com.enigmacamp.reservationcampus.model.entity.AppUser;
 import com.enigmacamp.reservationcampus.model.entity.User;
-
-import java.util.List;
 
 import org.springframework.security.core.userdetails.UserDetailsService;
 

@@ -1,9 +1,8 @@
-package com.enigmacamp.reservationcampus.controller;
+package com.enigmacamp.reservationcampus.controller.facilities;
 
 import com.enigmacamp.reservationcampus.model.facilities.Tools;
 import com.enigmacamp.reservationcampus.model.response.PageResponseWrapper;
-import com.enigmacamp.reservationcampus.service.ImageStorageService;
-import com.enigmacamp.reservationcampus.service.ToolService;
+import com.enigmacamp.reservationcampus.services.facilities.ToolService;
 import com.enigmacamp.reservationcampus.utils.constant.APIPath;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +13,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 
 import java.io.IOException;
@@ -107,5 +105,5 @@ public class ToolsController {
         tools.setStock(stock);
         tools.setPicture(picture.getBytes());
         toolService.uploadTools(tools);
-                            }
+    }
 }

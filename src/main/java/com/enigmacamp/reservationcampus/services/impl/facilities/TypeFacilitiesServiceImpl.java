@@ -1,8 +1,8 @@
-package com.enigmacamp.reservationcampus.service.Impl;
+package com.enigmacamp.reservationcampus.services.impl.facilities;
 
 import com.enigmacamp.reservationcampus.model.entity.constant.TypeFacilities;
 import com.enigmacamp.reservationcampus.repository.TypeFacilitiesRepository;
-import com.enigmacamp.reservationcampus.service.TypeFacilitiesService;
+import com.enigmacamp.reservationcampus.services.facilities.TypeFacilitiesService;
 import com.enigmacamp.reservationcampus.utils.constant.ETypeFacilities;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

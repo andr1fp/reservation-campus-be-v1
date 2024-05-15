@@ -1,8 +1,7 @@
-package com.enigmacamp.reservationcampus.service.impl;
+package com.enigmacamp.reservationcampus.services.impl;
 
 import com.enigmacamp.reservationcampus.config.FileStorageProperties;
-import com.enigmacamp.reservationcampus.service.ImageStorageService;
-import lombok.RequiredArgsConstructor;
+import com.enigmacamp.reservationcampus.services.ImageStorageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;

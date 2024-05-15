@@ -1,4 +1,4 @@
-package com.enigmacamp.reservationcampus.service;
+package com.enigmacamp.reservationcampus.services.facilities;
 
 import com.enigmacamp.reservationcampus.model.request.VehicleRequest;
 import com.enigmacamp.reservationcampus.model.facilities.Vehicles;

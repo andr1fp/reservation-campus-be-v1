@@ -2,7 +2,7 @@ package com.enigmacamp.reservationcampus.controller;
 
 import com.enigmacamp.reservationcampus.model.entity.constant.Availability;
 import com.enigmacamp.reservationcampus.model.response.CommonResponse;
-import com.enigmacamp.reservationcampus.service.AvailabilityService;
+import com.enigmacamp.reservationcampus.services.AvailabilityService;
 import com.enigmacamp.reservationcampus.utils.constant.APIPath;
 import com.enigmacamp.reservationcampus.utils.constant.EAvailability;
 import lombok.RequiredArgsConstructor;

@@ -1,9 +1,9 @@
-package com.enigmacamp.reservationcampus.controller;
+package com.enigmacamp.reservationcampus.controller.facilities;
 
 import com.enigmacamp.reservationcampus.model.facilities.Places;
 import com.enigmacamp.reservationcampus.model.request.PlaceRequest;
 import com.enigmacamp.reservationcampus.model.response.CommonResponse;
-import com.enigmacamp.reservationcampus.services.PlaceService;
+import com.enigmacamp.reservationcampus.services.facilities.PlaceService;
 import com.enigmacamp.reservationcampus.utils.constant.APIPath;
 import com.enigmacamp.reservationcampus.utils.constant.MessageConstant;
 import lombok.RequiredArgsConstructor;

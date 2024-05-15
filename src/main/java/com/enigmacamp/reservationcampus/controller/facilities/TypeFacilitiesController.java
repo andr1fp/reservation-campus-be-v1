@@ -1,17 +1,15 @@
-package com.enigmacamp.reservationcampus.controller;
+package com.enigmacamp.reservationcampus.controller.facilities;
 
 import com.enigmacamp.reservationcampus.model.entity.constant.TypeFacilities;
 import com.enigmacamp.reservationcampus.model.response.CommonResponse;
-import com.enigmacamp.reservationcampus.service.TypeFacilitiesService;
+import com.enigmacamp.reservationcampus.services.facilities.TypeFacilitiesService;
 import com.enigmacamp.reservationcampus.utils.constant.APIPath;
 import com.enigmacamp.reservationcampus.utils.constant.ETypeFacilities;
 import lombok.RequiredArgsConstructor;
-import org.apache.coyote.Response;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.lang.reflect.Type;
 import java.util.List;
 
 @RestController

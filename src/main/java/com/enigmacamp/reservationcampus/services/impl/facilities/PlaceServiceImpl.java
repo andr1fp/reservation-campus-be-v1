@@ -1,11 +1,11 @@
-package com.enigmacamp.reservationcampus.services.impl;
+package com.enigmacamp.reservationcampus.services.impl.facilities;
 
 import com.enigmacamp.reservationcampus.model.entity.constant.Availability;
 import com.enigmacamp.reservationcampus.model.entity.constant.TypeFacilities;
 import com.enigmacamp.reservationcampus.model.facilities.Places;
 import com.enigmacamp.reservationcampus.model.request.PlaceRequest;
 import com.enigmacamp.reservationcampus.repository.PlaceRepository;
-import com.enigmacamp.reservationcampus.services.PlaceService;
+import com.enigmacamp.reservationcampus.services.facilities.PlaceService;
 import com.enigmacamp.reservationcampus.utils.exception.DataNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

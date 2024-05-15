@@ -1,15 +1,14 @@
-package com.enigmacamp.reservationcampus.service.Impl;
+package com.enigmacamp.reservationcampus.services.impl.facilities;
 
 import com.enigmacamp.reservationcampus.model.request.VehicleRequest;
 import com.enigmacamp.reservationcampus.model.entity.constant.Availability;
 import com.enigmacamp.reservationcampus.model.entity.constant.TypeFacilities;
 import com.enigmacamp.reservationcampus.model.facilities.Vehicles;
 import com.enigmacamp.reservationcampus.repository.VehicleRepository;
-import com.enigmacamp.reservationcampus.service.VehicleService;
+import com.enigmacamp.reservationcampus.services.facilities.VehicleService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

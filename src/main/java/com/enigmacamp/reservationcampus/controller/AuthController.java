@@ -6,7 +6,7 @@ import com.enigmacamp.reservationcampus.model.request.AuthRequestLogin;
 import com.enigmacamp.reservationcampus.model.response.CommonResponse;
 import com.enigmacamp.reservationcampus.model.response.LoginResponse;
 import com.enigmacamp.reservationcampus.model.response.RegisterResponse;
-import com.enigmacamp.reservationcampus.service.AuthService;
+import com.enigmacamp.reservationcampus.services.AuthService;
 import com.enigmacamp.reservationcampus.utils.constant.APIPath;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;

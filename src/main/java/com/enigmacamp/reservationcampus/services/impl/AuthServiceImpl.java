@@ -1,4 +1,4 @@
-package com.enigmacamp.reservationcampus.service.Impl;
+package com.enigmacamp.reservationcampus.services.impl;
 
 import com.enigmacamp.reservationcampus.model.entity.AppUser;
 import com.enigmacamp.reservationcampus.model.entity.Profile;
@@ -7,13 +7,13 @@ import com.enigmacamp.reservationcampus.model.entity.constant.Role;
 import com.enigmacamp.reservationcampus.model.request.AuthRequestAdmin;
 import com.enigmacamp.reservationcampus.model.request.AuthRequestGeneral;
 import com.enigmacamp.reservationcampus.model.request.AuthRequestLogin;
-import com.enigmacamp.reservationcampus.model.request.AuthRequestStudent;
 import com.enigmacamp.reservationcampus.model.response.LoginResponse;
 import com.enigmacamp.reservationcampus.model.response.RegisterResponse;
 import com.enigmacamp.reservationcampus.repository.UserRepository;
 import com.enigmacamp.reservationcampus.security.JwtUtil;
-import com.enigmacamp.reservationcampus.service.AuthService;
-import com.enigmacamp.reservationcampus.service.RoleService;
+import com.enigmacamp.reservationcampus.services.AuthService;
+import com.enigmacamp.reservationcampus.services.ProfileService;
+import com.enigmacamp.reservationcampus.services.RoleService;
 import com.enigmacamp.reservationcampus.utils.constant.ERole;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;

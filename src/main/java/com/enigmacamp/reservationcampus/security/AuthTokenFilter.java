@@ -1,7 +1,7 @@
 package com.enigmacamp.reservationcampus.security;
 
 
-import com.enigmacamp.reservationcampus.service.UserService;
+import com.enigmacamp.reservationcampus.services.UserService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

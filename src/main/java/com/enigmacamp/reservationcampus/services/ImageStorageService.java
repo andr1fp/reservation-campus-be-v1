@@ -1,4 +1,4 @@
-package com.enigmacamp.reservationcampus.service;
+package com.enigmacamp.reservationcampus.services;
 
 import org.springframework.web.multipart.MultipartFile;
 

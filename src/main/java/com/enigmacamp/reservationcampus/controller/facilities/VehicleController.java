@@ -1,10 +1,9 @@
-package com.enigmacamp.reservationcampus.controller;
+package com.enigmacamp.reservationcampus.controller.facilities;
 
 import com.enigmacamp.reservationcampus.model.request.VehicleRequest;
 import com.enigmacamp.reservationcampus.model.facilities.Vehicles;
 import com.enigmacamp.reservationcampus.model.response.CommonResponse;
-import com.enigmacamp.reservationcampus.model.response.PageResponseWrapper;
-import com.enigmacamp.reservationcampus.service.VehicleService;
+import com.enigmacamp.reservationcampus.services.facilities.VehicleService;
 import com.enigmacamp.reservationcampus.utils.constant.APIPath;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;

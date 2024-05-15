@@ -1,19 +1,14 @@
-package com.enigmacamp.reservationcampus.service.impl;
+package com.enigmacamp.reservationcampus.services.impl.facilities;
 
 import com.enigmacamp.reservationcampus.model.facilities.Tools;
 import com.enigmacamp.reservationcampus.repository.ToolsRepository;
-import com.enigmacamp.reservationcampus.service.ToolService;
+import com.enigmacamp.reservationcampus.services.facilities.ToolService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
 import java.util.List;
 
 @Service

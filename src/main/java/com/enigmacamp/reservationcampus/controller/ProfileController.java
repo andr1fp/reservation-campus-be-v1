@@ -1,13 +1,10 @@
 package com.enigmacamp.reservationcampus.controller;
 
 import com.enigmacamp.reservationcampus.model.entity.Profile;
-import com.enigmacamp.reservationcampus.model.request.AuthRequestGeneral;
-import com.enigmacamp.reservationcampus.model.request.AuthRequestStudent;
 import com.enigmacamp.reservationcampus.model.response.CommonResponse;
-import com.enigmacamp.reservationcampus.model.response.RegisterResponse;
-import com.enigmacamp.reservationcampus.service.AuthService;
-import com.enigmacamp.reservationcampus.service.ProfileService;
-import com.enigmacamp.reservationcampus.service.UserService;
+import com.enigmacamp.reservationcampus.services.AuthService;
+import com.enigmacamp.reservationcampus.services.ProfileService;
+import com.enigmacamp.reservationcampus.services.UserService;
 import com.enigmacamp.reservationcampus.utils.constant.APIPath;
 import com.enigmacamp.reservationcampus.utils.constant.Message;
 import lombok.RequiredArgsConstructor;
