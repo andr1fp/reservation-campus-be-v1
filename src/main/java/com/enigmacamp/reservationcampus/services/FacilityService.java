@@ -1,13 +1,14 @@
 package com.enigmacamp.reservationcampus.services;
 
 import com.enigmacamp.reservationcampus.model.entity.Facility;
+import com.enigmacamp.reservationcampus.model.request.FacilityRequest;
 import com.enigmacamp.reservationcampus.model.response.FacilityResponse;
 
 import java.util.List;
 
 public interface FacilityService {
 
-    Facility saveFacility(Facility facility);
+    FacilityRequest saveFacility(FacilityRequest facilityRequest);
 
     Facility getFacilityById(String id);
 
