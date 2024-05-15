@@ -13,12 +13,13 @@ import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping(APIPath.BASE_PATH + APIPath.VEHICLES)
+@RequestMapping(APIPath.API + APIPath.VEHICLES)
 public class VehicleController {
     private final VehicleService vehicleService;
 
@@ -118,5 +119,24 @@ public class VehicleController {
             commonResponse.setMessage("Success Deleted Data");
             return ResponseEntity.status(HttpStatus.OK).body(commonResponse);
         }
+    }
+
+    @PostMapping("/upload")
+    public void uploadVehicle(@RequestParam("name") String name,
+                              @RequestParam("picture") MultipartFile picture,
+                              @RequestParam("noPolice") String noPolice,
+                              @RequestParam("description") String description,
+                              @RequestParam("price") Integer price,
+                              @RequestParam("id_facility") String id_facility,
+                              @RequestParam("id_availability") String id_availability) {
+        VehicleRequest vehicleRequest = new VehicleRequest();
+        vehicleRequest.setName(name);
+        vehicleRequest.setDescription(description);
+        vehicleRequest.setPrice(price);
+        vehicleRequest.setNoPolice(noPolice);
+        vehicleRequest.setId_availability(id_availability);
+        vehicleRequest.setId_facility(id_facility);
+        vehicleRequest.setPicture(picture.getOriginalFilename());
+        vehicleService.uploadVehicles(vehicleRequest);
     }
 }

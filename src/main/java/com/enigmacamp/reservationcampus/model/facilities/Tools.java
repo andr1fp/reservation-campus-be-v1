@@ -19,7 +19,7 @@ public class Tools extends Facilities {
 
     @Lob
     @Column(name = "picture")
-    private byte[] picture;
+    private String picture;
 
     @Column(name = "name")
     private String name;

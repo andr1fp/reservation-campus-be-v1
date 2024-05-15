@@ -11,8 +11,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class PlaceRequest {
     private String id;
-    private String availabilityId;
-    private String typefacilityId;
+    private String id_availability;
+    private String id_facility;
     private String name;
     private String picture;
     private String description;

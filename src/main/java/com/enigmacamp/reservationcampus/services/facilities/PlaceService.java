@@ -11,4 +11,6 @@ public interface PlaceService {
     List<Places> getAllPlaces();
     PlaceRequest updatePlaces(PlaceRequest places);
     void deletePlaces(String id);
+
+    void uploadPlace(PlaceRequest places);
 }

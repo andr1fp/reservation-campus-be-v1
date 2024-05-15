@@ -90,4 +90,19 @@ public class VehicleServiceImpl implements VehicleService {
     public Page<Vehicles> getAllVehiclesPages(Pageable pageable) {
         return vehicleRepository.findAll(pageable);
     }
+
+    @Override
+    public void uploadVehicles(VehicleRequest vehicles) {
+        Availability availability = Availability.builder().id(vehicles.getId_availability()).build();
+        TypeFacilities typeFacilities = TypeFacilities.builder().id(vehicles.getId_facility()).build();
+        Vehicles vehicle = new Vehicles();
+        vehicle.setPicture(vehicles.getPicture());
+        vehicle.setName(vehicles.getName());
+        vehicle.setDescription(vehicles.getDescription());
+        vehicle.setPrice(vehicles.getPrice());
+        vehicle.setNoPolice(vehicles.getNoPolice());
+        vehicle.setAvailability(availability);
+        vehicle.setFacility(typeFacilities);
+        vehicleRepository.save(vehicle);
+    }
 }

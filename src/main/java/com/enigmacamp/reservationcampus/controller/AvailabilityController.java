@@ -14,7 +14,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping(APIPath.BASE_PATH + APIPath.AVAILABILITY)
+@RequestMapping(APIPath.API + APIPath.AVAILABILITY)
 public class AvailabilityController {
     private final AvailabilityService availabilityService;
 

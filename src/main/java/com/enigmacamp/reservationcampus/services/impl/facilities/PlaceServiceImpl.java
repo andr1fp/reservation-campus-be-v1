@@ -19,8 +19,8 @@ public class PlaceServiceImpl implements PlaceService {
 
     @Override
     public PlaceRequest savePlaces(PlaceRequest places) {
-        Availability availability = Availability.builder().id(places.getAvailabilityId()).build();
-        TypeFacilities typeFacilities = TypeFacilities.builder().id(places.getTypefacilityId()).build();
+        Availability availability = Availability.builder().id(places.getId_availability()).build();
+        TypeFacilities typeFacilities = TypeFacilities.builder().id(places.getId_facility()).build();
         Places place = new Places();
         place.setId(places.getId());
         place.setAvailability(availability);
@@ -49,8 +49,8 @@ public class PlaceServiceImpl implements PlaceService {
     @Override
     public PlaceRequest updatePlaces(PlaceRequest places) {
         if (placesRepository.findById(places.getId()).isPresent()) {
-            Availability availability = Availability.builder().id(places.getAvailabilityId()).build();
-            TypeFacilities typeFacilities = TypeFacilities.builder().id(places.getTypefacilityId()).build();
+            Availability availability = Availability.builder().id(places.getId_availability()).build();
+            TypeFacilities typeFacilities = TypeFacilities.builder().id(places.getId_facility()).build();
             Places place = new Places();
             place.setId(places.getId());
             place.setAvailability(availability);
@@ -72,6 +72,21 @@ public class PlaceServiceImpl implements PlaceService {
         else {
             throw new DataNotFoundException("Data Tidak Ditemukan");
         }
+    }
+
+    @Override
+    public void uploadPlace(PlaceRequest places) {
+        Availability availability = Availability.builder().id(places.getId_availability()).build();
+        TypeFacilities typeFacilities = TypeFacilities.builder().id(places.getId_facility()).build();
+        Places place = new Places();
+        place.setDescription(places.getDescription());
+        place.setCapacity(places.getCapacity());
+        place.setPicture(places.getPicture());
+        place.setAvailability(availability);
+        place.setFacility(typeFacilities);
+        place.setName(places.getName());
+        place.setPrice(places.getPrice());
+        placesRepository.save(place);
     }
 }
 

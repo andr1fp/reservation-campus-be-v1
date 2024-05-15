@@ -17,4 +17,6 @@ public interface VehicleService {
 
    Page <Vehicles> getAllVehiclesPages(Pageable pageable);
 
+   void uploadVehicles(VehicleRequest vehicles);
+
 }

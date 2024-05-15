@@ -11,12 +11,13 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping(APIPath.BASE_PATH + APIPath.PLACES)
+@RequestMapping(APIPath.API + APIPath.PLACES)
 public class PlaceController {
     private final PlaceService placesService;
     @PostMapping
@@ -55,6 +56,25 @@ public class PlaceController {
             }
         }
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
+
+    @PostMapping("/upload")
+    public void uploadPlace(@RequestParam("name") String name,
+                                                              @RequestParam("picture") MultipartFile picture,
+                                                              @RequestParam("price") Integer price,
+                                                              @RequestParam("capacity") Integer capacity,
+                                                              @RequestParam("description") String description,
+                                                              @RequestParam("availability") String availability,
+                                                              @RequestParam("typefacility") String typefacility) {
+        PlaceRequest placeRequest = new PlaceRequest();
+        placeRequest.setName(name);
+        placeRequest.setPrice(price);
+        placeRequest.setCapacity(capacity);
+        placeRequest.setDescription(description);
+        placeRequest.setId_availability(availability);
+        placeRequest.setId_facility(typefacility);
+        placeRequest.setPicture(picture.getOriginalFilename());
+        placesService.uploadPlace(placeRequest);
     }
 }
 

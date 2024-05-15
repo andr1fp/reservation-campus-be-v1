@@ -14,7 +14,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping(APIPath.BASE_PATH + APIPath.TYPE_FACILITIES)
+@RequestMapping(APIPath.API + APIPath.TYPE_FACILITIES)
 public class TypeFacilitiesController {
     private final TypeFacilitiesService typeFacilitiesService;
 
