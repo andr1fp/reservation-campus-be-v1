@@ -42,4 +42,9 @@ public class ProfileServiceImpl implements ProfileService {
     public void deleteProfile(String id) {
         profileRepository.deleteById(id);
     }
+
+    @Override
+    public List<Profile> getProfileByName(String name) {
+        return profileRepository.findByProfileNameContainsIgnoreCase(name);
+    }
 }

@@ -17,6 +17,7 @@ public class APIPath {
     public static final String VEHICLES = "/vehicles";
     public static final String TYPE_FACILITIES = "/type-facilities";
 
+    public static final String USER = "/users";
     public static final String AVAILABILITY = "/availability";
 
     public static final String PROFILE = "/profile";

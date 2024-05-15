@@ -38,7 +38,7 @@ public class AuthController {
                 .body(response);
     }
 
-    @PostMapping(APIPath.REGIST + APIPath.GENERAL)
+    @PostMapping(APIPath.REGIST)
     public ResponseEntity<?> registerGeneral(@RequestBody AuthRequestGeneral authRequestGeneral){
         RegisterResponse registerResponse = authService.registerGeneral(authRequestGeneral);
 
@@ -52,8 +52,8 @@ public class AuthController {
                 .body(response);
     }
 
-                                             //LOGIN
-                                              @PostMapping(APIPath.LOGIN)
+    //LOGIN
+    @PostMapping(APIPath.LOGIN)
     public ResponseEntity<?> loginCustomer(@RequestBody AuthRequestLogin request){
         LoginResponse loginResponse = authService.login(request);
         CommonResponse<LoginResponse> response = CommonResponse.<LoginResponse>builder()

@@ -13,6 +13,9 @@ public interface VehicleService {
    Vehicles getVehicleById(String id);
    VehicleRequest updateVehicle(VehicleRequest vehicles);
    void deleteVehicle(String id);
+
+   List<Vehicles> findVehiclesByName(String name);
+
    List<Vehicles> getAllVehicles();
 
    Page <Vehicles> getAllVehiclesPages(Pageable pageable);

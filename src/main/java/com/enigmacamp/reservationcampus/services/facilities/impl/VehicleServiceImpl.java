@@ -1,4 +1,4 @@
-package com.enigmacamp.reservationcampus.services.impl.facilities;
+package com.enigmacamp.reservationcampus.services.facilities.impl;
 
 import com.enigmacamp.reservationcampus.model.request.VehicleRequest;
 import com.enigmacamp.reservationcampus.model.entity.constant.Availability;
@@ -79,6 +79,11 @@ public class VehicleServiceImpl implements VehicleService {
         }else{
             throw new RuntimeException("Vehicle not found");
         }
+    }
+
+    @Override
+    public List<Vehicles> findVehiclesByName(String name) {
+        return vehicleRepository.findbyVehiclesNameContainsIgnoreCase(name);
     }
 
     @Override

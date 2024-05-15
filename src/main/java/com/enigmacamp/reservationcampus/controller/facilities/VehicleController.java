@@ -12,6 +12,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -68,6 +69,7 @@ public class VehicleController {
 
 
     @PostMapping
+    @PreAuthorize("hasAnyRole({'ROLE_ADMIN'})")
     public ResponseEntity<CommonResponse<VehicleRequest>> saveVehicle(@RequestBody VehicleRequest vehicles) {
         CommonResponse<VehicleRequest> commonResponse = new CommonResponse<>();
         VehicleRequest vehicleResponse = vehicleService.saveVehicle(vehicles);
@@ -87,6 +89,7 @@ public class VehicleController {
     }
 
     @PutMapping
+    @PreAuthorize("hasAnyRole({'ROLE_ADMIN'})")
     public ResponseEntity<CommonResponse<VehicleRequest>> updateVehicle(@RequestBody VehicleRequest vehicles) {
         CommonResponse<VehicleRequest> commonResponse = new CommonResponse<>();
         VehicleRequest vehicleResponse = vehicleService.updateVehicle(vehicles);

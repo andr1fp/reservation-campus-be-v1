@@ -1,4 +1,4 @@
-package com.enigmacamp.reservationcampus.services.impl.facilities;
+package com.enigmacamp.reservationcampus.services.facilities.impl;
 
 import com.enigmacamp.reservationcampus.model.facilities.Tools;
 import com.enigmacamp.reservationcampus.repository.ToolsRepository;
@@ -48,6 +48,11 @@ public class ToolsServiceImpl implements ToolService {
             }
         }
         return null;
+    }
+
+    @Override
+    public List<Tools> findToolsByName(String name) {
+        return toolsRepository.findByToolsNameContainsIgnoreCase(name);
     }
 
 //    @Override

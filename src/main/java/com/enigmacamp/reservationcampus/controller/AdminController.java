@@ -9,19 +9,21 @@ import com.enigmacamp.reservationcampus.utils.constant.APIPath;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping(APIPath.API + APIPath.AUTH + APIPath.ADMIN)
+@RequestMapping(APIPath.API + APIPath.AUTH + APIPath.STUDENT)
 @RequiredArgsConstructor
 public class AdminController {
 
     private final AdminService adminService;
 
     @PostMapping(APIPath.STUDENT)
+    @PreAuthorize("hasAnyRole({'ROLE_ADMIN'})")
     public ResponseEntity<?> registerStudent(@RequestBody AuthRequestStudent authRequestStudent){
         RegisterResponse registerResponse = adminService.registerStudent(authRequestStudent);
 
@@ -34,5 +36,4 @@ public class AdminController {
                 .status(HttpStatus.CREATED)
                 .body(response);
     }
-
 }

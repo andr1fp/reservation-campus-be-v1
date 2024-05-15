@@ -1,6 +1,5 @@
 package com.enigmacamp.reservationcampus.controller.facilities;
 
-import com.enigmacamp.reservationcampus.model.entity.constant.TypeFacilities;
 import com.enigmacamp.reservationcampus.model.facilities.Tools;
 import com.enigmacamp.reservationcampus.model.response.PageResponseWrapper;
 import com.enigmacamp.reservationcampus.services.facilities.ToolService;
@@ -17,12 +16,12 @@ import org.springframework.web.multipart.MultipartFile;
 
 
 import java.io.IOException;
+import java.util.List;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping(APIPath.API + APIPath.TOOLS)
+@RequestMapping(APIPath.BASE_PATH + "/tools")
 public class ToolsController {
-
     ToolService toolService;
 
     @Autowired
@@ -33,6 +32,11 @@ public class ToolsController {
     @PostMapping
     public Tools saveTools(@RequestBody Tools tools){
         return toolService.saveTools(tools);
+    }
+
+    @GetMapping("/all")
+    public List<Tools> getAllTools(){
+        return toolService.getAllTools();
     }
 
     @GetMapping
@@ -70,12 +74,28 @@ public class ToolsController {
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
+//    @PostMapping("/upload")
+//    public String uploadImage(@RequestParam(value = "picture") MultipartFile picture) {
+//        try {
+//            String fileName = imageStorageService.storeFile(picture);
+//            return "File uploaded successfully: " + fileName;
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//            return "Failed to upload file";
+//        }
+//    }
+
+//    @PostMapping("/add")
+//    public ResponseEntity<Tools> uploadTools(Tools tools, @RequestParam("file") MultipartFile picture) {
+//        Tools savedTools = toolService.uploadTools(tools, picture);
+//        return ResponseEntity.created(ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(savedTools.getId()).toUri()).body(savedTools);
+//    }
+
     @PostMapping("/add")
     public void uploadTools(@RequestParam("name") String name,
                             @RequestParam("description") String description,
                             @RequestParam("price") Integer price,
                             @RequestParam("stock") Integer stock,
-                            @RequestParam("id_typefac") TypeFacilities id_typefac,
                             @RequestParam("picture") MultipartFile picture) throws IOException {
 
         Tools tools = new Tools();
@@ -83,8 +103,7 @@ public class ToolsController {
         tools.setDescription(description);
         tools.setPrice(price);
         tools.setStock(stock);
-        tools.setFacility(id_typefac);
-        tools.setPicture(picture.getOriginalFilename());
+        tools.setPicture(picture.getBytes());
         toolService.uploadTools(tools);
     }
 }

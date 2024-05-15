@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -20,6 +21,8 @@ import java.util.List;
 @RequestMapping(APIPath.API + APIPath.PLACES)
 public class PlaceController {
     private final PlaceService placesService;
+
+    @PreAuthorize("hasAnyRole({'ROLE_ADMIN'})")
     @PostMapping
     public ResponseEntity<CommonResponse<Places>> savePlaces(@RequestBody PlaceRequest places) {
         String message = String.format(MessageConstant.MESSAGE_INSERT, places.getName());
@@ -38,16 +41,19 @@ public class PlaceController {
     }
 
     @GetMapping
+
     public List<Places> getAllPlaces() {
         return placesService.getAllPlaces();
     }
 
-    @PutMapping("update/{id}")
+    @PutMapping("{/id}")
+    @PreAuthorize("hasAnyRole({'ROLE_ADMIN'})")
     public PlaceRequest updatePlaces(@PathVariable String id, @RequestBody PlaceRequest places){
         return placesService.savePlaces(places);
     }
 
     @DeleteMapping("delete/{id}")
+    @PreAuthorize("hasAnyRole({'ROLE_ADMIN'})")
     public ResponseEntity<Places> deletePlaces(@PathVariable String id){
         for (Places places : placesService.getAllPlaces()){
             if(places.getId().equals(id)){

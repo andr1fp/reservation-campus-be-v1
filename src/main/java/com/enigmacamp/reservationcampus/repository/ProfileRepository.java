@@ -2,8 +2,10 @@ package com.enigmacamp.reservationcampus.repository;
 
 import com.enigmacamp.reservationcampus.model.entity.Profile;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+import org.springframework.stereotype.Repository;
 
-public interface ProfileRepository extends JpaRepository<Profile, String>, JpaSpecificationExecutor<Profile> {
-
+import java.util.List;
+@Repository
+public interface ProfileRepository extends JpaRepository<Profile, String> {
+    List<Profile> findByProfileNameContainsIgnoreCase(String name);
 }

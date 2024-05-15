@@ -34,7 +34,6 @@ public class AvailabilityController {
             commonResponse.setMessage("Success Get All Availabilities");
             return ResponseEntity.status(HttpStatus.OK).body(commonResponse);
         }
-
     }
 
     @GetMapping("/{name}")

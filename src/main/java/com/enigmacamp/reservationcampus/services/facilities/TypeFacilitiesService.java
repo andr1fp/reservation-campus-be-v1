@@ -7,6 +7,7 @@ import java.util.List;
 
 public interface TypeFacilitiesService {
     TypeFacilities save(TypeFacilities typeFacilities);
+    TypeFacilities getById(String id);
     TypeFacilities getByName(ETypeFacilities name);
     TypeFacilities update(TypeFacilities typeFacilities);
     void delete(String id);

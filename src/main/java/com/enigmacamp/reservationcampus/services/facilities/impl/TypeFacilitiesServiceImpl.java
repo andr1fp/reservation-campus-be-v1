@@ -1,4 +1,4 @@
-package com.enigmacamp.reservationcampus.services.impl.facilities;
+package com.enigmacamp.reservationcampus.services.facilities.impl;
 
 import com.enigmacamp.reservationcampus.model.entity.constant.TypeFacilities;
 import com.enigmacamp.reservationcampus.repository.TypeFacilitiesRepository;
