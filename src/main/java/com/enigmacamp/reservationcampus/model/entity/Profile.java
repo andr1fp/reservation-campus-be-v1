@@ -25,10 +25,7 @@ public class Profile {
     private Integer NIM;
 
 //    @Column(nullable = false)
-    private String firstName;
-
-//    @Column(nullable = false)
-    private String lastName;
+    private String fullName;
 
     @Column(name = "dateofbirth")
     private Date dateofbirth;

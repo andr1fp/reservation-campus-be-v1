@@ -8,9 +8,12 @@ import lombok.*;
 
 @Entity
 @Table(name = "mst_places")
+@NoArgsConstructor
+@AllArgsConstructor
 @Setter
 @Getter
-public class Places extends Facilities{
+@Builder
+public class Places{
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
@@ -31,6 +34,10 @@ public class Places extends Facilities{
 
     @Column(name = "capacity")
     private Integer capacity;
+
+    @ManyToOne
+    @JoinColumn(name = "id_typefac")
+    private TypeFacilities facilities;
 
     @ManyToOne
     @JoinColumn(name = "id_avail")

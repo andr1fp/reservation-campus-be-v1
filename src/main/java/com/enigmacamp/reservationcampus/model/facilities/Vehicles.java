@@ -1,14 +1,18 @@
 package com.enigmacamp.reservationcampus.model.facilities;
 
 import com.enigmacamp.reservationcampus.model.entity.constant.Availability;
+import com.enigmacamp.reservationcampus.model.entity.constant.TypeFacilities;
 import jakarta.persistence.*;
 import lombok.*;
 
 @Entity
 @Table(name = "mst_vehicles")
-@Getter
+@NoArgsConstructor
+@AllArgsConstructor
 @Setter
-public class Vehicles extends Facilities {
+@Getter
+@Builder
+public class Vehicles{
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
@@ -29,6 +33,10 @@ public class Vehicles extends Facilities {
 
     @Column(name = "no_police")
     private String noPolice;
+
+    @ManyToOne
+    @JoinColumn(name = "id_typefac")
+    private TypeFacilities facilities;
 
     @ManyToOne
     @JoinColumn(name = "id_avail")

@@ -52,7 +52,7 @@ public class ToolsServiceImpl implements ToolService {
 
     @Override
     public List<Tools> findToolsByName(String name) {
-        return toolsRepository.findByToolsNameContainsIgnoreCase(name);
+        return toolsRepository.findByNameContainsIgnoreCase(name);
     }
 
 //    @Override

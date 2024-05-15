@@ -24,7 +24,7 @@ public class PlaceServiceImpl implements PlaceService {
         Places place = new Places();
         place.setId(places.getId());
         place.setAvailability(availability);
-        place.setFacility(typeFacilities);
+        place.setFacilities(typeFacilities);
         place.setName(places.getName());
         place.setPrice(places.getPrice());
         placesRepository.save(place);
@@ -48,7 +48,7 @@ public class PlaceServiceImpl implements PlaceService {
 
     @Override
     public List<Places> findPlacesByName(String name) {
-        return placesRepository.findByPlacesNameContainsIgnoreCase(name);
+        return placesRepository.findByNameContainsIgnoreCase(name);
     }
 
     @Override
@@ -59,7 +59,7 @@ public class PlaceServiceImpl implements PlaceService {
             Places place = new Places();
             place.setId(places.getId());
             place.setAvailability(availability);
-            place.setFacility(typeFacilities);
+            place.setFacilities(typeFacilities);
             place.setName(places.getName());
             place.setPrice(places.getPrice());
             placesRepository.save(place);
@@ -88,7 +88,7 @@ public class PlaceServiceImpl implements PlaceService {
         place.setCapacity(places.getCapacity());
         place.setPicture(places.getPicture());
         place.setAvailability(availability);
-        place.setFacility(typeFacilities);
+        place.setFacilities(typeFacilities);
         place.setName(places.getName());
         place.setPrice(places.getPrice());
         placesRepository.save(place);

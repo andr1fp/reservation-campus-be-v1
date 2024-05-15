@@ -7,5 +7,5 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 @Repository
 public interface ProfileRepository extends JpaRepository<Profile, String> {
-    List<Profile> findByProfileNameContainsIgnoreCase(String name);
+    List<Profile> findByFullNameContainsIgnoreCase(String name);
 }

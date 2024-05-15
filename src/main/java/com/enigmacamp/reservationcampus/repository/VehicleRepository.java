@@ -8,5 +8,5 @@ import java.util.List;
 
 @Repository
 public interface VehicleRepository extends JpaRepository<Vehicles, String> {
-    List<Vehicles> findbyVehiclesNameContainsIgnoreCase(String name);
+    List<Vehicles> findByNameContainsIgnoreCase(String name);
 }

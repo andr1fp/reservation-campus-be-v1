@@ -103,7 +103,7 @@ public class ToolsController {
         tools.setDescription(description);
         tools.setPrice(price);
         tools.setStock(stock);
-//        tools.setPicture(picture);
+        tools.setPicture(picture.getOriginalFilename());
         toolService.uploadTools(tools);
     }
 }

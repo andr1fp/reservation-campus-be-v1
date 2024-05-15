@@ -46,7 +46,7 @@ public class PlaceController {
         return placesService.getAllPlaces();
     }
 
-    @PutMapping("{/id}")
+    @PutMapping("/{id}")
     @PreAuthorize("hasAnyRole({'ROLE_ADMIN'})")
     public PlaceRequest updatePlaces(@PathVariable String id, @RequestBody PlaceRequest places){
         return placesService.savePlaces(places);

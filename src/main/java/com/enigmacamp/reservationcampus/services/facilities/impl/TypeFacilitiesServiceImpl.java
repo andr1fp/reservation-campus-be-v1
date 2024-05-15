@@ -21,6 +21,11 @@ public class TypeFacilitiesServiceImpl implements TypeFacilitiesService {
     }
 
     @Override
+    public TypeFacilities getById(String id) {
+        return null;
+    }
+
+    @Override
     public TypeFacilities getByName(ETypeFacilities name) {
         if(typeFacilitiesRepository.findByName(name).isPresent()){
             return typeFacilitiesRepository.findByName(name).get();

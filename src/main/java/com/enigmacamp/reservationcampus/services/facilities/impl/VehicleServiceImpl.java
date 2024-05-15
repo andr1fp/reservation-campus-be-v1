@@ -32,7 +32,7 @@ public class VehicleServiceImpl implements VehicleService {
 
 
         vehicle.setAvailability(availability);
-        vehicle.setFacility(typeFacilities);
+        vehicle.setFacilities(typeFacilities);
 
         vehicleRepository.save(vehicle);
 
@@ -63,7 +63,7 @@ public class VehicleServiceImpl implements VehicleService {
             vehicle.setNoPolice(vehicles.getNoPolice());
 
             vehicle.setAvailability(availability);
-            vehicle.setFacility(typeFacilities);
+            vehicle.setFacilities(typeFacilities);
 
             vehicleRepository.save(vehicle);
             return vehicles;
@@ -83,7 +83,7 @@ public class VehicleServiceImpl implements VehicleService {
 
     @Override
     public List<Vehicles> findVehiclesByName(String name) {
-        return vehicleRepository.findbyVehiclesNameContainsIgnoreCase(name);
+        return vehicleRepository.findByNameContainsIgnoreCase(name);
     }
 
     @Override
@@ -107,7 +107,7 @@ public class VehicleServiceImpl implements VehicleService {
         vehicle.setPrice(vehicles.getPrice());
         vehicle.setNoPolice(vehicles.getNoPolice());
         vehicle.setAvailability(availability);
-        vehicle.setFacility(typeFacilities);
+        vehicle.setFacilities(typeFacilities);
         vehicleRepository.save(vehicle);
     }
 }

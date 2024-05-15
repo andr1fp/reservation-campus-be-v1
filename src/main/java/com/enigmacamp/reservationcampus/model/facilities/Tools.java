@@ -1,5 +1,7 @@
 package com.enigmacamp.reservationcampus.model.facilities;
 
+import com.enigmacamp.reservationcampus.model.entity.constant.Availability;
+import com.enigmacamp.reservationcampus.model.entity.constant.TypeFacilities;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -7,10 +9,13 @@ import org.springframework.stereotype.Component;
 
 @Entity
 @Table(name = "mst_tools")
-@Getter
+@NoArgsConstructor
+@AllArgsConstructor
 @Setter
-@ConfigurationProperties(prefix = "file")
-public class Tools extends Facilities {
+@Getter
+@Builder
+//@ConfigurationProperties(prefix = "file")
+public class Tools{
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
@@ -33,22 +38,29 @@ public class Tools extends Facilities {
     @Column(name = "stock")
     private Integer stock;
 
-    private Boolean avaibility;
+    @ManyToOne
+    @JoinColumn(name = "id_typefac")
+    private TypeFacilities facilities;
 
-    @PrePersist
-    public void setDefaultValue(){
-        if(this.stock > 0){
-            this.avaibility = true;
-        }else {
-            this.avaibility = false;
-        }
+    @ManyToOne
+    @JoinColumn(name = "id_avail")
+    private Availability availability;
+
+}
+//    @PrePersist
+//    public void setDefaultValue(){
+//        if(this.stock > 0){
+//            this.avaibility = true;
+//        }else {
+//            this.avaibility = false;
+//        }
 //        TypeFacilities defaultFacility = new TypeFacilities();
 //        defaultFacility.setId("3");
 //        this.setFacility(defaultFacility);
-    }
+
 // =======
 //     @ManyToOne
 //     @JoinColumn(name = "id_avail")
 //     private Availability availability;
 // >>>>>>> src/main/java/com/enigmacamp/reservationcampus/model/facilities/Tools.java
-}
+
