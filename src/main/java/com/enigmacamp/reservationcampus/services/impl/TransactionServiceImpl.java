@@ -1,17 +1,11 @@
 package com.enigmacamp.reservationcampus.services.impl;
 
 import com.enigmacamp.reservationcampus.model.entity.Transaction;
-import com.enigmacamp.reservationcampus.model.entity.TransactionDetail;
-import com.enigmacamp.reservationcampus.model.entity.constant.TypeFacilities;
 import com.enigmacamp.reservationcampus.repository.TransactionRepository;
 import com.enigmacamp.reservationcampus.services.ProfileService;
 import com.enigmacamp.reservationcampus.services.TransactionDetailService;
 import com.enigmacamp.reservationcampus.services.TransactionService;
-import com.enigmacamp.reservationcampus.services.facilities.PlaceService;
-import com.enigmacamp.reservationcampus.services.facilities.ToolService;
-import com.enigmacamp.reservationcampus.services.facilities.TypeFacilitiesService;
-import com.enigmacamp.reservationcampus.services.facilities.VehicleService;
-import com.enigmacamp.reservationcampus.utils.constant.ETypeFacilities;
+import com.enigmacamp.reservationcampus.services.TypeFacilitiesService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -27,26 +21,18 @@ public class TransactionServiceImpl implements TransactionService {
     TransactionDetailService transactionDetailService;
     TypeFacilitiesService typeFacilitiesService;
     ProfileService profileService;
-    PlaceService placeService;
-    ToolService toolsService;
-    VehicleService vehicleService;
+
 
     @Autowired
     public TransactionServiceImpl(
             TransactionRepository transactionRepository,
             TransactionDetailService transactionDetailService,
             TypeFacilitiesService typeFacilitiesService,
-            ProfileService profileService,
-            PlaceService placeService,
-            ToolService toolsService,
-            VehicleService vehicleService) {
+            ProfileService profileService) {
         this.transactionRepository = transactionRepository;
         this.transactionDetailService = transactionDetailService;
         this.typeFacilitiesService = typeFacilitiesService;
         this.profileService = profileService;
-        this.placeService = placeService;
-        this.toolsService = toolsService;
-        this.vehicleService = vehicleService;
     }
 
 

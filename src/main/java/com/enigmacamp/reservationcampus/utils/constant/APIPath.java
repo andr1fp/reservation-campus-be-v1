@@ -12,10 +12,11 @@ public class APIPath {
     public static final String GENERAL = "/general";
     public static final String STUDENT = "/student";
 
-    public static final String TOOLS = "/tools";
-    public static final String PLACES = "/places";
-    public static final String VEHICLES = "/vehicles";
+//    public static final String TOOLS = "/tools";
+//    public static final String PLACES = "/places";
+//    public static final String VEHICLES = "/vehicles";
     public static final String TYPE_FACILITIES = "/type-facilities";
+    public static final String FACILITIES = "/facilities";
 
     public static final String USER = "/users";
     public static final String AVAILABILITY = "/availability";

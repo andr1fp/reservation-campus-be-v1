@@ -1,13 +1,13 @@
 package com.enigmacamp.reservationcampus.model.entity;
 
-
-import com.enigmacamp.reservationcampus.model.entity.constant.TypeFacilities;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import java.util.List;
 
 @Entity
 @NoArgsConstructor
@@ -26,8 +26,8 @@ public class TransactionDetail {
     private Integer quantity;
 
     @ManyToOne
-    @JoinColumn(name = "id_typefac")
-    private TypeFacilities TypeFacilities;
+    @JoinColumn(name = "id_fac")
+    private Facility facility;
 
     @ManyToOne
     @JoinColumn(name = "id_reservation")

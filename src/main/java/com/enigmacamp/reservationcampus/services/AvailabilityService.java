@@ -7,9 +7,7 @@ import java.util.List;
 
 public interface AvailabilityService {
 
-    Availability save(Availability availability);
-    Availability getByName(EAvailability name);
+    void initAvailability();
     List<Availability> getAll();
-    Availability update(Availability availability);
-    void delete(String id);
+
 }
