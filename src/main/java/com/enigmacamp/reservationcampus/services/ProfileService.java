@@ -10,7 +10,7 @@ public interface ProfileService {
 
     List<Profile> getAllProfiles();
 
-//    Profile getProfileById(String id);
+    Profile getProfileById(String id);
 
     List<Profile> getProfileByName(String name);
 

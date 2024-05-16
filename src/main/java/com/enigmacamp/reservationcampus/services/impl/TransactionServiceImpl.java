@@ -1,66 +1,90 @@
 package com.enigmacamp.reservationcampus.services.impl;
 
 import com.enigmacamp.reservationcampus.model.entity.Facility;
+import com.enigmacamp.reservationcampus.model.entity.Profile;
 import com.enigmacamp.reservationcampus.model.entity.Transaction;
 import com.enigmacamp.reservationcampus.model.entity.TransactionDetail;
 import com.enigmacamp.reservationcampus.model.entity.constant.Penalties;
 import com.enigmacamp.reservationcampus.model.entity.constant.StatusReservation;
+import com.enigmacamp.reservationcampus.model.request.TransactionRequest;
+import com.enigmacamp.reservationcampus.model.response.TransactionDetailDTO;
+import com.enigmacamp.reservationcampus.repository.PenaltiesRepository;
+import com.enigmacamp.reservationcampus.repository.StatusRepository;
 import com.enigmacamp.reservationcampus.repository.TransactionRepository;
 import com.enigmacamp.reservationcampus.services.*;
 import com.enigmacamp.reservationcampus.utils.constant.EPenalties;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.enigmacamp.reservationcampus.utils.constant.EStatusReservation;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Date;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class TransactionServiceImpl implements TransactionService {
 
-    TransactionRepository transactionRepository;
-    TransactionDetailService transactionDetailService;
-    ProfileService profileService;
-    FacilityService facilityService;
+    private final TransactionRepository transactionRepository;
+    private final TransactionDetailService transactionDetailService;
+    private final ProfileService profileService;
+    private final FacilityService facilityService;
+    private final StatusRepository statusRepository;
+    private final PenaltiesRepository penaltiesRepository;
 
-    @Autowired
-    public TransactionServiceImpl(
-            TransactionRepository transactionRepository,
-            TransactionDetailService transactionDetailService,
-            FacilityService facilityService,
-            ProfileService profileService) {
-        this.transactionRepository = transactionRepository;
-        this.transactionDetailService = transactionDetailService;
-        this.profileService = profileService;
-        this.facilityService = facilityService;
-    }
 
 
     @Override
     @Transactional
-    public Transaction saveTransaction(Transaction transaction) {
-        transaction.setDateSubmission(Date.valueOf(LocalDate.now()));
+    public Transaction saveTransaction(TransactionRequest transaction) {
+        String profileId = transaction.getId_profile();
+        Profile profile = profileService.getProfileById(profileId);
+        StatusReservation status = statusRepository.findByStatus(EStatusReservation.STATUS_PROCESSED);
+        Penalties penalties = penaltiesRepository.findByName(EPenalties.NOT_PENALTY);
 
-        StatusReservation processedStatusReservation = new StatusReservation();
-        processedStatusReservation.setStatus(EStatus.STATUS_PROCESSED);
-        transaction.setStatus(processedStatusReservation);
 
-        Penalties noPenalty = new Penalties();
-        noPenalty.setName(EPenalties.NOT_PENALTY);
-        transaction.setPenalties(noPenalty);
-        Transaction savedTransaction = transactionRepository.save(transaction);
-        System.out.println("SUCCESSFUL");
-        System.out.println(savedTransaction);
+        Transaction transaction1 = new Transaction();
+        transaction1.setSubject(transaction.getSubject());
+        transaction1.setDocument(transaction.getDocument());
+        transaction1.setProfile(profile);
+        transaction1.setDateReservation(Date.valueOf(LocalDate.now()));
+        transaction1.setDateSubmission(transaction.getDateReservation());
+        transaction1.setDateReturn(transaction.getDateReturn());
+        transaction1.setStatus(status);
+        transaction1.setPenalties(penalties);
 
-        for (TransactionDetail transactionDetail : transaction.getTransactionDetail()) {
-            Facility facility = facilityService.getFacilityById(transactionDetail.getFacility().getId());
-            transactionDetail.setPrice(facility.getPrice());
-            transactionDetailService.saveTransactionDetail(transactionDetail);
+
+        Transaction transactionResult = transactionRepository.save(transaction1);
+        List<TransactionDetail> transactionDetailList = new ArrayList<>();
+
+
+        for(TransactionDetailDTO transactionDetail : transaction.getTransactionDetail()) {
+            TransactionDetail transactionDetail1 = new TransactionDetail();
+            transactionDetail1.setTransaction(transaction1);
+            transactionDetail1.setPrice(transactionDetail.getPrice());
+            transactionDetail1.setQuantity(transactionDetail.getQuantity());
+            transactionDetail1.setFacility(facilityService.getFacilityById(transactionDetail.getId()));
+
+            Facility facility = facilityService.getFacilityById(transactionDetail.getId());
+            Integer stok = facility.getQuantity();
+            Integer quantity = transactionDetail.getQuantity();
+            if(stok == 0 || stok < quantity){
+                throw new RuntimeException("STOK TIDAK CUKUP");
+            }else{
+                facility.setQuantity(stok - quantity);
+                facilityService.updateFacility(facility);
+            }
+
+            transactionDetailService.saveTransactionDetail(transactionDetail1);
+            transactionDetailList.add(this.transactionDetailService.saveTransactionDetail(transactionDetail1));
+
         }
 
-        System.out.println(savedTransaction);
-        return savedTransaction;
+        transactionResult.setTransactionDetail(transactionDetailList);
+        return transactionResult;
+
     }
 
     @Override

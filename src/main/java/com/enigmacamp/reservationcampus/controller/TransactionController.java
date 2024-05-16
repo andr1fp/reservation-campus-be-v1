@@ -1,6 +1,7 @@
 package com.enigmacamp.reservationcampus.controller;
 
 import com.enigmacamp.reservationcampus.model.entity.Transaction;
+import com.enigmacamp.reservationcampus.model.request.TransactionRequest;
 import com.enigmacamp.reservationcampus.model.response.CommonResponse;
 import com.enigmacamp.reservationcampus.model.response.TransactionDTO;
 import com.enigmacamp.reservationcampus.services.TransactionDetailService;
@@ -30,12 +31,11 @@ public class TransactionController {
         this.transactionService = transactionService;
     }
 
-    @PostMapping
-    @Transactional
-    public ResponseEntity<?> saveTransaction(@RequestBody Transaction transaction) {
+    @PostMapping("/transaction")
+    public ResponseEntity<?> saveTransaction(@RequestBody TransactionRequest transactionRequest) {
         String message = String.format(Message.MESSAGE_INSERT);
-        System.out.println(transaction);
-        Transaction result = transactionService.saveTransaction(transaction);
+        System.out.println(transactionRequest);
+        Transaction result = transactionService.saveTransaction(transactionRequest);
 
         CommonResponse<Transaction> response = CommonResponse.<Transaction>builder()
                 .statusCode(HttpStatus.OK.value())
@@ -46,4 +46,8 @@ public class TransactionController {
                 .contentType(MediaType.APPLICATION_JSON)
                 .body(response);
     }
+
+
+
+
 }

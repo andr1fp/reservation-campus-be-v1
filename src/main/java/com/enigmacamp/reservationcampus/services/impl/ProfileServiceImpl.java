@@ -28,10 +28,10 @@ public class ProfileServiceImpl implements ProfileService {
         return profileRepository.findAll();
     }
 
-//    @Override
-//    public Profile getProfileById(String id) {
-//        return profileRepository.findById(id).get();
-//    }
+    @Override
+    public Profile getProfileById(String id) {
+        return profileRepository.findById(id).get();
+    }
 
     @Override
     public Profile updateProfile(String id, Profile profile) {
