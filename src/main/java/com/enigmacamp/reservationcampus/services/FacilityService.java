@@ -16,11 +16,11 @@ public interface FacilityService {
 
     List<Facility> getAllFacilities();
 
-    List<Facility> getFacilityByName(String name);
-
-    List<Facility> getFacilitiesByType(String type);
-
-    List<Facility> getFacilitiesByAvailability(String availability);
+//    List<Facility> getFacilityByName(String name);
+//
+//    List<Facility> getFacilitiesByType(String type);
+//
+//    List<Facility> getFacilitiesByAvailability(String availability);
 
     void deleteFacility(String id);
 

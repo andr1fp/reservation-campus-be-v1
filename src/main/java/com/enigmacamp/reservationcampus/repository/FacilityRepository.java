@@ -9,7 +9,7 @@ import java.util.Optional;
 
 @Repository
 public interface FacilityRepository extends JpaRepository<Facility, String> {
-    Optional<Facility> findByName(String facility);
-    Optional<Facility> findByTypeFacilities(String facility);
-    Optional<Facility> findByAvailabilityIs(String facility);
+//    Optional<Facility> findByName(String facility);
+//    Optional<Facility> findByTypeFacilities(String facility);
+//    Optional<Facility> findByAvailabilityIs(String facility);
 }

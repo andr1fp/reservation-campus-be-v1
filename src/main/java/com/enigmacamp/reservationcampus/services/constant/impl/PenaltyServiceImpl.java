@@ -4,6 +4,7 @@ import com.enigmacamp.reservationcampus.model.entity.constant.Penalties;
 import com.enigmacamp.reservationcampus.repository.constant.PenaltyRepository;
 import com.enigmacamp.reservationcampus.services.constant.PenaltyService;
 import com.enigmacamp.reservationcampus.utils.constant.EPenalties;
+import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,7 +18,7 @@ public class PenaltyServiceImpl implements PenaltyService {
     @Autowired
     private PenaltyRepository penaltyRepository;
 
-    @Override
+    @PostConstruct
     public void initPenalty() {
         if(penaltyRepository.count() == 0){
             for(EPenalties ePenalties : EPenalties.values()){

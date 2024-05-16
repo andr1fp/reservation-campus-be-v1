@@ -9,7 +9,7 @@ import com.enigmacamp.reservationcampus.model.entity.constant.StatusReservation;
 import com.enigmacamp.reservationcampus.model.request.TransactionRequest;
 import com.enigmacamp.reservationcampus.model.response.TransactionDetailDTO;
 import com.enigmacamp.reservationcampus.repository.PenaltiesRepository;
-import com.enigmacamp.reservationcampus.repository.StatusRepository;
+import com.enigmacamp.reservationcampus.repository.constant.StatusRepository;
 import com.enigmacamp.reservationcampus.repository.TransactionRepository;
 import com.enigmacamp.reservationcampus.services.*;
 import com.enigmacamp.reservationcampus.utils.constant.EPenalties;
@@ -44,6 +44,10 @@ public class TransactionServiceImpl implements TransactionService {
         StatusReservation status = statusRepository.findByStatus(EStatusReservation.STATUS_PROCESSED);
         Penalties penalties = penaltiesRepository.findByName(EPenalties.NOT_PENALTY);
 
+
+        System.out.println(transaction);
+        System.out.println(status);
+        System.out.println(penalties);
 
         Transaction transaction1 = new Transaction();
         transaction1.setSubject(transaction.getSubject());

@@ -69,23 +69,23 @@ public class FacilityServiceImpl implements FacilityService {
         return facilityRepository.findAll();
     }
 
-    @Override
-    public List<Facility> getFacilityByName(String name) {
-        Optional<Facility> facility = facilityRepository.findByName(name);
-        return facility.map(Collections::singletonList).orElse(Collections.emptyList());
-   }
-
-    @Override
-    public List<Facility> getFacilitiesByType(String type) {
-        Optional<Facility> facility = facilityRepository.findByTypeFacilities(type);
-        return facility.map(Collections::singletonList).orElse(Collections.emptyList());
-    }
-
-    @Override
-    public List<Facility> getFacilitiesByAvailability(String availability) {
-        Optional<Facility> facility = facilityRepository.findByAvailabilityIs(availability);
-        return facility.map(Collections::singletonList).orElse(Collections.emptyList());
-    }
+//    @Override
+//    public List<Facility> getFacilityByName(String name) {
+//        Optional<Facility> facility = facilityRepository.findByName(name);
+//        return facility.map(Collections::singletonList).orElse(Collections.emptyList());
+//   }
+//
+//    @Override
+//    public List<Facility> getFacilitiesByType(String type) {
+//        Optional<Facility> facility = facilityRepository.findByTypeFacilities(type);
+//        return facility.map(Collections::singletonList).orElse(Collections.emptyList());
+//    }
+//
+//    @Override
+//    public List<Facility> getFacilitiesByAvailability(String availability) {
+//        Optional<Facility> facility = facilityRepository.findByAvailabilityIs(availability);
+//        return facility.map(Collections::singletonList).orElse(Collections.emptyList());
+//    }
 
     @Override
     public void deleteFacility(String id) {
