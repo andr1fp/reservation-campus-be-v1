@@ -10,11 +10,11 @@ public interface TransactionService {
 
     Transaction saveTransaction(TransactionRequest transaction);
 
-    Transaction getTransactionById(String id);
+    TransactionDTO getTransactionById(String id);
 
-    List<Transaction> getAllTransactions();
+    List<TransactionDTO> getAllTransaction();
 
-    List<Transaction> findTransactionsbyName(String name);
+    List<TransactionDTO> findTransactionsbyName(String name);
 
     Transaction updateTransaction(Transaction transaction);
 

@@ -11,6 +11,7 @@ import lombok.NoArgsConstructor;
 @Builder
 public class TransactionDetailDTO {
     private String id;
+    private String name;
     private Integer quantity;
     private Integer price;
 
