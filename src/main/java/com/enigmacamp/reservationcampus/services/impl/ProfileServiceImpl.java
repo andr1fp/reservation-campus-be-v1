@@ -28,10 +28,10 @@ public class ProfileServiceImpl implements ProfileService {
         return profileRepository.findAll();
     }
 
-    @Override
-    public Profile getProfileById(String id) {
-        return profileRepository.findById(id).get();
-    }
+//    @Override
+//    public Profile getProfileById(String id) {
+//        return profileRepository.findById(id).get();
+//    }
 
     @Override
     public Profile updateProfile(String id, Profile profile) {
@@ -41,6 +41,11 @@ public class ProfileServiceImpl implements ProfileService {
     @Override
     public void deleteProfile(String id) {
         profileRepository.deleteById(id);
+    }
+
+    @Override
+    public Profile getProfileByUserId(String userId) {
+        return profileRepository.findByUserId(userId);
     }
 
     @Override

@@ -36,5 +36,19 @@ public class ProfileController {
                 .contentType(MediaType.APPLICATION_JSON)
                 .body(response);
     }
+    @GetMapping("/{id}")
+    public ResponseEntity<CommonResponse<Profile>> getProfileById(@PathVariable String id){
+        String message = String.format(Message.MESSAGE_READ, id);
+        Profile result = profileService.getProfileByUserId(id);
+
+        CommonResponse<Profile> response = CommonResponse.<Profile>builder()
+               .statusCode(HttpStatus.OK.value())
+               .message(message)
+               .data(result)
+               .build();
+        return ResponseEntity.status(HttpStatus.OK)
+               .contentType(MediaType.APPLICATION_JSON)
+               .body(response);
+    }
 
 }

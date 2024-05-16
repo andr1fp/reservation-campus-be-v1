@@ -54,6 +54,6 @@ public class FacilityServiceImpl implements FacilityService {
 
     @Override
     public void deleteFacility(String id) {
-        facilityRepository.findById(id).get();
+        facilityRepository.deleteById(id);
     }
 }

@@ -1,6 +1,7 @@
 package com.enigmacamp.reservationcampus.services.impl;
 
 import com.enigmacamp.reservationcampus.model.entity.Transaction;
+import com.enigmacamp.reservationcampus.model.entity.TransactionDetail;
 import com.enigmacamp.reservationcampus.repository.TransactionRepository;
 import com.enigmacamp.reservationcampus.services.ProfileService;
 import com.enigmacamp.reservationcampus.services.TransactionDetailService;
@@ -40,7 +41,10 @@ public class TransactionServiceImpl implements TransactionService {
     @Transactional
     public Transaction saveTransaction(Transaction transaction) {
         transaction.setDateReservation(Date.valueOf(LocalDate.now()));
-
+//        Transaction transactionResult = transactionRepository.save(transaction);
+//        for(TransactionDetail transactionDetail : transaction.getTransactionDetail()){
+//            transactionDetail.
+//        }
         return null;
     }
 
