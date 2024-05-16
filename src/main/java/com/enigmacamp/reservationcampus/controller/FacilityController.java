@@ -159,6 +159,6 @@ public class FacilityController {
         // Beri respons sukses
         return new ResponseEntity<>(HttpStatus.OK);
     }
-    }
+}
 
 
