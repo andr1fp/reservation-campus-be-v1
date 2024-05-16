@@ -17,6 +17,6 @@ public class FacilityRequest {
     private String picture;
     private Integer quantity;
     private Integer price;
-    private TypeFacilities typeFacilities;
-    private Availability availability;
+    private String typeFacilities;
+    private String availability;
 }
