@@ -13,7 +13,7 @@ import com.enigmacamp.reservationcampus.repository.UserRepository;
 import com.enigmacamp.reservationcampus.security.JwtUtil;
 import com.enigmacamp.reservationcampus.services.AuthService;
 import com.enigmacamp.reservationcampus.services.ProfileService;
-import com.enigmacamp.reservationcampus.services.RoleService;
+import com.enigmacamp.reservationcampus.services.constant.RoleService;
 import com.enigmacamp.reservationcampus.utils.constant.ERole;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;

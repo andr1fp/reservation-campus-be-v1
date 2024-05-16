@@ -9,7 +9,9 @@ import com.enigmacamp.reservationcampus.services.FacilityService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class FacilityServiceImpl implements FacilityService {
@@ -69,12 +71,20 @@ public class FacilityServiceImpl implements FacilityService {
 
     @Override
     public List<Facility> getFacilityByName(String name) {
-        return null;
-    }
+        Optional<Facility> facility = facilityRepository.findByName(name);
+        return facility.map(Collections::singletonList).orElse(Collections.emptyList());
+   }
 
     @Override
     public List<Facility> getFacilitiesByType(String type) {
-        return null;
+        Optional<Facility> facility = facilityRepository.findByTypeFacilities(type);
+        return facility.map(Collections::singletonList).orElse(Collections.emptyList());
+    }
+
+    @Override
+    public List<Facility> getFacilitiesByAvailability(String availability) {
+        Optional<Facility> facility = facilityRepository.findByAvailabilityIs(availability);
+        return facility.map(Collections::singletonList).orElse(Collections.emptyList());
     }
 
     @Override

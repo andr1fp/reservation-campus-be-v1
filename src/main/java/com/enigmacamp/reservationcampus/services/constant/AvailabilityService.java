@@ -1,7 +1,6 @@
-package com.enigmacamp.reservationcampus.services;
+package com.enigmacamp.reservationcampus.services.constant;
 
 import com.enigmacamp.reservationcampus.model.entity.constant.Availability;
-import com.enigmacamp.reservationcampus.utils.constant.EAvailability;
 
 import java.util.List;
 

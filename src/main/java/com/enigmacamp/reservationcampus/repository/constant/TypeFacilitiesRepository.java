@@ -1,4 +1,4 @@
-package com.enigmacamp.reservationcampus.repository;
+package com.enigmacamp.reservationcampus.repository.constant;
 
 import com.enigmacamp.reservationcampus.model.entity.constant.TypeFacilities;
 import com.enigmacamp.reservationcampus.utils.constant.ETypeFacilities;

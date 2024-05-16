@@ -2,7 +2,7 @@ package com.enigmacamp.reservationcampus.model.entity;
 
 
 import com.enigmacamp.reservationcampus.model.entity.constant.Penalties;
-import com.enigmacamp.reservationcampus.model.entity.constant.Status;
+import com.enigmacamp.reservationcampus.model.entity.constant.StatusReservation;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -51,7 +51,7 @@ public class Transaction {
 
     @ManyToOne
     @JoinColumn(name = "id_status")
-    private Status status;
+    private StatusReservation status;
 
     @ManyToOne
     @JoinColumn(name = "id_penalties")

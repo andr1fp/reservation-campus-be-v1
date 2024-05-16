@@ -8,7 +8,7 @@ import com.enigmacamp.reservationcampus.model.response.RegisterResponse;
 import com.enigmacamp.reservationcampus.repository.UserRepository;
 import com.enigmacamp.reservationcampus.services.AdminService;
 import com.enigmacamp.reservationcampus.services.ProfileService;
-import com.enigmacamp.reservationcampus.services.RoleService;
+import com.enigmacamp.reservationcampus.services.constant.RoleService;
 import com.enigmacamp.reservationcampus.utils.constant.ERole;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;

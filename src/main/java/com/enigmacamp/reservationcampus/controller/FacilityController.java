@@ -159,6 +159,49 @@ public class FacilityController {
         // Beri respons sukses
         return new ResponseEntity<>(HttpStatus.OK);
     }
+
+    @GetMapping(APIPath.BYNAME)
+    public ResponseEntity<CommonResponse<List<Facility>>> getFacilityByName(@RequestParam("name") String name){
+        String message = String.format(Message.MESSAGE_READ);
+        List<Facility> result = facilityService.getFacilityByName(name);
+        CommonResponse<List<Facility>> response = CommonResponse.<List<Facility>>builder()
+                .statusCode(HttpStatus.OK.value())
+                .message(message)
+                .data(result)
+                .build();
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(response);
+    }
+
+    @GetMapping(APIPath.BYTYPE)
+    public ResponseEntity<CommonResponse<List<Facility>>> getFacilitiesByType(@RequestParam("type") String type){
+        String message = String.format(Message.MESSAGE_READ);
+        List<Facility> result = facilityService.getFacilitiesByType(type);
+        CommonResponse<List<Facility>> response = CommonResponse.<List<Facility>>builder()
+                .statusCode(HttpStatus.OK.value())
+                .message(message)
+                .data(result)
+                .build();
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(response);
+    }
+
+    @GetMapping(APIPath.BYAVAILABILITY)
+    public ResponseEntity<CommonResponse<List<Facility>>> getFacilitiesByAvailability(@RequestParam("availability") String availability){
+        String message = String.format(Message.MESSAGE_READ);
+        List<Facility> result = facilityService.getFacilitiesByAvailability(availability);
+        CommonResponse<List<Facility>> response = CommonResponse.<List<Facility>>builder()
+                .statusCode(HttpStatus.OK.value())
+                .message(message)
+                .data(result)
+                .build();
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(response);
+    }
+
 }
 
 

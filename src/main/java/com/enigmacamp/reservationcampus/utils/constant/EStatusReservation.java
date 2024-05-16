@@ -1,6 +1,6 @@
 package com.enigmacamp.reservationcampus.utils.constant;
 
-public enum EStatus {
+public enum EStatusReservation {
     STATUS_APPROVED,
     STATUS_REJECTED,
     STATUS_PROCESSED,

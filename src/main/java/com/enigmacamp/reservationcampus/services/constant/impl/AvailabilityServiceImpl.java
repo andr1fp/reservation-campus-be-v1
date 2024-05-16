@@ -1,8 +1,8 @@
-package com.enigmacamp.reservationcampus.services.impl;
+package com.enigmacamp.reservationcampus.services.constant.impl;
 
 import com.enigmacamp.reservationcampus.model.entity.constant.Availability;
-import com.enigmacamp.reservationcampus.repository.AvailabilityRepository;
-import com.enigmacamp.reservationcampus.services.AvailabilityService;
+import com.enigmacamp.reservationcampus.repository.constant.AvailabilityRepository;
+import com.enigmacamp.reservationcampus.services.constant.AvailabilityService;
 import com.enigmacamp.reservationcampus.utils.constant.EAvailability;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;

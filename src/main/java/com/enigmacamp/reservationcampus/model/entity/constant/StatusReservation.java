@@ -1,7 +1,7 @@
 package com.enigmacamp.reservationcampus.model.entity.constant;
+import com.enigmacamp.reservationcampus.utils.constant.EStatusReservation;
 import jakarta.persistence.*;
 import lombok.*;
-import com.enigmacamp.reservationcampus.utils.constant.EStatus;
 
 @Entity
 @Table(name = "mst_status")
@@ -10,12 +10,12 @@ import com.enigmacamp.reservationcampus.utils.constant.EStatus;
 @Getter
 @Setter
 @Builder
-public class Status {
+public class StatusReservation {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     @Column(name = "id_status")
     private String id;
     @Enumerated(EnumType.STRING)
-    private EStatus status;
+    private EStatusReservation status;
 
 }

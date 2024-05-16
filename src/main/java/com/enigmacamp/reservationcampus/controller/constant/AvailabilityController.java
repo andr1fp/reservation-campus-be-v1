@@ -1,7 +1,7 @@
-package com.enigmacamp.reservationcampus.controller;
+package com.enigmacamp.reservationcampus.controller.constant;
 
 import com.enigmacamp.reservationcampus.model.entity.constant.Availability;
-import com.enigmacamp.reservationcampus.services.AvailabilityService;
+import com.enigmacamp.reservationcampus.services.constant.AvailabilityService;
 import com.enigmacamp.reservationcampus.utils.constant.APIPath;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;

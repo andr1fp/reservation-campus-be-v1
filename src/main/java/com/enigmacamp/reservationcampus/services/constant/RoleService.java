@@ -1,4 +1,4 @@
-package com.enigmacamp.reservationcampus.services;
+package com.enigmacamp.reservationcampus.services.constant;
 
 
 import com.enigmacamp.reservationcampus.model.entity.constant.Role;

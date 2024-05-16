@@ -20,6 +20,8 @@ public interface FacilityService {
 
     List<Facility> getFacilitiesByType(String type);
 
+    List<Facility> getFacilitiesByAvailability(String availability);
+
     void deleteFacility(String id);
 
 }

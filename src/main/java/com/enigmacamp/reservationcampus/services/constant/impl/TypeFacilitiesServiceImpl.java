@@ -1,8 +1,8 @@
-package com.enigmacamp.reservationcampus.services.impl;
+package com.enigmacamp.reservationcampus.services.constant.impl;
 
 import com.enigmacamp.reservationcampus.model.entity.constant.TypeFacilities;
-import com.enigmacamp.reservationcampus.repository.TypeFacilitiesRepository;
-import com.enigmacamp.reservationcampus.services.TypeFacilitiesService;
+import com.enigmacamp.reservationcampus.repository.constant.TypeFacilitiesRepository;
+import com.enigmacamp.reservationcampus.services.constant.TypeFacilitiesService;
 import com.enigmacamp.reservationcampus.utils.constant.ETypeFacilities;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;

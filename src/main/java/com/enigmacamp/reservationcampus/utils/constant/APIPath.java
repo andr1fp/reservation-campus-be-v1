@@ -20,6 +20,13 @@ public class APIPath {
 
     public static final String USER = "/users";
     public static final String AVAILABILITY = "/availability";
+    public static final String STATUS_RESERVATION = "/status-reserv";
+    public static final String PENALTY = "/penalty";
+    public static final String TYPE_RESERVATION = "/type-reserv";
+
+    public static final String BYNAME = "/by-name";
+    public static final String BYTYPE = "/by-type";
+    public static final String BYAVAILABILITY = "/by-availability";
 
     public static final String PROFILE = "/profile";
 

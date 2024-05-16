@@ -4,15 +4,13 @@ import com.enigmacamp.reservationcampus.model.entity.Facility;
 import com.enigmacamp.reservationcampus.model.entity.Transaction;
 import com.enigmacamp.reservationcampus.model.entity.TransactionDetail;
 import com.enigmacamp.reservationcampus.model.entity.constant.Penalties;
-import com.enigmacamp.reservationcampus.model.entity.constant.Status;
+import com.enigmacamp.reservationcampus.model.entity.constant.StatusReservation;
 import com.enigmacamp.reservationcampus.repository.TransactionRepository;
 import com.enigmacamp.reservationcampus.services.*;
 import com.enigmacamp.reservationcampus.utils.constant.EPenalties;
-import com.enigmacamp.reservationcampus.utils.constant.EStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.CrossOrigin;
 
 import java.sql.Date;
 import java.time.LocalDate;
@@ -44,9 +42,9 @@ public class TransactionServiceImpl implements TransactionService {
     public Transaction saveTransaction(Transaction transaction) {
         transaction.setDateSubmission(Date.valueOf(LocalDate.now()));
 
-        Status processedStatus = new Status();
-        processedStatus.setStatus(EStatus.STATUS_PROCESSED);
-        transaction.setStatus(processedStatus);
+        StatusReservation processedStatusReservation = new StatusReservation();
+        processedStatusReservation.setStatus(EStatus.STATUS_PROCESSED);
+        transaction.setStatus(processedStatusReservation);
 
         Penalties noPenalty = new Penalties();
         noPenalty.setName(EPenalties.NOT_PENALTY);
@@ -54,7 +52,6 @@ public class TransactionServiceImpl implements TransactionService {
         Transaction savedTransaction = transactionRepository.save(transaction);
         System.out.println("SUCCESSFUL");
         System.out.println(savedTransaction);
-
 
         for (TransactionDetail transactionDetail : transaction.getTransactionDetail()) {
             Facility facility = facilityService.getFacilityById(transactionDetail.getFacility().getId());

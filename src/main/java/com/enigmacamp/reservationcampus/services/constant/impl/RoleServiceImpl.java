@@ -1,8 +1,8 @@
-package com.enigmacamp.reservationcampus.services.impl;
+package com.enigmacamp.reservationcampus.services.constant.impl;
 
 import com.enigmacamp.reservationcampus.model.entity.constant.Role;
-import com.enigmacamp.reservationcampus.repository.RoleRepository;
-import com.enigmacamp.reservationcampus.services.RoleService;
+import com.enigmacamp.reservationcampus.repository.constant.RoleRepository;
+import com.enigmacamp.reservationcampus.services.constant.RoleService;
 import com.enigmacamp.reservationcampus.utils.constant.ERole;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
