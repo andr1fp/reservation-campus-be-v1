@@ -35,7 +35,7 @@ public class Profile {
 
     private String phone;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "id_user")
     private User user;
 
