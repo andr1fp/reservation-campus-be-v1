@@ -1,15 +1,18 @@
 package com.enigmacamp.reservationcampus.services.impl;
 
+import com.enigmacamp.reservationcampus.model.entity.Facility;
 import com.enigmacamp.reservationcampus.model.entity.Transaction;
 import com.enigmacamp.reservationcampus.model.entity.TransactionDetail;
+import com.enigmacamp.reservationcampus.model.entity.constant.Penalties;
+import com.enigmacamp.reservationcampus.model.entity.constant.Status;
 import com.enigmacamp.reservationcampus.repository.TransactionRepository;
-import com.enigmacamp.reservationcampus.services.ProfileService;
-import com.enigmacamp.reservationcampus.services.TransactionDetailService;
-import com.enigmacamp.reservationcampus.services.TransactionService;
-import com.enigmacamp.reservationcampus.services.TypeFacilitiesService;
+import com.enigmacamp.reservationcampus.services.*;
+import com.enigmacamp.reservationcampus.utils.constant.EPenalties;
+import com.enigmacamp.reservationcampus.utils.constant.EStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.CrossOrigin;
 
 import java.sql.Date;
 import java.time.LocalDate;
@@ -20,32 +23,47 @@ public class TransactionServiceImpl implements TransactionService {
 
     TransactionRepository transactionRepository;
     TransactionDetailService transactionDetailService;
-    TypeFacilitiesService typeFacilitiesService;
     ProfileService profileService;
-
+    FacilityService facilityService;
 
     @Autowired
     public TransactionServiceImpl(
             TransactionRepository transactionRepository,
             TransactionDetailService transactionDetailService,
-            TypeFacilitiesService typeFacilitiesService,
+            FacilityService facilityService,
             ProfileService profileService) {
         this.transactionRepository = transactionRepository;
         this.transactionDetailService = transactionDetailService;
-        this.typeFacilitiesService = typeFacilitiesService;
         this.profileService = profileService;
+        this.facilityService = facilityService;
     }
 
 
     @Override
     @Transactional
     public Transaction saveTransaction(Transaction transaction) {
-        transaction.setDateReservation(Date.valueOf(LocalDate.now()));
-//        Transaction transactionResult = transactionRepository.save(transaction);
-//        for(TransactionDetail transactionDetail : transaction.getTransactionDetail()){
-//            transactionDetail.
-//        }
-        return null;
+        transaction.setDateSubmission(Date.valueOf(LocalDate.now()));
+
+        Status processedStatus = new Status();
+        processedStatus.setStatus(EStatus.STATUS_PROCESSED);
+        transaction.setStatus(processedStatus);
+
+        Penalties noPenalty = new Penalties();
+        noPenalty.setName(EPenalties.NOT_PENALTY);
+        transaction.setPenalties(noPenalty);
+        Transaction savedTransaction = transactionRepository.save(transaction);
+        System.out.println("SUCCESSFUL");
+        System.out.println(savedTransaction);
+
+
+        for (TransactionDetail transactionDetail : transaction.getTransactionDetail()) {
+            Facility facility = facilityService.getFacilityById(transactionDetail.getFacility().getId());
+            transactionDetail.setPrice(facility.getPrice());
+            transactionDetailService.saveTransactionDetail(transactionDetail);
+        }
+
+        System.out.println(savedTransaction);
+        return savedTransaction;
     }
 
     @Override
