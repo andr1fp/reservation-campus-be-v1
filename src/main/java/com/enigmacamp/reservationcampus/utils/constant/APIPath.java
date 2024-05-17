@@ -31,6 +31,7 @@ public class APIPath {
     public static final String PROFILE = "/profile";
 
     public static final String SUBMISSION = "/submission";
+    public static final String TRANSACTION = "/transaction";
 
 
 

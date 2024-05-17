@@ -31,7 +31,7 @@ public class TransactionController {
     }
 
 
-    @GetMapping("/transaction/detail/{id}")
+    @GetMapping( APIPath.TRANSACTION + "/detail/{id}")
     public ResponseEntity<?> getTransaction(@PathVariable("id") String id) {
         TransactionDTO result = transactionService.getTransactionById(id);
         CommonResponse<TransactionDTO> response = CommonResponse.<TransactionDTO>builder()
@@ -44,7 +44,7 @@ public class TransactionController {
                 .body(response);
     }
 
-    @GetMapping("/transaction/{name}")
+    @GetMapping( APIPath.TRANSACTION + "/{name}")
     public ResponseEntity<?> getTransactionByName(@PathVariable("name") String name) {
         List<TransactionDTO> result = transactionService.findTransactionsbyName(name);
         CommonResponse<List<TransactionDTO>> response = CommonResponse.<List<TransactionDTO>>builder()
@@ -59,7 +59,7 @@ public class TransactionController {
 
 
 
-    @GetMapping("/transaction")
+    @GetMapping(APIPath.TRANSACTION)
     public ResponseEntity<?> getAllTransaction() {
         List<TransactionDTO> result = transactionService.getAllTransaction();
         CommonResponse<List<TransactionDTO>> response = CommonResponse.<List<TransactionDTO>>builder()
@@ -72,9 +72,9 @@ public class TransactionController {
                 .body(response);
     }
 
-    @PostMapping("/transaction")
+    @PostMapping(APIPath.TRANSACTION)
     public ResponseEntity<?> saveTransaction(@RequestBody TransactionRequest transactionRequest) {
-        String message = String.format(Message.MESSAGE_INSERT);
+        String message = String.format(Message.MESSAGE_SAVE_SUBMISSION);
         System.out.println(transactionRequest);
         Transaction result = transactionService.saveTransaction(transactionRequest);
 
@@ -116,4 +116,16 @@ public class TransactionController {
                 .body(response);
     }
 
+    @PutMapping("/transaction/{id}")
+    public ResponseEntity<?> cancelTransaction(@PathVariable("id") String id) {
+        String message = String.format(Message.MESSAGE_CANCELED);
+        transactionService.cancelTransaction(id);
+        CommonResponse<Transaction> response = CommonResponse.<Transaction>builder()
+                .statusCode(HttpStatus.OK.value())
+                .message(message)
+                .build();
+        return ResponseEntity.status(HttpStatus.OK)
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(response);
+    }
 }

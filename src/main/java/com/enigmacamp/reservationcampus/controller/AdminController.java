@@ -16,14 +16,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping(APIPath.API + APIPath.AUTH + APIPath.STUDENT)
+@RequestMapping(APIPath.API + APIPath.AUTH + APIPath.ADMIN)
 @RequiredArgsConstructor
 public class AdminController {
 
     private final AdminService adminService;
 
     @PostMapping(APIPath.STUDENT)
-    @PreAuthorize("hasAnyRole({'ROLE_ADMIN'})")
+//    @PreAuthorize("hasAnyRole({'ROLE_ADMIN'})")
     public ResponseEntity<?> registerStudent(@RequestBody AuthRequestStudent authRequestStudent){
         RegisterResponse registerResponse = adminService.registerStudent(authRequestStudent);
 

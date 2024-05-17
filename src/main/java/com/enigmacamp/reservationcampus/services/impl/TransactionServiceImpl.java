@@ -4,15 +4,18 @@ import com.enigmacamp.reservationcampus.model.entity.Facility;
 import com.enigmacamp.reservationcampus.model.entity.Profile;
 import com.enigmacamp.reservationcampus.model.entity.Transaction;
 import com.enigmacamp.reservationcampus.model.entity.TransactionDetail;
+import com.enigmacamp.reservationcampus.model.entity.constant.Availability;
 import com.enigmacamp.reservationcampus.model.entity.constant.Penalties;
 import com.enigmacamp.reservationcampus.model.entity.constant.StatusReservation;
 import com.enigmacamp.reservationcampus.model.request.TransactionRequest;
 import com.enigmacamp.reservationcampus.model.response.TransactionDTO;
 import com.enigmacamp.reservationcampus.model.response.TransactionDetailDTO;
 import com.enigmacamp.reservationcampus.repository.PenaltiesRepository;
+import com.enigmacamp.reservationcampus.repository.constant.AvailabilityRepository;
 import com.enigmacamp.reservationcampus.repository.constant.StatusRepository;
 import com.enigmacamp.reservationcampus.repository.TransactionRepository;
 import com.enigmacamp.reservationcampus.services.*;
+import com.enigmacamp.reservationcampus.utils.constant.EAvailability;
 import com.enigmacamp.reservationcampus.utils.constant.EPenalties;
 import com.enigmacamp.reservationcampus.utils.constant.EStatusReservation;
 import com.enigmacamp.reservationcampus.utils.exception.DataNotFoundException;
@@ -35,8 +38,7 @@ public class TransactionServiceImpl implements TransactionService {
     private final FacilityService facilityService;
     private final StatusRepository statusRepository;
     private final PenaltiesRepository penaltiesRepository;
-
-
+    private final AvailabilityRepository availabilityRepository;
 
     @Override
     @Transactional
@@ -45,6 +47,8 @@ public class TransactionServiceImpl implements TransactionService {
         Profile profile = profileService.getProfileById(profileId);
         StatusReservation status = statusRepository.findByStatus(EStatusReservation.STATUS_PROCESSED);
         Penalties penalties = penaltiesRepository.findByName(EPenalties.NOT_PENALTY);
+
+        Availability notAvailability = availabilityRepository.findByName(EAvailability.AVAILABILITY_NO);
 
         Transaction transaction1 = new Transaction();
         transaction1.setSubject(transaction.getSubject());
@@ -56,10 +60,8 @@ public class TransactionServiceImpl implements TransactionService {
         transaction1.setStatus(status);
         transaction1.setPenalties(penalties);
 
-
         Transaction transactionResult = transactionRepository.save(transaction1);
         List<TransactionDetail> transactionDetailList = new ArrayList<>();
-
 
         for(TransactionDetailDTO transactionDetail : transaction.getTransactionDetail()) {
             TransactionDetail transactionDetail1 = new TransactionDetail();
@@ -72,6 +74,7 @@ public class TransactionServiceImpl implements TransactionService {
             Integer stok = facility.getQuantity();
             Integer quantity = transactionDetail.getQuantity();
             if(stok == 0 || stok < quantity){
+                facility.setAvailability(notAvailability);
                 throw new RuntimeException("STOK TIDAK CUKUP");
             }else{
                 facility.setQuantity(stok - quantity);
@@ -102,7 +105,6 @@ public class TransactionServiceImpl implements TransactionService {
             transactionDTO.setDateReservation(transaction.getDateReservation());
             transactionDTO.setDateSubmission(transaction.getDateSubmission());
             transactionDTO.setDateReturn(transaction.getDateReturn());
-
 
             List<TransactionDetailDTO> transactionDetailDtoList = new ArrayList<>();
 
@@ -162,7 +164,7 @@ public class TransactionServiceImpl implements TransactionService {
 
     @Override
     public List<TransactionDTO> findTransactionsbyName(String name) {
-        List<Transaction> transactions = transactionRepository.findByName(name);
+        List<Transaction> transactions = transactionRepository.findBySubject(name);
         List<TransactionDTO> transactionDTOList = new ArrayList<>();
 
         TransactionDTO transactionDTO = new TransactionDTO();
@@ -179,7 +181,6 @@ public class TransactionServiceImpl implements TransactionService {
 
             transactionDTOList.add(transactionDTO);
         }
-
         return transactionDTOList;
 
     }
@@ -198,14 +199,13 @@ public class TransactionServiceImpl implements TransactionService {
         transaction1.setPenalties(transaction.getPenalties());
 
         StatusReservation status = statusRepository.findById(transaction.getStatus().getId()).get();
-        if(status.getStatus() == EStatusReservation.STATUS_REJECTED) {
+        if(status.getStatus() == EStatusReservation.STATUS_REJECTED || status.getStatus() == EStatusReservation.STATUS_CANCELED || status.getStatus() == EStatusReservation.STATUS_COMPLETED){
             for (TransactionDetail transactionDetail : transaction.getTransactionDetail()) {
                 Facility facility = facilityService.getFacilityById(transactionDetail.getFacility().getId());
                 facility.setQuantity(facility.getQuantity() + transactionDetail.getQuantity());
                 facilityService.updateFacility(facility);
             }
         }
-
         return transactionRepository.save(transaction1);
     }
 
@@ -214,6 +214,23 @@ public class TransactionServiceImpl implements TransactionService {
         Transaction transaction = transactionRepository.findById(id).get();
         if(transaction.getId() != null){
             transactionRepository.delete(transaction);
+        } else {
+            throw new DataNotFoundException("Data Not Found");
         }
     }
+
+    @Override
+    public void cancelTransaction(String id) {
+        Transaction transaction = transactionRepository.findById(id).get();
+        System.out.println(transaction);
+        StatusReservation status = statusRepository.findByStatus(EStatusReservation.STATUS_CANCELED);
+        if(transaction.getId()!= null){
+            transaction.setStatus(status);
+            transactionRepository.save(transaction);
+        } else{
+            throw new DataNotFoundException("Data Not Found");
+        }
+    }
+
+
 }

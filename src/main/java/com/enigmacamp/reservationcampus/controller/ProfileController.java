@@ -22,10 +22,10 @@ public class ProfileController {
     private final ProfileService profileService;
     private final UserService userService;
 
-    @PutMapping("/{id}")
-    public ResponseEntity<CommonResponse<Profile>> updateProfile(@PathVariable String id, @RequestBody Profile updateProfile){
-        String message = String.format(Message.MESSAGE_UPDATE, id);
-        Profile result = profileService.updateProfile(id, updateProfile);
+    @PutMapping
+    public ResponseEntity<CommonResponse<Profile>> updateProfile(@RequestBody Profile updateProfile){
+        String message = String.format(Message.MESSAGE_UPDATE);
+        Profile result = profileService.updateProfile(updateProfile);
 
         CommonResponse<Profile> response = CommonResponse.<Profile>builder()
                 .statusCode(HttpStatus.OK.value())
@@ -36,6 +36,7 @@ public class ProfileController {
                 .contentType(MediaType.APPLICATION_JSON)
                 .body(response);
     }
+
     @GetMapping("/{id}")
     public ResponseEntity<CommonResponse<Profile>> getProfileById(@PathVariable String id){
         String message = String.format(Message.MESSAGE_READ, id);
