@@ -16,10 +16,12 @@ public class TransactionDTO {
     private String id;
     private String name;
     private String subject;
-    private String docoment;
+    private String document;
     private Date dateSubmission;
     private Date dateReservation;
     private Date dateReturn;
+    private String status;
+    private String penalties;
     private Integer totalItem;
     private Integer grandTotal;
     List<TransactionDetailDTO> transactionDetailDTO;

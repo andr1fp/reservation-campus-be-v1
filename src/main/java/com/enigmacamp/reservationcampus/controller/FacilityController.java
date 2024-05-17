@@ -95,8 +95,8 @@ public class FacilityController {
                                                          @RequestParam("quantity") Integer quantity,
                                                          @RequestParam("information") String information,
                                                          @RequestParam("price") Integer price,
-                                                         @RequestParam("id_facility") String id_facility,
-                                                         @RequestParam("id_availability") String id_availability) throws IOException {
+                                                         @RequestParam("typeFacilities") String id_facility,
+                                                         @RequestParam("availability") String id_availability) throws IOException {
         FacilityRequest facilityRequest = new FacilityRequest();
         facilityRequest.setName(name);
         facilityRequest.setInformation(information);

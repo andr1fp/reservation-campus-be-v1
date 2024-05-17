@@ -1,5 +1,6 @@
 package com.enigmacamp.reservationcampus.model.response;
 
+import com.enigmacamp.reservationcampus.model.entity.TransactionDetail;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -15,4 +16,12 @@ public class TransactionDetailDTO {
     private Integer quantity;
     private Integer price;
 
+    public static TransactionDetailDTO fromEntity(TransactionDetail transactionDetail) {
+        return TransactionDetailDTO.builder()
+                .id(transactionDetail.getId())
+                .name(transactionDetail.getFacility().getName())
+                .quantity(transactionDetail.getQuantity())
+                .price(transactionDetail.getPrice())
+                .build();
+    }
 }
