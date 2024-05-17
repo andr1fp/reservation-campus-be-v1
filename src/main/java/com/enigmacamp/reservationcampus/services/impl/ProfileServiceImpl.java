@@ -34,8 +34,8 @@ public class ProfileServiceImpl implements ProfileService {
     }
 
     @Override
-    public Profile updateProfile(Profile profile) {
-        Profile updatedProfile =  profileRepository.findByUserId(profile.getUser().getId());
+    public Profile updateProfile(Profile profile, String userId) {
+        Profile updatedProfile =  profileRepository.findByUserId(userId);
         if (updatedProfile != null){
             updatedProfile.setFullName(profile.getFullName());
             updatedProfile.setPhone(profile.getPhone());

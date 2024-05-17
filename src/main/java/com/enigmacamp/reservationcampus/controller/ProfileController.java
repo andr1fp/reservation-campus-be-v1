@@ -32,6 +32,7 @@ public class ProfileController {
 
     @PutMapping("/add-with-avatar")
     public ResponseEntity<CommonResponse<Profile>> updateAvatar(@RequestParam ("photo") MultipartFile photo,
+                                                                @RequestParam("id_profile") String id_user,
                                                                 @RequestParam("id_profile") String id_profile,
                                                                 @RequestParam("nim") Integer nim,
                                                                 @RequestParam("fullName") String fullName,
@@ -47,13 +48,14 @@ public class ProfileController {
         updateProfile.setPhone(phone);
         updateProfile.setId(id_profile);
 
+
         // update image
         String fileName = imageStorageService.storeFile(photo, id_profile);
         updateProfile.setPhoto(fileName);
 
 
         String message = String.format(Message.MESSAGE_UPDATE);
-        Profile result = profileService.updateProfile(updateProfile);
+        Profile result = profileService.updateProfile(updateProfile, id_user);
         CommonResponse<Profile> response = CommonResponse.<Profile>builder()
                 .statusCode(HttpStatus.OK.value())
                 .message(message)
@@ -65,10 +67,10 @@ public class ProfileController {
     }
 
 
-    @PutMapping
-    public ResponseEntity<CommonResponse<Profile>> updateProfile(@RequestBody Profile updateProfile){
+    @PutMapping("/{id}")
+    public ResponseEntity<CommonResponse<Profile>> updateProfile(@PathVariable String id_user, @RequestBody Profile updateProfile){
         String message = String.format(Message.MESSAGE_UPDATE);
-        Profile result = profileService.updateProfile(updateProfile);
+        Profile result = profileService.updateProfile(updateProfile, id_user);
 
         CommonResponse<Profile> response = CommonResponse.<Profile>builder()
                 .statusCode(HttpStatus.OK.value())
