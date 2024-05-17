@@ -35,6 +35,13 @@ public class TransactionServiceImpl implements TransactionService {
     @Override
     @Transactional
     public Transaction saveTransaction(TransactionRequest transactionRequest) {
+        // Validate reservation date
+        LocalDate today = LocalDate.now();
+        LocalDate maxReservationDate = today.plusDays(7);
+        if (transactionRequest.getDateReservation().toLocalDate().isAfter(maxReservationDate)) {
+            throw new RuntimeException("Reservation can only be made up to 7 days in advance");
+        }
+
         String profileId = transactionRequest.getId_profile();
         Profile profile = profileService.getProfileById(profileId);
         StatusReservation status = statusRepository.findByStatus(EStatusReservation.STATUS_PROCESSED);
@@ -51,7 +58,7 @@ public class TransactionServiceImpl implements TransactionService {
         transaction.setSubject(transactionRequest.getSubject());
         transaction.setDocument(transactionRequest.getDocument());
         transaction.setProfile(profile);
-        transaction.setDateSubmission(Date.valueOf(LocalDate.now()));
+        transaction.setDateSubmission(Date.valueOf(today));
         transaction.setDateReservation(transactionRequest.getDateReservation());
         transaction.setDateReturn(transactionRequest.getDateReturn());
         transaction.setStatus(status);
