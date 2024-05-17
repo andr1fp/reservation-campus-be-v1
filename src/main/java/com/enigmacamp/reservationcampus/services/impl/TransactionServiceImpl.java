@@ -54,8 +54,8 @@ public class TransactionServiceImpl implements TransactionService {
         transaction1.setSubject(transaction.getSubject());
         transaction1.setDocument(transaction.getDocument());
         transaction1.setProfile(profile);
-        transaction1.setDateReservation(Date.valueOf(LocalDate.now()));
-        transaction1.setDateSubmission(transaction.getDateReservation());
+        transaction1.setDateReservation(transaction.getDateReservation());
+        transaction1.setDateSubmission(Date.valueOf(LocalDate.now()));
         transaction1.setDateReturn(transaction.getDateReturn());
         transaction1.setStatus(status);
         transaction1.setPenalties(penalties);
@@ -80,12 +80,9 @@ public class TransactionServiceImpl implements TransactionService {
                 facility.setQuantity(stok - quantity);
                 facilityService.updateFacility(facility);
             }
-
             transactionDetailService.saveTransactionDetail(transactionDetail1);
             transactionDetailList.add(this.transactionDetailService.saveTransactionDetail(transactionDetail1));
-
         }
-
         transactionResult.setTransactionDetail(transactionDetailList);
         return transactionResult;
 
@@ -139,26 +136,36 @@ public class TransactionServiceImpl implements TransactionService {
     @Override
     public List<TransactionDTO> getAllTransaction() {
         List<Transaction> transactions = transactionRepository.findAll();
-        TransactionDTO transactionDTO = new TransactionDTO();
-
         List<TransactionDTO> transactionDTOList = new ArrayList<>();
 
-        for(Transaction transaction : transactions){
+        for (Transaction transaction : transactions) {
             Profile profile = profileService.getProfileById(transaction.getProfile().getId());
-            transactionDTO.setId(transaction.getId());
-            transactionDTO.setName(profile.getFullName());
-            transactionDTO.setDocument(transaction.getDocument());
-            transactionDTO.setSubject(transaction.getSubject());
-            transactionDTO.setDateReservation(transaction.getDateReservation());
-            transactionDTO.setDateSubmission(transaction.getDateSubmission());
-            transactionDTO.setDateReturn(transaction.getDateReturn());
+
+            List<TransactionDetailDTO> transactionDetailDTOList = new ArrayList<>();
+            for (TransactionDetail detail : transaction.getTransactionDetail()) {
+                transactionDetailDTOList.add(TransactionDetailDTO.fromEntity(detail));
+            }
+
+            TransactionDTO transactionDTO = TransactionDTO.builder()
+                    .id(transaction.getId())
+                    .name(profile.getFullName())
+                    .document(transaction.getDocument())
+                    .subject(transaction.getSubject())
+                    .dateSubmission(transaction.getDateSubmission())
+                    .dateReservation(transaction.getDateReservation())
+                    .dateReturn(transaction.getDateReturn())
+                    .status(transaction.getStatus().getStatus().name())
+                    .penalties(transaction.getPenalties().getName().name())
+                    .transactionDetailDTO(transactionDetailDTOList)
+                    .build();
 
             transactionDTOList.add(transactionDTO);
         }
 
-        return  transactionDTOList;
-
+        return transactionDTOList;
     }
+
+
 
 
 
