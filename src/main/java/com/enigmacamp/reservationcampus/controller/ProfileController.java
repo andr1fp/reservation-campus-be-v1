@@ -1,6 +1,7 @@
 package com.enigmacamp.reservationcampus.controller;
 
 import com.enigmacamp.reservationcampus.model.entity.Profile;
+import com.enigmacamp.reservationcampus.model.entity.User;
 import com.enigmacamp.reservationcampus.model.response.CommonResponse;
 import com.enigmacamp.reservationcampus.services.AuthService;
 import com.enigmacamp.reservationcampus.services.ImageStorageService;
@@ -32,7 +33,6 @@ public class ProfileController {
 
     @PutMapping("/add-with-avatar")
     public ResponseEntity<CommonResponse<Profile>> updateAvatar(@RequestParam ("photo") MultipartFile photo,
-                                                                @RequestParam("id_profile") String id_user,
                                                                 @RequestParam("id_profile") String id_profile,
                                                                 @RequestParam("nim") Integer nim,
                                                                 @RequestParam("fullName") String fullName,
@@ -55,7 +55,7 @@ public class ProfileController {
 
 
         String message = String.format(Message.MESSAGE_UPDATE);
-        Profile result = profileService.updateProfile(updateProfile, id_user);
+        Profile result = profileService.updateProfile(updateProfile);
         CommonResponse<Profile> response = CommonResponse.<Profile>builder()
                 .statusCode(HttpStatus.OK.value())
                 .message(message)
@@ -67,10 +67,10 @@ public class ProfileController {
     }
 
 
-    @PutMapping("/{id}")
-    public ResponseEntity<CommonResponse<Profile>> updateProfile(@PathVariable String id_user, @RequestBody Profile updateProfile){
+    @PutMapping()
+    public ResponseEntity<CommonResponse<Profile>> updateProfile(@RequestBody Profile updateProfile){
         String message = String.format(Message.MESSAGE_UPDATE);
-        Profile result = profileService.updateProfile(updateProfile, id_user);
+        Profile result = profileService.updateProfile(updateProfile);
 
         CommonResponse<Profile> response = CommonResponse.<Profile>builder()
                 .statusCode(HttpStatus.OK.value())
