@@ -68,4 +68,19 @@ public class ProfileController {
                 .contentType(MediaType.APPLICATION_JSON)
                 .body(response);
     }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<CommonResponse<Profile>> deleteProfile(@PathVariable String id){
+        String message = String.format(Message.MESSAGE_DELETE, id);
+        Profile result = profileService.deleteProfile(id);
+
+        CommonResponse<Profile> response = CommonResponse.<Profile>builder()
+               .statusCode(HttpStatus.OK.value())
+               .message(message)
+               .data(result)
+               .build();
+        return ResponseEntity.status(HttpStatus.OK)
+               .contentType(MediaType.APPLICATION_JSON)
+               .body(response);
+    }
 }

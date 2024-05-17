@@ -60,4 +60,11 @@ public class AdminServiceImpl implements AdminService {
             throw new ResponseStatusException(HttpStatus.CONFLICT, "EMAIL ALREADY EXITS");
         }
     }
+
+    @Override
+    public void deleteStudent(String userId) {
+        userRepository.deleteById(userId);
+    }
+
+
 }
