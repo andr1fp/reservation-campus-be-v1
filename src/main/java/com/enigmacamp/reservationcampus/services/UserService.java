@@ -5,6 +5,8 @@ import com.enigmacamp.reservationcampus.model.entity.User;
 
 import org.springframework.security.core.userdetails.UserDetailsService;
 
+import java.util.List;
+
 public interface UserService extends UserDetailsService {
     AppUser loadUserById(String id);
 
@@ -12,5 +14,5 @@ public interface UserService extends UserDetailsService {
 
     void deleteUser(String id);
 
-
+    List<User> getAllUsers();
 }
