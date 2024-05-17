@@ -13,11 +13,11 @@ import java.util.Date;
 @AllArgsConstructor
 @Builder
 public class AuthRequestStudent {
-    private Integer NPM;
+    private Integer nim;
     private String email;
     private String password;
-    private String firstName;
-    private String lastName;
+    private String fullName;
     private String phone;
+    private String photo;
     private Date birthDate;
 }

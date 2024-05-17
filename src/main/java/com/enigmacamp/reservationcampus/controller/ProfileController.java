@@ -13,6 +13,8 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping(APIPath.API + APIPath.AUTH + APIPath.PROFILE)
 @RequiredArgsConstructor
@@ -52,4 +54,18 @@ public class ProfileController {
                .body(response);
     }
 
+    @GetMapping
+    public ResponseEntity<CommonResponse<List<Profile>>> getAllProfiles(){
+        String message = String.format(Message.MESSAGE_READ);
+        List<Profile> result = profileService.getAllProfiles();
+
+        CommonResponse<List<Profile>> response = CommonResponse.<List<Profile>>builder()
+               .statusCode(HttpStatus.OK.value())
+               .message(message)
+               .data(result)
+               .build();
+        return ResponseEntity.status(HttpStatus.OK)
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(response);
+    }
 }

@@ -42,6 +42,11 @@ public class AdminServiceImpl implements AdminService {
 
             // TODO 3 : SET PROFILE
             Profile profile = Profile.builder()
+                    .NIM(authRequestStudent.getNim())
+                    .fullName(authRequestStudent.getFullName())
+                    .dateofbirth(authRequestStudent.getBirthDate())
+                    .phone(authRequestStudent.getPhone())
+                    .photo(authRequestStudent.getPhoto())
                     .user(user)
                     .build();
             profileService.saveProfile(profile);
