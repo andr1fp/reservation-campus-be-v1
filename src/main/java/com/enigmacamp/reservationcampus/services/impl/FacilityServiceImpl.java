@@ -10,6 +10,7 @@ import com.enigmacamp.reservationcampus.services.FacilityService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.sql.Date;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -62,7 +63,8 @@ public class FacilityServiceImpl implements FacilityService {
 
     @Override
     public Facility getFacilityById(String id) {
-        return facilityRepository.findById(id).get();
+        return facilityRepository.findById(id).orElseThrow(() -> new RuntimeException("Facility not found"));
+
     }
 
     @Override
@@ -92,23 +94,32 @@ public class FacilityServiceImpl implements FacilityService {
         return facilityRepository.findAll();
     }
 
-//    @Override
-//    public List<Facility> getFacilityByName(String name) {
-//        Optional<Facility> facility = facilityRepository.findByName(name);
-//        return facility.map(Collections::singletonList).orElse(Collections.emptyList());
-//   }
-//
-//    @Override
-//    public List<Facility> getFacilitiesByType(String type) {
-//        Optional<Facility> facility = facilityRepository.findByTypeFacilities(type);
-//        return facility.map(Collections::singletonList).orElse(Collections.emptyList());
-//    }
-//
-//    @Override
-//    public List<Facility> getFacilitiesByAvailability(String availability) {
-//        Optional<Facility> facility = facilityRepository.findByAvailabilityIs(availability);
-//        return facility.map(Collections::singletonList).orElse(Collections.emptyList());
-//    }
+    @Override
+    public List<Facility> getAvailableFacilities(Date startDate, Date endDate) {
+        return facilityRepository.findAvailableFacilities(startDate, endDate);
+    }
+
+    @Override
+    public List<Facility> getUnavailableFacilities(Date startDate, Date endDate) {
+        return facilityRepository.findUnavailableFacilities(startDate, endDate);
+    }
+
+    @Override
+    public List<Facility> getAvailableFacilitiesByName(String name, Date startDate, Date endDate) {
+        return facilityRepository.findAvailableFacilitiesByName(name, startDate, endDate);
+    }
+
+    public List<Facility> getUnavailableFacilitiesByName(String name, Date startDate, Date endDate) {
+        return facilityRepository.findUnavailableFacilitiesByName(name, startDate, endDate);
+    }
+
+    public List<Facility> getAvailableFacilitiesByType(String typeId, Date startDate, Date endDate) {
+        return facilityRepository.findAvailableFacilitiesByType(typeId, startDate, endDate);
+    }
+
+    public List<Facility> getUnavailableFacilitiesByType(String typeId, Date startDate, Date endDate) {
+        return facilityRepository.findUnavailableFacilitiesByType(typeId, startDate, endDate);
+    }
 
     @Override
     public void deleteFacility(String id) {

@@ -5,6 +5,7 @@ import com.enigmacamp.reservationcampus.model.entity.constant.Availability;
 import com.enigmacamp.reservationcampus.model.entity.constant.TypeFacilities;
 import com.enigmacamp.reservationcampus.model.request.FacilityRequest;
 import com.enigmacamp.reservationcampus.model.response.CommonResponse;
+import com.enigmacamp.reservationcampus.model.response.FacilityAvailabilityResponse;
 import com.enigmacamp.reservationcampus.model.response.FacilityResponse;
 import com.enigmacamp.reservationcampus.services.FacilityService;
 import com.enigmacamp.reservationcampus.services.constant.TypeFacilitiesService;
@@ -12,6 +13,7 @@ import com.enigmacamp.reservationcampus.utils.constant.APIPath;
 import com.enigmacamp.reservationcampus.utils.constant.ETypeFacilities;
 import com.enigmacamp.reservationcampus.utils.constant.Message;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -22,18 +24,27 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.sql.Date;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @RestController
 @RequestMapping(APIPath.API + APIPath.FACILITIES)
 @RequiredArgsConstructor
 public class FacilityController {
 
-    String uploadDir = "assets/images/facilities/";
-    Path uploadPath = Paths.get(uploadDir);
+    private final String uploadDir = "assets/images/facilities/";
+    private final Path uploadPath = Paths.get(uploadDir);
 
-    private final FacilityService facilityService;
-    private final TypeFacilitiesService typeFacilitiesService;
+    FacilityService facilityService;
+    TypeFacilitiesService typeFacilitiesService;
+
+    @Autowired
+    public FacilityController(FacilityService facilityService, TypeFacilitiesService typeFacilitiesService){
+        this.facilityService = facilityService;
+        this.typeFacilitiesService = typeFacilitiesService;
+    }
 
     @PostMapping("/add")
     public ResponseEntity<CommonResponse<FacilityRequest>> createFacility(@RequestBody FacilityRequest facility){
@@ -183,48 +194,137 @@ public class FacilityController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-//    @GetMapping(APIPath.BYNAME)
-//    public ResponseEntity<CommonResponse<List<Facility>>> getFacilityByName(@RequestParam("name") String name){
-//        String message = String.format(Message.MESSAGE_READ);
-//        List<Facility> result = facilityService.getFacilityByName(name);
-//        CommonResponse<List<Facility>> response = CommonResponse.<List<Facility>>builder()
-//                .statusCode(HttpStatus.OK.value())
-//                .message(message)
-//                .data(result)
-//                .build();
-//        return ResponseEntity
-//                .status(HttpStatus.OK)
-//                .body(response);
-//    }
-//
-//    @GetMapping(APIPath.BYTYPE)
-//    public ResponseEntity<CommonResponse<List<Facility>>> getFacilitiesByType(@RequestParam("type") String type){
-//        String message = String.format(Message.MESSAGE_READ);
-//        List<Facility> result = facilityService.getFacilitiesByType(type);
-//        CommonResponse<List<Facility>> response = CommonResponse.<List<Facility>>builder()
-//                .statusCode(HttpStatus.OK.value())
-//                .message(message)
-//                .data(result)
-//                .build();
-//        return ResponseEntity
-//                .status(HttpStatus.OK)
-//                .body(response);
-//    }
-//
-//    @GetMapping(APIPath.BYAVAILABILITY)
-//    public ResponseEntity<CommonResponse<List<Facility>>> getFacilitiesByAvailability(@RequestParam("availability") String availability){
-//        String message = String.format(Message.MESSAGE_READ);
-//        List<Facility> result = facilityService.getFacilitiesByAvailability(availability);
-//        CommonResponse<List<Facility>> response = CommonResponse.<List<Facility>>builder()
-//                .statusCode(HttpStatus.OK.value())
-//                .message(message)
-//                .data(result)
-//                .build();
-//        return ResponseEntity
-//                .status(HttpStatus.OK)
-//                .body(response);
-//    }
+    @GetMapping("/availability")
+    public ResponseEntity<CommonResponse<List<FacilityAvailabilityResponse>>> getFacilitiesWithAvailability(@RequestParam Date startDate, @RequestParam Date endDate) {
+        List<Facility> availableFacilities = facilityService.getAvailableFacilities(startDate, endDate);
+        List<Facility> unavailableFacilities = facilityService.getUnavailableFacilities(startDate, endDate);
 
+        List<FacilityAvailabilityResponse> availableResponses = availableFacilities.stream()
+                .map(facility -> FacilityAvailabilityResponse.builder()
+                        .id(facility.getId())
+                        .name(facility.getName())
+                        .information(facility.getInformation())
+                        .picture(facility.getPicture())
+                        .quantity(facility.getQuantity())
+                        .price(facility.getPrice())
+                        .typeFacilities(facility.getTypeFacilities().getId())
+                        .availability(facility.getAvailability().getId())
+                        .build())
+                .toList();
+
+        List<FacilityAvailabilityResponse> unavailableResponses = unavailableFacilities.stream()
+                .map(facility -> FacilityAvailabilityResponse.builder()
+                        .id(facility.getId())
+                        .name(facility.getName())
+                        .information(facility.getInformation())
+                        .picture(facility.getPicture())
+                        .quantity(facility.getQuantity())
+                        .price(facility.getPrice())
+                        .typeFacilities(facility.getTypeFacilities().getId())
+                        .availability(facility.getAvailability().getId())
+                        .build())
+                .toList();
+
+        List<FacilityAvailabilityResponse> allResponses = Stream.concat(availableResponses.stream(), unavailableResponses.stream())
+                .collect(Collectors.toList());
+
+        CommonResponse<List<FacilityAvailabilityResponse>> response = CommonResponse.<List<FacilityAvailabilityResponse>>builder()
+                .statusCode(HttpStatus.OK.value())
+                .message("Facility availability retrieved successfully")
+                .data(allResponses)
+                .build();
+
+        return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/name/{name}")
+    public ResponseEntity<CommonResponse<List<FacilityAvailabilityResponse>>> getFacilitiesByName(@PathVariable String name,
+                                                                                                  @RequestParam Date startDate, @RequestParam Date endDate) {
+        List<Facility> availableFacilities = facilityService.getAvailableFacilitiesByName(name, startDate, endDate);
+        List<Facility> unavailableFacilities = facilityService.getUnavailableFacilitiesByName(name, startDate, endDate);
+
+        List<FacilityAvailabilityResponse> availableResponses = availableFacilities.stream()
+                .map(facility -> FacilityAvailabilityResponse.builder()
+                        .id(facility.getId())
+                        .name(facility.getName())
+                        .information(facility.getInformation())
+                        .picture(facility.getPicture())
+                        .quantity(facility.getQuantity())
+                        .price(facility.getPrice())
+                        .typeFacilities(facility.getTypeFacilities().getId())
+                        .availability(facility.getAvailability().getId())
+                        .build())
+                .toList();
+
+        List<FacilityAvailabilityResponse> unavailableResponses = unavailableFacilities.stream()
+                .map(facility -> FacilityAvailabilityResponse.builder()
+                        .id(facility.getId())
+                        .name(facility.getName())
+                        .information(facility.getInformation())
+                        .picture(facility.getPicture())
+                        .quantity(facility.getQuantity())
+                        .price(facility.getPrice())
+                        .typeFacilities(facility.getTypeFacilities().getId())
+                        .availability(facility.getAvailability().getId())
+                        .build())
+                .toList();
+
+        List<FacilityAvailabilityResponse> combinedResponses = Stream.concat(availableResponses.stream(), unavailableResponses.stream())
+                .collect(Collectors.toList());
+
+        CommonResponse<List<FacilityAvailabilityResponse>> response = CommonResponse.<List<FacilityAvailabilityResponse>>builder()
+                .statusCode(HttpStatus.OK.value())
+                .message("Facilities retrieved successfully")
+                .data(combinedResponses)
+                .build();
+
+        return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/type/{typeId}")
+    public ResponseEntity<CommonResponse<List<FacilityAvailabilityResponse>>> getFacilitiesByType(@PathVariable String typeId,
+                                                                                                  @RequestParam Date startDate,
+                                                                                                  @RequestParam Date endDate) {
+        List<Facility> availableFacilities = facilityService.getAvailableFacilitiesByType(typeId, startDate, endDate);
+        List<Facility> unavailableFacilities = facilityService.getUnavailableFacilitiesByType(typeId, startDate, endDate);
+
+        List<FacilityAvailabilityResponse> availableResponses = availableFacilities.stream()
+                .map(facility -> FacilityAvailabilityResponse.builder()
+                        .id(facility.getId())
+                        .name(facility.getName())
+                        .information(facility.getInformation())
+                        .picture(facility.getPicture())
+                        .quantity(facility.getQuantity())
+                        .price(facility.getPrice())
+                        .typeFacilities(facility.getTypeFacilities().getId())
+                        .availability(facility.getAvailability().getId())
+                        .build())
+                .toList();
+
+        List<FacilityAvailabilityResponse> unavailableResponses = unavailableFacilities.stream()
+                .map(facility -> FacilityAvailabilityResponse.builder()
+                        .id(facility.getId())
+                        .name(facility.getName())
+                        .information(facility.getInformation())
+                        .picture(facility.getPicture())
+                        .quantity(facility.getQuantity())
+                        .price(facility.getPrice())
+                        .typeFacilities(facility.getTypeFacilities().getId())
+                        .availability(facility.getAvailability().getId())
+                        .build())
+                .toList();
+
+        List<FacilityAvailabilityResponse> combinedResponses = Stream.concat(availableResponses.stream(), unavailableResponses.stream())
+                .collect(Collectors.toList());
+
+        CommonResponse<List<FacilityAvailabilityResponse>> response = CommonResponse.<List<FacilityAvailabilityResponse>>builder()
+                .statusCode(HttpStatus.OK.value())
+                .message("Facilities retrieved successfully")
+                .data(combinedResponses)
+                .build();
+
+        return ResponseEntity.ok(response);
+    }
 }
 
 
