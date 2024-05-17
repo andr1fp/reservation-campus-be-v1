@@ -10,6 +10,8 @@ public interface FacilityService {
 
     FacilityRequest saveFacility(FacilityRequest facilityRequest);
 
+    FacilityResponse updateFaciliyRes(FacilityRequest facilityRequest);
+
     Facility getFacilityById(String id);
 
     Facility updateFacility(Facility facility);

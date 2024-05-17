@@ -12,6 +12,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Builder
 public class FacilityRequest {
+    private String id;
     private String name;
     private String information;
     private String picture;

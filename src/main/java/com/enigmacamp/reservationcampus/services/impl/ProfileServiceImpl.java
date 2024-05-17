@@ -1,22 +1,23 @@
 package com.enigmacamp.reservationcampus.services.impl;
 
 import com.enigmacamp.reservationcampus.model.entity.Profile;
+import com.enigmacamp.reservationcampus.model.entity.User;
 import com.enigmacamp.reservationcampus.repository.ProfileRepository;
+import com.enigmacamp.reservationcampus.repository.UserRepository;
 import com.enigmacamp.reservationcampus.services.ProfileService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class ProfileServiceImpl implements ProfileService {
 
-    ProfileRepository profileRepository;
+    private final ProfileRepository profileRepository;
+    private final UserRepository userRepository;
 
-    @Autowired
-    ProfileServiceImpl(ProfileRepository profileRepository){
-        this.profileRepository = profileRepository;
-    }
 
     @Override
     public Profile saveProfile(Profile profile) {
@@ -35,18 +36,16 @@ public class ProfileServiceImpl implements ProfileService {
 
     @Override
     public Profile updateProfile(Profile profile) {
-        Profile updatedProfile =  profileRepository.findByUserId(profile.getUser().getId());
-        if (updatedProfile != null){
-            updatedProfile.setFullName(profile.getFullName());
-            updatedProfile.setPhone(profile.getPhone());
-            updatedProfile.setDateofbirth(profile.getDateofbirth());
-            updatedProfile.setPhoto(profile.getPhoto());
-//            updatedProfile.setUserId(profile.getUser().getId());
-            return saveProfile(updatedProfile);
-        } else {
-            return null;
-        }
+        Profile profile1 = profileRepository.findById(profile.getId()).get();
+        profile1.setNIM(profile.getNIM());
+        profile1.setFullName(profile.getFullName());
+        profile1.setDateofbirth(profile.getDateofbirth());
+        profile1.setPhone(profile.getPhone());
+        profile1.setPhoto(profile.getPhoto());
+        return profileRepository.save(profile1);
+
     }
+
 
     @Override
     public void deleteProfile(String id) {

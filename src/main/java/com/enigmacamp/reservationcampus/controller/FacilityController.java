@@ -1,10 +1,15 @@
 package com.enigmacamp.reservationcampus.controller;
 
 import com.enigmacamp.reservationcampus.model.entity.Facility;
+import com.enigmacamp.reservationcampus.model.entity.constant.Availability;
+import com.enigmacamp.reservationcampus.model.entity.constant.TypeFacilities;
 import com.enigmacamp.reservationcampus.model.request.FacilityRequest;
 import com.enigmacamp.reservationcampus.model.response.CommonResponse;
+import com.enigmacamp.reservationcampus.model.response.FacilityResponse;
 import com.enigmacamp.reservationcampus.services.FacilityService;
+import com.enigmacamp.reservationcampus.services.constant.TypeFacilitiesService;
 import com.enigmacamp.reservationcampus.utils.constant.APIPath;
+import com.enigmacamp.reservationcampus.utils.constant.ETypeFacilities;
 import com.enigmacamp.reservationcampus.utils.constant.Message;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -28,21 +33,37 @@ public class FacilityController {
     Path uploadPath = Paths.get(uploadDir);
 
     private final FacilityService facilityService;
+    private final TypeFacilitiesService typeFacilitiesService;
 
-//    @PostMapping
-//    public ResponseEntity<CommonResponse<Facility>> createFacility(@RequestBody Facility facility){
-//        String message = String.format(Message.MESSAGE_INSERT);
-//        Facility result = facilityService.saveFacility(facility);
-//
-//        CommonResponse<Facility> response = CommonResponse.<Facility>builder()
-//                .statusCode(HttpStatus.OK.value())
-//                .message(message)
-//                .data(result)
-//                .build();
-//        return ResponseEntity
-//                .status(HttpStatus.OK)
-//                .body(response);
-//    }
+    @PostMapping("/add")
+    public ResponseEntity<CommonResponse<FacilityRequest>> createFacility(@RequestBody FacilityRequest facility){
+        String message = String.format(Message.MESSAGE_INSERT);
+        FacilityRequest facilityRequest = facilityService.saveFacility(facility);
+
+        CommonResponse<FacilityRequest> response = CommonResponse.<FacilityRequest>builder()
+                .statusCode(HttpStatus.OK.value())
+                .message(message)
+                .data(facilityRequest)
+                .build();
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(response);
+    }
+
+    @PutMapping("/update")
+    public ResponseEntity<CommonResponse<FacilityResponse>> updateFacility(@RequestBody FacilityRequest facility) {
+        String message = String.format(Message.MESSAGE_UPDATE);
+        FacilityResponse facilityResponse = facilityService.updateFaciliyRes(facility);
+
+        CommonResponse<FacilityResponse> response = CommonResponse.<FacilityResponse>builder()
+                .statusCode(HttpStatus.OK.value())
+                .message(message)
+                .data(facilityResponse)
+                .build();
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(response);
+    }
 
     @PutMapping
     public ResponseEntity<CommonResponse<Facility>> updateFacility(@RequestBody Facility facility){
@@ -55,9 +76,11 @@ public class FacilityController {
                 .data(result)
                 .build();
         return ResponseEntity
-               .status(HttpStatus.OK)
-               .body(response);
+                .status(HttpStatus.OK)
+                .body(response);
     }
+
+
 
     @GetMapping
     public ResponseEntity<CommonResponse<List<Facility>>> getAllFacilities(){

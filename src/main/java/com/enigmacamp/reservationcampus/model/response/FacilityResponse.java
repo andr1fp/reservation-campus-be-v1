@@ -12,5 +12,5 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class FacilityResponse {
     private String name;
-    private ETypeFacilities typeFacilities;
+    private String typeFacilities;
 }
