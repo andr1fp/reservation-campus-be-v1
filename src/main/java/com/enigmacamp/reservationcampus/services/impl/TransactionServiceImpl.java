@@ -161,7 +161,6 @@ public class TransactionServiceImpl implements TransactionService {
     }
 
 
-
     @Override
     public List<TransactionDTO> findTransactionsbyName(String name) {
         List<Transaction> transactions = transactionRepository.findBySubject(name);
@@ -184,6 +183,7 @@ public class TransactionServiceImpl implements TransactionService {
         return transactionDTOList;
 
     }
+
 
     @Override
     @Transactional

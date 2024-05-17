@@ -41,7 +41,6 @@ public class ProfileServiceImpl implements ProfileService {
             updatedProfile.setPhone(profile.getPhone());
             updatedProfile.setDateofbirth(profile.getDateofbirth());
             updatedProfile.setPhoto(profile.getPhoto());
-//            updatedProfile.setUserId(profile.getUser().getId());
             return saveProfile(updatedProfile);
         } else {
             return null;

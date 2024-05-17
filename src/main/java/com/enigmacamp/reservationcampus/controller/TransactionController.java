@@ -44,6 +44,7 @@ public class TransactionController {
                 .body(response);
     }
 
+
     @GetMapping( APIPath.TRANSACTION + "/{name}")
     public ResponseEntity<?> getTransactionByName(@PathVariable("name") String name) {
         List<TransactionDTO> result = transactionService.findTransactionsbyName(name);
