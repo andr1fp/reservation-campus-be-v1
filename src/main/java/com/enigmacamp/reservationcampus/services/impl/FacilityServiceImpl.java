@@ -4,6 +4,7 @@ import com.enigmacamp.reservationcampus.model.entity.Facility;
 import com.enigmacamp.reservationcampus.model.entity.constant.Availability;
 import com.enigmacamp.reservationcampus.model.entity.constant.TypeFacilities;
 import com.enigmacamp.reservationcampus.model.request.FacilityRequest;
+import com.enigmacamp.reservationcampus.model.response.FacilityResponse;
 import com.enigmacamp.reservationcampus.repository.FacilityRepository;
 import com.enigmacamp.reservationcampus.services.FacilityService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,8 +36,28 @@ public class FacilityServiceImpl implements FacilityService {
         facility.setPicture(facilityRequest.getPicture());
         facility.setAvailability(availability);
         facility.setTypeFacilities(typeFacilities);
-        facilityRepository.save(facility);
+        Facility facility1 = facilityRepository.save(facility);
+        facilityRequest.setId(facility1.getId());
         return facilityRequest;
+    }
+
+    @Override
+    public FacilityResponse updateFaciliyRes(FacilityRequest facilityRequest) {
+        Facility facility = new Facility();
+        facility.setId(facilityRequest.getId());
+        facility.setName(facilityRequest.getName());
+        facility.setInformation(facilityRequest.getInformation());
+        facility.setPrice(facilityRequest.getPrice());
+        facility.setQuantity(facilityRequest.getQuantity());
+        facility.setPicture(facilityRequest.getPicture());
+        facility.setAvailability(Availability.builder().id(facilityRequest.getAvailability()).build());
+        facility.setTypeFacilities(TypeFacilities.builder().id(facilityRequest.getTypeFacilities()).build());
+        Facility facility1 = facilityRepository.save(facility);
+        FacilityResponse facilityResponse = new FacilityResponse();
+        facilityResponse.setName(facility1.getName());
+        facilityResponse.setTypeFacilities(facility1.getTypeFacilities().getId());
+        return facilityResponse;
+
     }
 
     @Override
@@ -51,6 +72,7 @@ public class FacilityServiceImpl implements FacilityService {
             TypeFacilities typeFacilities = TypeFacilities.builder().id(facility.getTypeFacilities().getId()).build();
             Facility facilities = new Facility();
 
+            facilities.setId(facility.getId());
             facilities.setName(facility.getName());
             facilities.setInformation(facility.getInformation());
             facilities.setPrice(facility.getPrice());
@@ -59,6 +81,7 @@ public class FacilityServiceImpl implements FacilityService {
             facilities.setAvailability(availability);
             facilities.setTypeFacilities(typeFacilities);
             facilityRepository.save(facility);
+
             return facility;
         }
         return null;

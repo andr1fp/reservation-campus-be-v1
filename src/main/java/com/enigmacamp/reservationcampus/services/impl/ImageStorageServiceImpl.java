@@ -30,8 +30,16 @@ public class ImageStorageServiceImpl implements ImageStorageService {
     @Override
     public String storeFile(MultipartFile picture, String id_profile) {
         String fileName = picture.getOriginalFilename();
+
         String[] splitName = fileName.split("\\.");
         fileName = splitName[0] + "_" + id_profile + "." + splitName[splitName.length - 1];
+
+        String fileExtension = splitName[splitName.length - 1].toLowerCase();
+
+        // Validasi ekstensi file
+        if (!(fileExtension.equals("jpg") || fileExtension.equals("jpeg") || fileExtension.equals("png"))) {
+            throw new RuntimeException("Invalid file type! Only JPG, JPEG, and PNG files are allowed.");
+        }
 
         assert fileName != null;
 
