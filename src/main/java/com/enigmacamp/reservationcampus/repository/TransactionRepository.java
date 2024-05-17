@@ -9,5 +9,7 @@ import java.util.Optional;
 
 @Repository
 public interface TransactionRepository extends JpaRepository<Transaction, String> {
+
     List<Transaction> findBySubject(String name);
+
 }
