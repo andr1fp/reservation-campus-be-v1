@@ -63,6 +63,11 @@ public class AdminServiceImpl implements AdminService {
 
     @Override
     public void deleteStudent(String userId) {
+        User user = userRepository.findById(userId).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+        System.out.println(user);
+        if (user != null){
+            profileService.deleteProfile(user.getId());
+        }
         userRepository.deleteById(userId);
     }
 
