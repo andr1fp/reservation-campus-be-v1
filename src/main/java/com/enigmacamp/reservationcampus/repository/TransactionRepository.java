@@ -1,6 +1,8 @@
 package com.enigmacamp.reservationcampus.repository;
 
 import com.enigmacamp.reservationcampus.model.entity.Transaction;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -20,6 +22,7 @@ public interface TransactionRepository extends JpaRepository<Transaction, String
                                                              @Param("startDate") Date startDate,
                                                              @Param("endDate") Date endDate);
 
-    List<Transaction> findBySubject(String subject);
+    Page<Transaction> findBySubject(String subject, Pageable pageable);
+    Page<Transaction> findAll(Pageable pageable);
 }
 

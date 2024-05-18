@@ -13,6 +13,8 @@ import com.enigmacamp.reservationcampus.services.*;
 import com.enigmacamp.reservationcampus.utils.constant.*;
 import com.enigmacamp.reservationcampus.utils.exception.DataNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -100,24 +102,34 @@ public class TransactionServiceImpl implements TransactionService {
     }
 
     @Override
-    public List<TransactionDTO> getAllTransaction() {
-        List<Transaction> transactions = transactionRepository.findAll();
-        List<TransactionDTO> transactionDTOList = new ArrayList<>();
-        for (Transaction transaction : transactions) {
-            transactionDTOList.add(convertToDTO(transaction));
-        }
-        return transactionDTOList;
+    public Page<TransactionDTO> getAllTransaction(Pageable pageable){
+        return transactionRepository.findAll(pageable).map(this::convertToDTO);
     }
 
     @Override
-    public List<TransactionDTO> findTransactionsbyName(String subject) {
-        List<Transaction> transactions = transactionRepository.findBySubject(subject);
-        List<TransactionDTO> transactionDTOList = new ArrayList<>();
-        for (Transaction transaction : transactions) {
-            transactionDTOList.add(convertToDTO(transaction));
-        }
-        return transactionDTOList;
+    public Page<TransactionDTO> findTransactionsbySubject(String subject, Pageable pageable){
+        return transactionRepository.findBySubject(subject, pageable).map(this::convertToDTO);
     }
+
+//    @Override
+//    public List<TransactionDTO> getAllTransaction() {
+//        List<Transaction> transactions = transactionRepository.findAll();
+//        List<TransactionDTO> transactionDTOList = new ArrayList<>();
+//        for (Transaction transaction : transactions) {
+//            transactionDTOList.add(convertToDTO(transaction));
+//        }
+//        return transactionDTOList;
+//    }
+//
+//    @Override
+//    public List<TransactionDTO> findTransactionsbySubject(String subject) {
+//        List<Transaction> transactions = transactionRepository.findBySubject(subject);
+//        List<TransactionDTO> transactionDTOList = new ArrayList<>();
+//        for (Transaction transaction : transactions) {
+//            transactionDTOList.add(convertToDTO(transaction));
+//        }
+//        return transactionDTOList;
+//    }
 
     @Override
     @Transactional

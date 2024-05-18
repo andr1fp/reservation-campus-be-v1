@@ -4,12 +4,16 @@ import com.enigmacamp.reservationcampus.model.entity.Transaction;
 import com.enigmacamp.reservationcampus.model.request.TransactionRequest;
 import com.enigmacamp.reservationcampus.model.request.UpdateStatusRequest;
 import com.enigmacamp.reservationcampus.model.response.CommonResponse;
+import com.enigmacamp.reservationcampus.model.response.PageResponseWrapper;
 import com.enigmacamp.reservationcampus.model.response.TransactionDTO;
 import com.enigmacamp.reservationcampus.services.TransactionDetailService;
 import com.enigmacamp.reservationcampus.services.TransactionService;
 import com.enigmacamp.reservationcampus.utils.constant.APIPath;
 import com.enigmacamp.reservationcampus.utils.constant.Message;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -46,10 +50,14 @@ public class TransactionController {
     }
 
 
-    @GetMapping( APIPath.TRANSACTION + "/{name}")
-    public ResponseEntity<?> getTransactionByName(@PathVariable("name") String name) {
-        List<TransactionDTO> result = transactionService.findTransactionsbyName(name);
-        CommonResponse<List<TransactionDTO>> response = CommonResponse.<List<TransactionDTO>>builder()
+    @GetMapping(APIPath.TRANSACTION + "/{name}")
+    public ResponseEntity<?> getTransactionByName(@PathVariable("name") String name,
+                                                  @RequestParam(name = "page", defaultValue = "0") int page,
+                                                  @RequestParam(name = "size", defaultValue = "6") int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        Page<TransactionDTO> pageResult = transactionService.findTransactionsbySubject(name, pageable);
+        PageResponseWrapper<TransactionDTO> result = new PageResponseWrapper<>(pageResult);
+        CommonResponse<PageResponseWrapper<TransactionDTO>> response = CommonResponse.<PageResponseWrapper<TransactionDTO>>builder()
                 .statusCode(HttpStatus.OK.value())
                 .message(Message.MESSAGE_READ)
                 .data(result)
@@ -59,12 +67,13 @@ public class TransactionController {
                 .body(response);
     }
 
-
-
     @GetMapping(APIPath.TRANSACTION)
-    public ResponseEntity<?> getAllTransaction() {
-        List<TransactionDTO> result = transactionService.getAllTransaction();
-        CommonResponse<List<TransactionDTO>> response = CommonResponse.<List<TransactionDTO>>builder()
+    public ResponseEntity<?> getAllTransaction(@RequestParam(name = "page", defaultValue = "0") int page,
+                                               @RequestParam(name = "size", defaultValue = "6") int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        Page<TransactionDTO> pageResult = transactionService.getAllTransaction(pageable);
+        PageResponseWrapper<TransactionDTO> result = new PageResponseWrapper<>(pageResult);
+        CommonResponse<PageResponseWrapper<TransactionDTO>> response = CommonResponse.<PageResponseWrapper<TransactionDTO>>builder()
                 .statusCode(HttpStatus.OK.value())
                 .message(Message.MESSAGE_READ)
                 .data(result)

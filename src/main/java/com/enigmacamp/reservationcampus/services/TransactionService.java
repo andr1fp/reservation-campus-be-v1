@@ -4,6 +4,8 @@ import com.enigmacamp.reservationcampus.model.entity.Transaction;
 import com.enigmacamp.reservationcampus.model.request.TransactionRequest;
 import com.enigmacamp.reservationcampus.model.request.UpdateStatusRequest;
 import com.enigmacamp.reservationcampus.model.response.TransactionDTO;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 
@@ -13,9 +15,9 @@ public interface TransactionService {
 
     TransactionDTO getTransactionById(String id);
 
-    List<TransactionDTO> getAllTransaction();
+    Page<TransactionDTO> getAllTransaction(Pageable pageable);
 
-    List<TransactionDTO> findTransactionsbyName(String name);
+    Page<TransactionDTO> findTransactionsbySubject(String name, Pageable pageable);
 
     Transaction updateTransaction(Transaction transaction);
 
