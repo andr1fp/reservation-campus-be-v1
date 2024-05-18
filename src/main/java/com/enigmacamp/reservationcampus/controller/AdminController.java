@@ -1,11 +1,13 @@
 package com.enigmacamp.reservationcampus.controller;
 
 
+import com.enigmacamp.reservationcampus.model.entity.Profile;
 import com.enigmacamp.reservationcampus.model.entity.User;
 import com.enigmacamp.reservationcampus.model.request.AuthRequestStudent;
 import com.enigmacamp.reservationcampus.model.response.CommonResponse;
 import com.enigmacamp.reservationcampus.model.response.RegisterResponse;
 import com.enigmacamp.reservationcampus.services.AdminService;
+import com.enigmacamp.reservationcampus.services.ProfileService;
 import com.enigmacamp.reservationcampus.services.UserService;
 import com.enigmacamp.reservationcampus.utils.constant.APIPath;
 import com.enigmacamp.reservationcampus.utils.constant.Message;
@@ -25,6 +27,7 @@ public class AdminController {
 
     private final AdminService adminService;
     private final UserService userService;
+    private final ProfileService profileService;
 
     @PostMapping(APIPath.STUDENT)
 //    @PreAuthorize("hasAnyRole({'ROLE_ADMIN'})")
@@ -56,4 +59,24 @@ public class AdminController {
                .contentType(MediaType.APPLICATION_JSON)
                .body(response);
     }
+
+
+    @DeleteMapping(APIPath.USER + "/{id}")
+    public ResponseEntity<CommonResponse<Profile>> deleteProfile(@PathVariable String id) {
+        // Hapus profile dan user yang terkait
+        Profile profile = profileService.deleteProfile(id);
+        userService.deleteUser(profile.getUser().getId());
+
+        String message = String.format(Message.MESSAGE_DELETE, id);
+        CommonResponse<Profile> response = CommonResponse.<Profile>builder()
+                .statusCode(HttpStatus.OK.value())
+                .message(message)
+                .data(profile)
+                .build();
+        return ResponseEntity.status(HttpStatus.OK)
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(response);
+    }
+
+
 }

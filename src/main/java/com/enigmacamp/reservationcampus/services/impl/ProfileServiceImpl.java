@@ -1,12 +1,10 @@
 package com.enigmacamp.reservationcampus.services.impl;
 
 import com.enigmacamp.reservationcampus.model.entity.Profile;
-import com.enigmacamp.reservationcampus.model.entity.User;
 import com.enigmacamp.reservationcampus.repository.ProfileRepository;
 import com.enigmacamp.reservationcampus.repository.UserRepository;
 import com.enigmacamp.reservationcampus.services.ProfileService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -47,9 +45,14 @@ public class ProfileServiceImpl implements ProfileService {
     }
 
 
+
     @Override
-    public void deleteProfile(String id) {
-        profileRepository.deleteById(id);
+    public Profile deleteProfile(String id) {
+        Profile profile = profileRepository.findById(id).orElse(null);
+        if (profile != null) {
+            profileRepository.delete(profile);
+        }
+        return profile;
     }
 
     @Override

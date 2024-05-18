@@ -47,6 +47,8 @@ public interface FacilityRepository extends JpaRepository<Facility, String> {
             "JOIN td.transaction t " +
             "WHERE t.dateReservation <= :endDate AND t.dateReturn >= :startDate)")
     List<Facility> findUnavailableFacilitiesByType(String typeId, Date startDate, Date endDate);
+
+
 //    List<Facility> findByNameContainingIgnoreCase(String name);
 //
 //    List<Facility> findByTypeFacilitiesId(String typeId);

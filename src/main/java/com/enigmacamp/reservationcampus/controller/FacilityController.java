@@ -1,8 +1,6 @@
 package com.enigmacamp.reservationcampus.controller;
 
 import com.enigmacamp.reservationcampus.model.entity.Facility;
-import com.enigmacamp.reservationcampus.model.entity.constant.Availability;
-import com.enigmacamp.reservationcampus.model.entity.constant.TypeFacilities;
 import com.enigmacamp.reservationcampus.model.request.FacilityRequest;
 import com.enigmacamp.reservationcampus.model.response.CommonResponse;
 import com.enigmacamp.reservationcampus.model.response.FacilityAvailabilityResponse;
@@ -10,7 +8,6 @@ import com.enigmacamp.reservationcampus.model.response.FacilityResponse;
 import com.enigmacamp.reservationcampus.services.FacilityService;
 import com.enigmacamp.reservationcampus.services.constant.TypeFacilitiesService;
 import com.enigmacamp.reservationcampus.utils.constant.APIPath;
-import com.enigmacamp.reservationcampus.utils.constant.ETypeFacilities;
 import com.enigmacamp.reservationcampus.utils.constant.Message;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -90,7 +87,6 @@ public class FacilityController {
                 .status(HttpStatus.OK)
                 .body(response);
     }
-
 
 
     @GetMapping
