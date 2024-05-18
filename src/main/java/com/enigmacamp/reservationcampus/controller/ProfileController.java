@@ -52,7 +52,7 @@ public class ProfileController {
         updateProfile.setId(id_profile);
 
         // update image
-        String fileName = imageStorageService.storeFile(photo, id_profile);
+        String fileName = imageStorageService.storeFile(photo, fullName);
         updateProfile.setPhoto(fileName);
 
         String message = String.format(Message.MESSAGE_UPDATE);
