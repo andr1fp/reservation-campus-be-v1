@@ -18,6 +18,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.Optional;
+
 @Service
 @RequiredArgsConstructor
 public class AdminServiceImpl implements AdminService {
@@ -79,5 +81,6 @@ public class AdminServiceImpl implements AdminService {
         }
         userRepository.deleteById(id);
     }
+
 
 }

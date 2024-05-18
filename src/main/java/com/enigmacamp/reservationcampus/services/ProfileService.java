@@ -1,8 +1,10 @@
 package com.enigmacamp.reservationcampus.services;
 
 import com.enigmacamp.reservationcampus.model.entity.Profile;
+import com.enigmacamp.reservationcampus.model.request.AuthRequestStudent;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface ProfileService {
 
@@ -20,5 +22,5 @@ public interface ProfileService {
 
     Profile getProfileByUserId(String userId);
 
-
+    Profile updateProfileById(String id, AuthRequestStudent authRequestStudent);
 }
