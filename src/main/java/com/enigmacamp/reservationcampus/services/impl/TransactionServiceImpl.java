@@ -3,6 +3,7 @@ package com.enigmacamp.reservationcampus.services.impl;
 import com.enigmacamp.reservationcampus.model.entity.*;
 import com.enigmacamp.reservationcampus.model.entity.constant.*;
 import com.enigmacamp.reservationcampus.model.request.TransactionRequest;
+import com.enigmacamp.reservationcampus.model.request.UpdateStatusRequest;
 import com.enigmacamp.reservationcampus.model.response.TransactionDTO;
 import com.enigmacamp.reservationcampus.model.response.TransactionDetailDTO;
 import com.enigmacamp.reservationcampus.repository.*;
@@ -160,6 +161,15 @@ public class TransactionServiceImpl implements TransactionService {
         Transaction transaction = transactionRepository.findById(id)
                 .orElseThrow(() -> new DataNotFoundException("Data not found"));
         StatusReservation status = statusRepository.findByStatus(EStatusReservation.STATUS_CANCELED);
+        transaction.setStatus(status);
+        transactionRepository.save(transaction);
+    }
+
+    @Override
+    public void updateTransactionStatus(String id, UpdateStatusRequest request) {
+        Transaction transaction = transactionRepository.findById(id)
+                .orElseThrow(() -> new DataNotFoundException("Data not found"));
+        StatusReservation status = statusRepository.findByStatus(request.getStatus());
         transaction.setStatus(status);
         transactionRepository.save(transaction);
     }

@@ -199,8 +199,9 @@ public class FacilityController {
     //GET All Facilities
     @GetMapping("/all")
     public ResponseEntity<CommonResponse<PageResponseWrapper<FacilityAvailabilityResponse>>> getAllFacilities(
-            @RequestParam int page,
-            @RequestParam int size) {
+            @RequestParam(name = "page", defaultValue = "0") int page,
+            @RequestParam(name = "size", defaultValue = "6") int size) {
+
 
         Pageable pageable = PageRequest.of(page, size);
         Date startDate = new Date(System.currentTimeMillis());
@@ -228,7 +229,7 @@ public class FacilityController {
             @RequestParam Date startDate,
             @RequestParam Date endDate,
             @RequestParam(name = "page", defaultValue = "0") int page,
-            @RequestParam(name = "size", defaultValue = "0") int size) {
+            @RequestParam(name = "size", defaultValue = "6") int size) {
 
         Pageable pageable = PageRequest.of(page, size);
 
@@ -254,7 +255,7 @@ public class FacilityController {
             @RequestParam Date startDate,
             @RequestParam Date endDate,
             @RequestParam(name = "page", defaultValue = "0") int page,
-            @RequestParam(name = "size", defaultValue = "0") int size) {
+            @RequestParam(name = "size", defaultValue = "6") int size) {
 
         Pageable pageable = PageRequest.of(page, size);
 
@@ -280,7 +281,7 @@ public class FacilityController {
             @RequestParam Date startDate,
             @RequestParam Date endDate,
             @RequestParam(name = "page", defaultValue = "0") int page,
-            @RequestParam(name = "size", defaultValue = "0") int size) {
+            @RequestParam(name = "size", defaultValue = "6") int size) {
 
         Pageable pageable = PageRequest.of(page, size);
 

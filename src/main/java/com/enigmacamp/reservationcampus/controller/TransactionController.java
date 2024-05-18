@@ -2,6 +2,7 @@ package com.enigmacamp.reservationcampus.controller;
 
 import com.enigmacamp.reservationcampus.model.entity.Transaction;
 import com.enigmacamp.reservationcampus.model.request.TransactionRequest;
+import com.enigmacamp.reservationcampus.model.request.UpdateStatusRequest;
 import com.enigmacamp.reservationcampus.model.response.CommonResponse;
 import com.enigmacamp.reservationcampus.model.response.TransactionDTO;
 import com.enigmacamp.reservationcampus.services.TransactionDetailService;
@@ -89,7 +90,7 @@ public class TransactionController {
                 .body(response);
     }
 
-    @PutMapping("/transaction")
+    @PutMapping(APIPath.TRANSACTION)
     public ResponseEntity<?> updateTransaction(@RequestBody Transaction transaction) {
         String message = String.format(Message.MESSAGE_UPDATE);
         Transaction result = transactionService.updateTransaction(transaction);
@@ -104,11 +105,11 @@ public class TransactionController {
 
     }
 
-    @DeleteMapping("/transaction/{id}")
+    @DeleteMapping(APIPath.TRANSACTION + "/{id}")
     public ResponseEntity<?> deleteTransaction(@PathVariable("id") String id) {
         String message = String.format(Message.MESSAGE_DELETE);
         transactionService.deleteTransaction(id);
-        CommonResponse<Transaction> response = CommonResponse.<Transaction>builder()
+        CommonResponse<TransactionDTO> response = CommonResponse.<TransactionDTO>builder()
                 .statusCode(HttpStatus.OK.value())
                 .message(message)
                 .build();
@@ -117,16 +118,30 @@ public class TransactionController {
                 .body(response);
     }
 
-    @PutMapping("/transaction/{id}")
+    @PutMapping(APIPath.TRANSACTION + "/{id}")
     public ResponseEntity<?> cancelTransaction(@PathVariable("id") String id) {
         String message = String.format(Message.MESSAGE_CANCELED);
         transactionService.cancelTransaction(id);
-        CommonResponse<Transaction> response = CommonResponse.<Transaction>builder()
+        CommonResponse<TransactionDTO> response = CommonResponse.<TransactionDTO>builder()
                 .statusCode(HttpStatus.OK.value())
                 .message(message)
                 .build();
         return ResponseEntity.status(HttpStatus.OK)
                 .contentType(MediaType.APPLICATION_JSON)
                 .body(response);
+    }
+
+    @PutMapping(APIPath.TRANSACTION + APIPath.STATUS_RESERVATION + "/{id}")
+    public ResponseEntity<?> changeStatusTransaction(@PathVariable String id, @RequestBody UpdateStatusRequest updateStatusRequest) {
+        String message = String.format(Message.MESSAGE_UPDATE);
+        transactionService.updateTransactionStatus(id, updateStatusRequest);
+        CommonResponse<TransactionDTO> response = CommonResponse.<TransactionDTO>builder()
+                .statusCode(HttpStatus.OK.value())
+                .message(message)
+                .build();
+        return ResponseEntity.status(HttpStatus.OK)
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(response);
+
     }
 }

@@ -2,6 +2,7 @@ package com.enigmacamp.reservationcampus.services;
 
 import com.enigmacamp.reservationcampus.model.entity.Transaction;
 import com.enigmacamp.reservationcampus.model.request.TransactionRequest;
+import com.enigmacamp.reservationcampus.model.request.UpdateStatusRequest;
 import com.enigmacamp.reservationcampus.model.response.TransactionDTO;
 
 import java.util.List;
@@ -21,4 +22,6 @@ public interface TransactionService {
     void deleteTransaction(String id);
 
     void cancelTransaction(String id);
+
+    void updateTransactionStatus(String id, UpdateStatusRequest request);
 }

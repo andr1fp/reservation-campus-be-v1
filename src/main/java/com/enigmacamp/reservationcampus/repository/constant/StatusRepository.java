@@ -11,4 +11,6 @@ import org.springframework.stereotype.Repository;
 public interface StatusRepository extends JpaRepository<StatusReservation, String> {
     @Query("SELECT s FROM StatusReservation s WHERE s.status = :status")
     StatusReservation findByStatus(@Param("status") EStatusReservation status);
+
+
 }
