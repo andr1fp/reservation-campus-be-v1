@@ -3,6 +3,8 @@ package com.enigmacamp.reservationcampus.services;
 import com.enigmacamp.reservationcampus.model.entity.Facility;
 import com.enigmacamp.reservationcampus.model.request.FacilityRequest;
 import com.enigmacamp.reservationcampus.model.response.FacilityResponse;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import java.sql.Date;
 import java.util.List;
@@ -19,17 +21,17 @@ public interface FacilityService {
 
     List<Facility> getAllFacilities();
 
-    List<Facility> getAvailableFacilities(Date startDate, Date endDate);
+    Page<Facility> getAvailableFacilities(Date startDate, Date endDate, Pageable pageable);
 
-    List<Facility> getUnavailableFacilities(Date startDate, Date endDate);
+    Page<Facility> getUnavailableFacilities(Date startDate, Date endDate, Pageable pageable);
 
-    List<Facility> getAvailableFacilitiesByName(String name, Date startDate, Date endDate);
+    Page<Facility> getAvailableFacilitiesByName(String name, Date startDate, Date endDate, Pageable pageable);
 
-    List<Facility> getUnavailableFacilitiesByName(String name, Date startDate, Date endDate);
+    Page<Facility> getUnavailableFacilitiesByName(String name, Date startDate, Date endDate, Pageable pageable);
 
-    List<Facility> getAvailableFacilitiesByType(String typeId, Date startDate, Date endDate);
+    Page<Facility> getAvailableFacilitiesByType(String typeId, Date startDate, Date endDate, Pageable pageable);
 
-    List<Facility> getUnavailableFacilitiesByType(String typeId, Date startDate, Date endDate);
+    Page<Facility> getUnavailableFacilitiesByType(String typeId, Date startDate, Date endDate, Pageable pageable);
 
 
 //    List<Facility> getFacilitiesByType(String typeId);

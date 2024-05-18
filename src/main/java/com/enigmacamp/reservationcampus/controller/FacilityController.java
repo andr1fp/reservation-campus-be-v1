@@ -5,12 +5,17 @@ import com.enigmacamp.reservationcampus.model.request.FacilityRequest;
 import com.enigmacamp.reservationcampus.model.response.CommonResponse;
 import com.enigmacamp.reservationcampus.model.response.FacilityAvailabilityResponse;
 import com.enigmacamp.reservationcampus.model.response.FacilityResponse;
+import com.enigmacamp.reservationcampus.model.response.PageResponseWrapper;
 import com.enigmacamp.reservationcampus.services.FacilityService;
 import com.enigmacamp.reservationcampus.services.constant.TypeFacilitiesService;
 import com.enigmacamp.reservationcampus.utils.constant.APIPath;
 import com.enigmacamp.reservationcampus.utils.constant.Message;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -22,6 +27,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.sql.Date;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -89,20 +95,20 @@ public class FacilityController {
     }
 
 
-    @GetMapping
-    public ResponseEntity<CommonResponse<List<Facility>>> getAllFacilities(){
-        String message = String.format(Message.MESSAGE_READ);
-        List<Facility> result = facilityService.getAllFacilities();
-
-        CommonResponse<List<Facility>> response = CommonResponse.<List<Facility>>builder()
-               .statusCode(HttpStatus.OK.value())
-               .message(message)
-               .data(result)
-               .build();
-        return ResponseEntity
-               .status(HttpStatus.OK)
-               .body(response);
-    }
+//    @GetMapping
+//    public ResponseEntity<CommonResponse<List<Facility>>> getAllFacilities(){
+//        String message = String.format(Message.MESSAGE_READ);
+//        List<Facility> result = facilityService.getAllFacilities();
+//
+//        CommonResponse<List<Facility>> response = CommonResponse.<List<Facility>>builder()
+//               .statusCode(HttpStatus.OK.value())
+//               .message(message)
+//               .data(result)
+//               .build();
+//        return ResponseEntity
+//               .status(HttpStatus.OK)
+//               .body(response);
+//    }
 
 
     @DeleteMapping("/{id}")
@@ -190,137 +196,268 @@ public class FacilityController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @GetMapping("/availability")
-    public ResponseEntity<CommonResponse<List<FacilityAvailabilityResponse>>> getFacilitiesWithAvailability(@RequestParam Date startDate, @RequestParam Date endDate) {
-        List<Facility> availableFacilities = facilityService.getAvailableFacilities(startDate, endDate);
-        List<Facility> unavailableFacilities = facilityService.getUnavailableFacilities(startDate, endDate);
+    //GET All Facilities
+    @GetMapping
+    public ResponseEntity<CommonResponse<PageResponseWrapper<FacilityAvailabilityResponse>>> getAllFacilities(
+            @RequestParam(name = "page", defaultValue = "0") int page,
+            @RequestParam(name = "size", defaultValue = "6") int size) {
 
-        List<FacilityAvailabilityResponse> availableResponses = availableFacilities.stream()
-                .map(facility -> FacilityAvailabilityResponse.builder()
-                        .id(facility.getId())
-                        .name(facility.getName())
-                        .information(facility.getInformation())
-                        .picture(facility.getPicture())
-                        .quantity(facility.getQuantity())
-                        .price(facility.getPrice())
-                        .typeFacilities(facility.getTypeFacilities().getId())
-                        .availability(facility.getAvailability().getId())
-                        .build())
-                .toList();
+        Pageable pageable = PageRequest.of(page, size);
+        Date startDate = new Date(System.currentTimeMillis());
+        Date endDate = Date.valueOf(startDate.toLocalDate().plusDays(7));
 
-        List<FacilityAvailabilityResponse> unavailableResponses = unavailableFacilities.stream()
-                .map(facility -> FacilityAvailabilityResponse.builder()
-                        .id(facility.getId())
-                        .name(facility.getName())
-                        .information(facility.getInformation())
-                        .picture(facility.getPicture())
-                        .quantity(facility.getQuantity())
-                        .price(facility.getPrice())
-                        .typeFacilities(facility.getTypeFacilities().getId())
-                        .availability(facility.getAvailability().getId())
-                        .build())
-                .toList();
+        Page<Facility> availableFacilities = facilityService.getAvailableFacilities(startDate, endDate, pageable);
+        Page<Facility> unavailableFacilities = facilityService.getUnavailableFacilities(startDate, endDate, pageable);
 
-        List<FacilityAvailabilityResponse> allResponses = Stream.concat(availableResponses.stream(), unavailableResponses.stream())
-                .collect(Collectors.toList());
+        Page<FacilityAvailabilityResponse> combinedPage = mergePages(availableFacilities, unavailableFacilities, pageable);
 
-        CommonResponse<List<FacilityAvailabilityResponse>> response = CommonResponse.<List<FacilityAvailabilityResponse>>builder()
+        PageResponseWrapper<FacilityAvailabilityResponse> pageResponse = new PageResponseWrapper<>(combinedPage);
+
+        CommonResponse<PageResponseWrapper<FacilityAvailabilityResponse>> response = CommonResponse.<PageResponseWrapper<FacilityAvailabilityResponse>>builder()
                 .statusCode(HttpStatus.OK.value())
                 .message("Facility availability retrieved successfully")
-                .data(allResponses)
+                .data(pageResponse)
+                .build();
+
+        return ResponseEntity.ok(response);
+    }
+
+    // GET Facility Availability by Date
+    @GetMapping
+    public ResponseEntity<CommonResponse<PageResponseWrapper<FacilityAvailabilityResponse>>> getAllFacilities(
+            @RequestParam Date startDate,
+            @RequestParam Date endDate,
+            @RequestParam int page,
+            @RequestParam int size) {
+
+        Pageable pageable = PageRequest.of(page, size);
+
+        Page<Facility> availableFacilities = facilityService.getAvailableFacilities(startDate, endDate, pageable);
+        Page<Facility> unavailableFacilities = facilityService.getUnavailableFacilities(startDate, endDate, pageable);
+
+        Page<FacilityAvailabilityResponse> combinedPage = mergePages(availableFacilities, unavailableFacilities, pageable);
+
+        PageResponseWrapper<FacilityAvailabilityResponse> pageResponse = new PageResponseWrapper<>(combinedPage);
+
+        CommonResponse<PageResponseWrapper<FacilityAvailabilityResponse>> response = CommonResponse.<PageResponseWrapper<FacilityAvailabilityResponse>>builder()
+                .statusCode(HttpStatus.OK.value())
+                .message("Facility availability retrieved successfully")
+                .data(pageResponse)
                 .build();
 
         return ResponseEntity.ok(response);
     }
 
     @GetMapping("/name/{name}")
-    public ResponseEntity<CommonResponse<List<FacilityAvailabilityResponse>>> getFacilitiesByName(@PathVariable String name,
-                                                                                                  @RequestParam Date startDate, @RequestParam Date endDate) {
-        List<Facility> availableFacilities = facilityService.getAvailableFacilitiesByName(name, startDate, endDate);
-        List<Facility> unavailableFacilities = facilityService.getUnavailableFacilitiesByName(name, startDate, endDate);
+    public ResponseEntity<CommonResponse<PageResponseWrapper<FacilityAvailabilityResponse>>> getFacilitiesByName(
+            @PathVariable String name,
+            @RequestParam Date startDate,
+            @RequestParam Date endDate,
+            @RequestParam(name = "page", defaultValue = "0") int page,
+            @RequestParam(name = "size", defaultValue = "6") int size) {
 
-        List<FacilityAvailabilityResponse> availableResponses = availableFacilities.stream()
-                .map(facility -> FacilityAvailabilityResponse.builder()
-                        .id(facility.getId())
-                        .name(facility.getName())
-                        .information(facility.getInformation())
-                        .picture(facility.getPicture())
-                        .quantity(facility.getQuantity())
-                        .price(facility.getPrice())
-                        .typeFacilities(facility.getTypeFacilities().getId())
-                        .availability(facility.getAvailability().getId())
-                        .build())
-                .toList();
+        Pageable pageable = PageRequest.of(page, size);
 
-        List<FacilityAvailabilityResponse> unavailableResponses = unavailableFacilities.stream()
-                .map(facility -> FacilityAvailabilityResponse.builder()
-                        .id(facility.getId())
-                        .name(facility.getName())
-                        .information(facility.getInformation())
-                        .picture(facility.getPicture())
-                        .quantity(facility.getQuantity())
-                        .price(facility.getPrice())
-                        .typeFacilities(facility.getTypeFacilities().getId())
-                        .availability(facility.getAvailability().getId())
-                        .build())
-                .toList();
+        Page<Facility> availableFacilities = facilityService.getAvailableFacilitiesByName(name, startDate, endDate, pageable);
+        Page<Facility> unavailableFacilities = facilityService.getUnavailableFacilitiesByName(name, startDate, endDate, pageable);
 
-        List<FacilityAvailabilityResponse> combinedResponses = Stream.concat(availableResponses.stream(), unavailableResponses.stream())
-                .collect(Collectors.toList());
+        Page<FacilityAvailabilityResponse> combinedPage = mergePages(availableFacilities, unavailableFacilities, pageable);
 
-        CommonResponse<List<FacilityAvailabilityResponse>> response = CommonResponse.<List<FacilityAvailabilityResponse>>builder()
+        PageResponseWrapper<FacilityAvailabilityResponse> pageResponse = new PageResponseWrapper<>(combinedPage);
+
+        CommonResponse<PageResponseWrapper<FacilityAvailabilityResponse>> response = CommonResponse.<PageResponseWrapper<FacilityAvailabilityResponse>>builder()
                 .statusCode(HttpStatus.OK.value())
                 .message("Facilities retrieved successfully")
-                .data(combinedResponses)
+                .data(pageResponse)
                 .build();
 
         return ResponseEntity.ok(response);
     }
 
     @GetMapping("/type/{typeId}")
-    public ResponseEntity<CommonResponse<List<FacilityAvailabilityResponse>>> getFacilitiesByType(@PathVariable String typeId,
-                                                                                                  @RequestParam Date startDate,
-                                                                                                  @RequestParam Date endDate) {
-        List<Facility> availableFacilities = facilityService.getAvailableFacilitiesByType(typeId, startDate, endDate);
-        List<Facility> unavailableFacilities = facilityService.getUnavailableFacilitiesByType(typeId, startDate, endDate);
+    public ResponseEntity<CommonResponse<PageResponseWrapper<FacilityAvailabilityResponse>>> getFacilitiesByType(
+            @PathVariable String typeId,
+            @RequestParam Date startDate,
+            @RequestParam Date endDate,
+            @RequestParam(name = "page", defaultValue = "0") int page,
+            @RequestParam(name = "size", defaultValue = "6") int size) {
 
-        List<FacilityAvailabilityResponse> availableResponses = availableFacilities.stream()
-                .map(facility -> FacilityAvailabilityResponse.builder()
-                        .id(facility.getId())
-                        .name(facility.getName())
-                        .information(facility.getInformation())
-                        .picture(facility.getPicture())
-                        .quantity(facility.getQuantity())
-                        .price(facility.getPrice())
-                        .typeFacilities(facility.getTypeFacilities().getId())
-                        .availability(facility.getAvailability().getId())
-                        .build())
-                .toList();
+        Pageable pageable = PageRequest.of(page, size);
 
-        List<FacilityAvailabilityResponse> unavailableResponses = unavailableFacilities.stream()
-                .map(facility -> FacilityAvailabilityResponse.builder()
-                        .id(facility.getId())
-                        .name(facility.getName())
-                        .information(facility.getInformation())
-                        .picture(facility.getPicture())
-                        .quantity(facility.getQuantity())
-                        .price(facility.getPrice())
-                        .typeFacilities(facility.getTypeFacilities().getId())
-                        .availability(facility.getAvailability().getId())
-                        .build())
-                .toList();
+        Page<Facility> availableFacilities = facilityService.getAvailableFacilitiesByType(typeId, startDate, endDate, pageable);
+        Page<Facility> unavailableFacilities = facilityService.getUnavailableFacilitiesByType(typeId, startDate, endDate, pageable);
 
-        List<FacilityAvailabilityResponse> combinedResponses = Stream.concat(availableResponses.stream(), unavailableResponses.stream())
-                .collect(Collectors.toList());
+        Page<FacilityAvailabilityResponse> combinedPage = mergePages(availableFacilities, unavailableFacilities, pageable);
 
-        CommonResponse<List<FacilityAvailabilityResponse>> response = CommonResponse.<List<FacilityAvailabilityResponse>>builder()
+        PageResponseWrapper<FacilityAvailabilityResponse> pageResponse = new PageResponseWrapper<>(combinedPage);
+
+        CommonResponse<PageResponseWrapper<FacilityAvailabilityResponse>> response = CommonResponse.<PageResponseWrapper<FacilityAvailabilityResponse>>builder()
                 .statusCode(HttpStatus.OK.value())
                 .message("Facilities retrieved successfully")
-                .data(combinedResponses)
+                .data(pageResponse)
                 .build();
 
         return ResponseEntity.ok(response);
     }
+
+
+    private FacilityAvailabilityResponse mapToResponse(Facility facility) {
+        return FacilityAvailabilityResponse.builder()
+                .id(facility.getId())
+                .name(facility.getName())
+                .information(facility.getInformation())
+                .picture(facility.getPicture())
+                .quantity(facility.getQuantity())
+                .price(facility.getPrice())
+                .typeFacilities(facility.getTypeFacilities().getId())
+                .availability(facility.getAvailability().getId())
+                .build();
+    }
+
+
+    private Page<FacilityAvailabilityResponse> mergePages(Page<Facility> availableFacilities, Page<Facility> unavailableFacilities, Pageable pageable) {
+        List<FacilityAvailabilityResponse> combinedList = Stream.concat(
+                availableFacilities.getContent().stream().map(this::mapToResponse),
+                unavailableFacilities.getContent().stream().map(this::mapToResponse))
+                .toList();
+
+        long totalElements = availableFacilities.getTotalElements() + unavailableFacilities.getTotalElements();
+        return new PageImpl<>(combinedList, pageable, totalElements);
+
+    }
+
+
+//    @GetMapping
+//    public ResponseEntity<CommonResponse<List<FacilityAvailabilityResponse>>> getAllFacilities(@RequestParam Date startDate, @RequestParam Date endDate) {
+//        List<Facility> availableFacilities = facilityService.getAvailableFacilities(startDate, endDate);
+//        List<Facility> unavailableFacilities = facilityService.getUnavailableFacilities(startDate, endDate);
+//
+//        List<FacilityAvailabilityResponse> availableResponses = availableFacilities.stream()
+//                .map(facility -> FacilityAvailabilityResponse.builder()
+//                        .id(facility.getId())
+//                        .name(facility.getName())
+//                        .information(facility.getInformation())
+//                        .picture(facility.getPicture())
+//                        .quantity(facility.getQuantity())
+//                        .price(facility.getPrice())
+//                        .typeFacilities(facility.getTypeFacilities().getId())
+//                        .availability(facility.getAvailability().getId())
+//                        .build())
+//                .toList();
+//
+//        List<FacilityAvailabilityResponse> unavailableResponses = unavailableFacilities.stream()
+//                .map(facility -> FacilityAvailabilityResponse.builder()
+//                        .id(facility.getId())
+//                        .name(facility.getName())
+//                        .information(facility.getInformation())
+//                        .picture(facility.getPicture())
+//                        .quantity(facility.getQuantity())
+//                        .price(facility.getPrice())
+//                        .typeFacilities(facility.getTypeFacilities().getId())
+//                        .availability(facility.getAvailability().getId())
+//                        .build())
+//                .toList();
+//
+//        List<FacilityAvailabilityResponse> allResponses = Stream.concat(availableResponses.stream(), unavailableResponses.stream())
+//                .collect(Collectors.toList());
+//
+//        CommonResponse<List<FacilityAvailabilityResponse>> response = CommonResponse.<List<FacilityAvailabilityResponse>>builder()
+//                .statusCode(HttpStatus.OK.value())
+//                .message("Facility availability retrieved successfully")
+//                .data(allResponses)
+//                .build();
+//
+//        return ResponseEntity.ok(response);
+//    }
+
+//    @GetMapping("/name/{name}")
+//    public ResponseEntity<CommonResponse<List<FacilityAvailabilityResponse>>> getFacilitiesByName(@PathVariable String name,
+//                                                                                                  @RequestParam Date startDate, @RequestParam Date endDate) {
+//        List<Facility> availableFacilities = facilityService.getAvailableFacilitiesByName(name, startDate, endDate);
+//        List<Facility> unavailableFacilities = facilityService.getUnavailableFacilitiesByName(name, startDate, endDate);
+//
+//        List<FacilityAvailabilityResponse> availableResponses = availableFacilities.stream()
+//                .map(facility -> FacilityAvailabilityResponse.builder()
+//                        .id(facility.getId())
+//                        .name(facility.getName())
+//                        .information(facility.getInformation())
+//                        .picture(facility.getPicture())
+//                        .quantity(facility.getQuantity())
+//                        .price(facility.getPrice())
+//                        .typeFacilities(facility.getTypeFacilities().getId())
+//                        .availability(facility.getAvailability().getId())
+//                        .build())
+//                .toList();
+//
+//        List<FacilityAvailabilityResponse> unavailableResponses = unavailableFacilities.stream()
+//                .map(facility -> FacilityAvailabilityResponse.builder()
+//                        .id(facility.getId())
+//                        .name(facility.getName())
+//                        .information(facility.getInformation())
+//                        .picture(facility.getPicture())
+//                        .quantity(facility.getQuantity())
+//                        .price(facility.getPrice())
+//                        .typeFacilities(facility.getTypeFacilities().getId())
+//                        .availability(facility.getAvailability().getId())
+//                        .build())
+//                .toList();
+//
+//        List<FacilityAvailabilityResponse> combinedResponses = Stream.concat(availableResponses.stream(), unavailableResponses.stream())
+//                .collect(Collectors.toList());
+//
+//        CommonResponse<List<FacilityAvailabilityResponse>> response = CommonResponse.<List<FacilityAvailabilityResponse>>builder()
+//                .statusCode(HttpStatus.OK.value())
+//                .message("Facilities retrieved successfully")
+//                .data(combinedResponses)
+//                .build();
+//
+//        return ResponseEntity.ok(response);
+//    }
+//
+//    @GetMapping("/type/{typeId}")
+//    public ResponseEntity<CommonResponse<List<FacilityAvailabilityResponse>>> getFacilitiesByType(@PathVariable String typeId,
+//                                                                                                  @RequestParam Date startDate,
+//                                                                                                  @RequestParam Date endDate) {
+//        List<Facility> availableFacilities = facilityService.getAvailableFacilitiesByType(typeId, startDate, endDate);
+//        List<Facility> unavailableFacilities = facilityService.getUnavailableFacilitiesByType(typeId, startDate, endDate);
+//
+//        List<FacilityAvailabilityResponse> availableResponses = availableFacilities.stream()
+//                .map(facility -> FacilityAvailabilityResponse.builder()
+//                        .id(facility.getId())
+//                        .name(facility.getName())
+//                        .information(facility.getInformation())
+//                        .picture(facility.getPicture())
+//                        .quantity(facility.getQuantity())
+//                        .price(facility.getPrice())
+//                        .typeFacilities(facility.getTypeFacilities().getId())
+//                        .availability(facility.getAvailability().getId())
+//                        .build())
+//                .toList();
+//
+//        List<FacilityAvailabilityResponse> unavailableResponses = unavailableFacilities.stream()
+//                .map(facility -> FacilityAvailabilityResponse.builder()
+//                        .id(facility.getId())
+//                        .name(facility.getName())
+//                        .information(facility.getInformation())
+//                        .picture(facility.getPicture())
+//                        .quantity(facility.getQuantity())
+//                        .price(facility.getPrice())
+//                        .typeFacilities(facility.getTypeFacilities().getId())
+//                        .availability(facility.getAvailability().getId())
+//                        .build())
+//                .toList();
+//
+//        List<FacilityAvailabilityResponse> combinedResponses = Stream.concat(availableResponses.stream(), unavailableResponses.stream())
+//                .collect(Collectors.toList());
+//
+//        CommonResponse<List<FacilityAvailabilityResponse>> response = CommonResponse.<List<FacilityAvailabilityResponse>>builder()
+//                .statusCode(HttpStatus.OK.value())
+//                .message("Facilities retrieved successfully")
+//                .data(combinedResponses)
+//                .build();
+//
+//        return ResponseEntity.ok(response);
+//    }
 }
 
 

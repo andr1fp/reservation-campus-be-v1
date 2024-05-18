@@ -23,5 +23,4 @@ public class PageResponseWrapper<T>{
         this.page = page.getNumber();
         this.size = page.getSize();
     }
-
 }

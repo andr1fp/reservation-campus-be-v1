@@ -8,6 +8,8 @@ import com.enigmacamp.reservationcampus.model.response.FacilityResponse;
 import com.enigmacamp.reservationcampus.repository.FacilityRepository;
 import com.enigmacamp.reservationcampus.services.FacilityService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.sql.Date;
@@ -95,30 +97,33 @@ public class FacilityServiceImpl implements FacilityService {
     }
 
     @Override
-    public List<Facility> getAvailableFacilities(Date startDate, Date endDate) {
-        return facilityRepository.findAvailableFacilities(startDate, endDate);
+    public Page<Facility> getAvailableFacilities(Date startDate, Date endDate, Pageable pageable) {
+        return facilityRepository.findAvailableFacilities(startDate, endDate, pageable);
     }
 
     @Override
-    public List<Facility> getUnavailableFacilities(Date startDate, Date endDate) {
-        return facilityRepository.findUnavailableFacilities(startDate, endDate);
+    public Page<Facility> getUnavailableFacilities(Date startDate, Date endDate, Pageable pageable) {
+        return facilityRepository.findUnavailableFacilities(startDate, endDate, pageable);
     }
 
     @Override
-    public List<Facility> getAvailableFacilitiesByName(String name, Date startDate, Date endDate) {
-        return facilityRepository.findAvailableFacilitiesByName(name, startDate, endDate);
+    public Page<Facility> getAvailableFacilitiesByName(String name, Date startDate, Date endDate, Pageable pageable) {
+        return facilityRepository.findAvailableFacilitiesByName(name, startDate, endDate, pageable);
     }
 
-    public List<Facility> getUnavailableFacilitiesByName(String name, Date startDate, Date endDate) {
-        return facilityRepository.findUnavailableFacilitiesByName(name, startDate, endDate);
+    @Override
+    public Page<Facility> getUnavailableFacilitiesByName(String name, Date startDate, Date endDate, Pageable pageable) {
+        return facilityRepository.findUnavailableFacilitiesByName(name, startDate, endDate, pageable);
     }
 
-    public List<Facility> getAvailableFacilitiesByType(String typeId, Date startDate, Date endDate) {
-        return facilityRepository.findAvailableFacilitiesByType(typeId, startDate, endDate);
+    @Override
+    public Page<Facility> getAvailableFacilitiesByType(String typeId, Date startDate, Date endDate, Pageable pageable) {
+        return facilityRepository.findAvailableFacilitiesByType(typeId, startDate, endDate, pageable);
     }
 
-    public List<Facility> getUnavailableFacilitiesByType(String typeId, Date startDate, Date endDate) {
-        return facilityRepository.findUnavailableFacilitiesByType(typeId, startDate, endDate);
+    @Override
+    public Page<Facility> getUnavailableFacilitiesByType(String typeId, Date startDate, Date endDate, Pageable pageable) {
+        return facilityRepository.findUnavailableFacilitiesByType(typeId, startDate, endDate, pageable);
     }
 
     @Override
