@@ -8,4 +8,7 @@ public interface AdminService {
     RegisterResponse registerStudent(AuthRequestStudent authRequestStudent);
 
     void deleteUser(String id);
+
+    void deleteStudent(String id);
+
 }

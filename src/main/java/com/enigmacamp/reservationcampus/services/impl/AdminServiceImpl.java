@@ -15,6 +15,7 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.server.ResponseStatusException;
 
 @Service
@@ -69,4 +70,14 @@ public class AdminServiceImpl implements AdminService {
         }
         userRepository.deleteById(id);
     }
+
+    @Override
+    public void deleteStudent(String id) {
+        User user = userRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+        if (user != null){
+            profileService.deleteProfile(user.getId());
+        }
+        userRepository.deleteById(id);
+    }
+
 }
