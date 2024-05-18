@@ -31,7 +31,6 @@ public class AdminController {
     private final ProfileService profileService;
 
     @PostMapping(APIPath.STUDENT)
-//    @PreAuthorize("hasAnyRole({'ROLE_ADMIN'})")
     public ResponseEntity<?> registerStudent(@RequestBody AuthRequestStudent authRequestStudent){
         RegisterResponse registerResponse = adminService.registerStudent(authRequestStudent);
 
@@ -93,6 +92,12 @@ public class AdminController {
                 .status(HttpStatus.OK)
                 .contentType(MediaType.APPLICATION_JSON)
                 .body(response);
+    }
+
+    @PutMapping(APIPath.STUDENT + "/{id}")
+    public ResponseEntity<Profile> editStudentById(@PathVariable String id, @RequestBody AuthRequestStudent authRequestStudent) {
+        Profile updatedProfile = profileService.updateProfileById(id, authRequestStudent);
+        return ResponseEntity.ok(updatedProfile);
     }
 
 }

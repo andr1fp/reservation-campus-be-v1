@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -19,6 +20,7 @@ import java.util.List;
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
     @Override
     public AppUser loadUserById(String id) { //method untuk verif token JWT
         User user = userRepository.findById(id).orElseThrow(() -> new UsernameNotFoundException("Invalid credential User"));
@@ -70,7 +72,7 @@ public class UserServiceImpl implements UserService {
     public User editUser(String id, User updatedUser) {
         User existingUser = userRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
         existingUser.setEmail(updatedUser.getEmail());
-        existingUser.setPassword(updatedUser.getPassword());
+        existingUser.setPassword((passwordEncoder.encode(updatedUser.getPassword())));
         return userRepository.save(existingUser);
     }
 
