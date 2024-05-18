@@ -28,11 +28,11 @@ public class ImageStorageServiceImpl implements ImageStorageService {
     }
 
     @Override
-    public String storeFile(MultipartFile picture, String id_profile) {
+    public String storeFile(MultipartFile picture, String fullName) {
         String fileName = picture.getOriginalFilename();
 
         String[] splitName = fileName.split("\\.");
-        fileName = splitName[0] + "_" + id_profile + "." + splitName[splitName.length - 1];
+        fileName = splitName[0] + "_" + fullName + "." + splitName[splitName.length - 1];
 
         String fileExtension = splitName[splitName.length - 1].toLowerCase();
 
