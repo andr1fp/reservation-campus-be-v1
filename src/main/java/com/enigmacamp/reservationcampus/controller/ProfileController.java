@@ -17,6 +17,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Date;
 
 import java.util.List;
@@ -48,11 +51,9 @@ public class ProfileController {
         updateProfile.setPhone(phone);
         updateProfile.setId(id_profile);
 
-
         // update image
         String fileName = imageStorageService.storeFile(photo, id_profile);
         updateProfile.setPhoto(fileName);
-
 
         String message = String.format(Message.MESSAGE_UPDATE);
         Profile result = profileService.updateProfile(updateProfile);
@@ -67,7 +68,7 @@ public class ProfileController {
     }
 
 
-    @PutMapping()
+    @PutMapping
     public ResponseEntity<CommonResponse<Profile>> updateProfile(@RequestBody Profile updateProfile){
         String message = String.format(Message.MESSAGE_UPDATE);
         Profile result = profileService.updateProfile(updateProfile);
@@ -128,5 +129,31 @@ public class ProfileController {
         return ResponseEntity.status(HttpStatus.OK)
                 .contentType(MediaType.APPLICATION_JSON)
                 .body(response);
+    }
+
+    @GetMapping("/avatar/{name}")
+    public ResponseEntity<byte[]> getAvatar(@PathVariable String name) {
+        try {
+            Path path = Paths.get("assets/images/profile/" + name);
+            byte[] imageBytes = Files.readAllBytes(path);
+
+            MediaType mediaType;
+            if (name.endsWith(".png")) {
+                mediaType = MediaType.IMAGE_PNG;
+            } else if (name.endsWith(".gif")) {
+                mediaType = MediaType.IMAGE_GIF;
+            } else {
+                mediaType = MediaType.IMAGE_JPEG;
+            }
+
+            return ResponseEntity
+                    .ok()
+                    .contentType(mediaType)
+                    .body(imageBytes);
+        } catch (Exception e) {
+            return ResponseEntity
+                    .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(null);
+        }
     }
 }
