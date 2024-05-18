@@ -38,10 +38,10 @@ public class UserServiceImpl implements UserService {
                 .build();
     }
 
-    @Override
-    public User updateUser(String id, User user) {
-        return userRepository.save(user);
-    }
+//    @Override
+//    public User updateUser(String id, User user) {
+//        return userRepository.save(user);
+//    }
 
     @Override
     public void deleteUser(String id) {
@@ -56,5 +56,10 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<User> getAllUsers() {
         return userRepository.findAll();
+    }
+
+    @Override
+    public User updateUserDetails(String id, String newEmail, String newPassword) {
+        return null;
     }
 }
