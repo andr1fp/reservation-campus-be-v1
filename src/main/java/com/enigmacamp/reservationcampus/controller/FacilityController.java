@@ -3,7 +3,7 @@ package com.enigmacamp.reservationcampus.controller;
 import com.enigmacamp.reservationcampus.model.entity.Facility;
 import com.enigmacamp.reservationcampus.model.request.FacilityRequest;
 import com.enigmacamp.reservationcampus.model.response.CommonResponse;
-import com.enigmacamp.reservationcampus.model.response.FacilityAvailabilityResponse;
+import com.enigmacamp.reservationcampus.model.response.FacilityDataResponse;
 import com.enigmacamp.reservationcampus.model.response.FacilityResponse;
 import com.enigmacamp.reservationcampus.model.response.PageResponseWrapper;
 import com.enigmacamp.reservationcampus.services.FacilityService;
@@ -27,9 +27,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.sql.Date;
-import java.time.LocalDate;
 import java.util.List;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 @RestController
@@ -58,6 +56,21 @@ public class FacilityController {
                 .statusCode(HttpStatus.OK.value())
                 .message(message)
                 .data(facilityRequest)
+                .build();
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(response);
+    }
+
+    @GetMapping("/detail/{id}")
+    public ResponseEntity<CommonResponse<Facility>> getFacility(@PathVariable("id") String id) {
+        String message = String.format("Success");
+        Facility facility = facilityService.getFacilityById(id);
+
+        CommonResponse<Facility> response = CommonResponse.<Facility>builder()
+                .statusCode(HttpStatus.OK.value())
+                .message(message)
+                .data(facility)
                 .build();
         return ResponseEntity
                 .status(HttpStatus.OK)
@@ -198,7 +211,7 @@ public class FacilityController {
 
     //GET All Facilities
     @GetMapping("/all")
-    public ResponseEntity<CommonResponse<PageResponseWrapper<FacilityAvailabilityResponse>>> getAllFacilities(
+    public ResponseEntity<CommonResponse<PageResponseWrapper<FacilityDataResponse>>> getAllFacilities(
             @RequestParam(name = "page", defaultValue = "0") int page,
             @RequestParam(name = "size", defaultValue = "6") int size) {
 
@@ -210,11 +223,11 @@ public class FacilityController {
         Page<Facility> availableFacilities = facilityService.getAvailableFacilities(startDate, endDate, pageable);
         Page<Facility> unavailableFacilities = facilityService.getUnavailableFacilities(startDate, endDate, pageable);
 
-        Page<FacilityAvailabilityResponse> combinedPage = mergePages(availableFacilities, unavailableFacilities, pageable);
+        Page<FacilityDataResponse> combinedPage = mergePages(availableFacilities, unavailableFacilities, pageable);
 
-        PageResponseWrapper<FacilityAvailabilityResponse> pageResponse = new PageResponseWrapper<>(combinedPage);
+        PageResponseWrapper<FacilityDataResponse> pageResponse = new PageResponseWrapper<>(combinedPage);
 
-        CommonResponse<PageResponseWrapper<FacilityAvailabilityResponse>> response = CommonResponse.<PageResponseWrapper<FacilityAvailabilityResponse>>builder()
+        CommonResponse<PageResponseWrapper<FacilityDataResponse>> response = CommonResponse.<PageResponseWrapper<FacilityDataResponse>>builder()
                 .statusCode(HttpStatus.OK.value())
                 .message("Facility availability retrieved successfully")
                 .data(pageResponse)
@@ -225,7 +238,7 @@ public class FacilityController {
 
     // GET Facility Availability by Date
     @GetMapping
-    public ResponseEntity<CommonResponse<PageResponseWrapper<FacilityAvailabilityResponse>>> getFacilitiesByDate(
+    public ResponseEntity<CommonResponse<PageResponseWrapper<FacilityDataResponse>>> getFacilitiesByDate(
             @RequestParam Date startDate,
             @RequestParam Date endDate,
             @RequestParam(name = "page", defaultValue = "0") int page,
@@ -236,11 +249,11 @@ public class FacilityController {
         Page<Facility> availableFacilities = facilityService.getAvailableFacilities(startDate, endDate, pageable);
         Page<Facility> unavailableFacilities = facilityService.getUnavailableFacilities(startDate, endDate, pageable);
 
-        Page<FacilityAvailabilityResponse> combinedPage = mergePages(availableFacilities, unavailableFacilities, pageable);
+        Page<FacilityDataResponse> combinedPage = mergePages(availableFacilities, unavailableFacilities, pageable);
 
-        PageResponseWrapper<FacilityAvailabilityResponse> pageResponse = new PageResponseWrapper<>(combinedPage);
+        PageResponseWrapper<FacilityDataResponse> pageResponse = new PageResponseWrapper<>(combinedPage);
 
-        CommonResponse<PageResponseWrapper<FacilityAvailabilityResponse>> response = CommonResponse.<PageResponseWrapper<FacilityAvailabilityResponse>>builder()
+        CommonResponse<PageResponseWrapper<FacilityDataResponse>> response = CommonResponse.<PageResponseWrapper<FacilityDataResponse>>builder()
                 .statusCode(HttpStatus.OK.value())
                 .message("Facility availability retrieved successfully")
                 .data(pageResponse)
@@ -250,7 +263,7 @@ public class FacilityController {
     }
 
     @GetMapping("/name/{name}")
-    public ResponseEntity<CommonResponse<PageResponseWrapper<FacilityAvailabilityResponse>>> getFacilitiesByName(
+    public ResponseEntity<CommonResponse<PageResponseWrapper<FacilityDataResponse>>> getFacilitiesByName(
             @PathVariable String name,
             @RequestParam Date startDate,
             @RequestParam Date endDate,
@@ -262,11 +275,11 @@ public class FacilityController {
         Page<Facility> availableFacilities = facilityService.getAvailableFacilitiesByName(name, startDate, endDate, pageable);
         Page<Facility> unavailableFacilities = facilityService.getUnavailableFacilitiesByName(name, startDate, endDate, pageable);
 
-        Page<FacilityAvailabilityResponse> combinedPage = mergePages(availableFacilities, unavailableFacilities, pageable);
+        Page<FacilityDataResponse> combinedPage = mergePages(availableFacilities, unavailableFacilities, pageable);
 
-        PageResponseWrapper<FacilityAvailabilityResponse> pageResponse = new PageResponseWrapper<>(combinedPage);
+        PageResponseWrapper<FacilityDataResponse> pageResponse = new PageResponseWrapper<>(combinedPage);
 
-        CommonResponse<PageResponseWrapper<FacilityAvailabilityResponse>> response = CommonResponse.<PageResponseWrapper<FacilityAvailabilityResponse>>builder()
+        CommonResponse<PageResponseWrapper<FacilityDataResponse>> response = CommonResponse.<PageResponseWrapper<FacilityDataResponse>>builder()
                 .statusCode(HttpStatus.OK.value())
                 .message("Facilities retrieved successfully")
                 .data(pageResponse)
@@ -276,7 +289,7 @@ public class FacilityController {
     }
 
     @GetMapping("/type/{typeId}")
-    public ResponseEntity<CommonResponse<PageResponseWrapper<FacilityAvailabilityResponse>>> getFacilitiesByType(
+    public ResponseEntity<CommonResponse<PageResponseWrapper<FacilityDataResponse>>> getFacilitiesByType(
             @PathVariable String typeId,
             @RequestParam Date startDate,
             @RequestParam Date endDate,
@@ -288,11 +301,11 @@ public class FacilityController {
         Page<Facility> availableFacilities = facilityService.getAvailableFacilitiesByType(typeId, startDate, endDate, pageable);
         Page<Facility> unavailableFacilities = facilityService.getUnavailableFacilitiesByType(typeId, startDate, endDate, pageable);
 
-        Page<FacilityAvailabilityResponse> combinedPage = mergePages(availableFacilities, unavailableFacilities, pageable);
+        Page<FacilityDataResponse> combinedPage = mergePages(availableFacilities, unavailableFacilities, pageable);
 
-        PageResponseWrapper<FacilityAvailabilityResponse> pageResponse = new PageResponseWrapper<>(combinedPage);
+        PageResponseWrapper<FacilityDataResponse> pageResponse = new PageResponseWrapper<>(combinedPage);
 
-        CommonResponse<PageResponseWrapper<FacilityAvailabilityResponse>> response = CommonResponse.<PageResponseWrapper<FacilityAvailabilityResponse>>builder()
+        CommonResponse<PageResponseWrapper<FacilityDataResponse>> response = CommonResponse.<PageResponseWrapper<FacilityDataResponse>>builder()
                 .statusCode(HttpStatus.OK.value())
                 .message("Facilities retrieved successfully")
                 .data(pageResponse)
@@ -302,22 +315,22 @@ public class FacilityController {
     }
 
 
-    private FacilityAvailabilityResponse mapToResponse(Facility facility) {
-        return FacilityAvailabilityResponse.builder()
+    private FacilityDataResponse mapToResponse(Facility facility) {
+        return FacilityDataResponse.builder()
                 .id(facility.getId())
                 .name(facility.getName())
                 .information(facility.getInformation())
                 .picture(facility.getPicture())
                 .quantity(facility.getQuantity())
                 .price(facility.getPrice())
-                .typeFacilities(facility.getTypeFacilities().getId())
-                .availability(facility.getAvailability().getId())
+                .typeFacilities(facility.getTypeFacilities().getName())
+                .availability(facility.getAvailability().getName())
                 .build();
     }
 
 
-    private Page<FacilityAvailabilityResponse> mergePages(Page<Facility> availableFacilities, Page<Facility> unavailableFacilities, Pageable pageable) {
-        List<FacilityAvailabilityResponse> combinedList = Stream.concat(
+    private Page<FacilityDataResponse> mergePages(Page<Facility> availableFacilities, Page<Facility> unavailableFacilities, Pageable pageable) {
+        List<FacilityDataResponse> combinedList = Stream.concat(
                 availableFacilities.getContent().stream().map(this::mapToResponse),
                 unavailableFacilities.getContent().stream().map(this::mapToResponse))
                 .toList();

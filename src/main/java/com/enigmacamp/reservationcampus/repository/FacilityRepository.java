@@ -1,6 +1,7 @@
 package com.enigmacamp.reservationcampus.repository;
 
 import com.enigmacamp.reservationcampus.model.entity.Facility;
+import com.enigmacamp.reservationcampus.model.response.FacilityResponse;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -47,4 +48,6 @@ public interface FacilityRepository extends JpaRepository<Facility, String> {
             "JOIN td.transaction t " +
             "WHERE t.dateReservation <= :endDate AND t.dateReturn >= :startDate)")
     Page<Facility> findUnavailableFacilitiesByType(String typeId, Date startDate, Date endDate, Pageable pageable);
+
+    FacilityResponse getFacilityById(String id);
 }
