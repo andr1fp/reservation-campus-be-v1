@@ -113,4 +113,20 @@ public class ProfileController {
                 .body(response);
     }
 
+    @DeleteMapping("/{id}")
+    public ResponseEntity<CommonResponse<Profile>> deleteProfile(@PathVariable String id) {
+        // Hapus profile dan user yang terkait
+        Profile profile = profileService.deleteProfile(id);
+        userService.deleteUser(profile.getUser().getId());
+
+        String message = String.format(Message.MESSAGE_DELETE, id);
+        CommonResponse<Profile> response = CommonResponse.<Profile>builder()
+                .statusCode(HttpStatus.OK.value())
+                .message(message)
+                .data(profile)
+                .build();
+        return ResponseEntity.status(HttpStatus.OK)
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(response);
+    }
 }
