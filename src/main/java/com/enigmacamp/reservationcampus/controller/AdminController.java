@@ -1,6 +1,10 @@
 package com.enigmacamp.reservationcampus.controller;
 
 
+<<<<<<< src/main/java/com/enigmacamp/reservationcampus/controller/AdminController.java
+import com.enigmacamp.reservationcampus.model.entity.Profile;
+=======
+>>>>>>> src/main/java/com/enigmacamp/reservationcampus/controller/AdminController.java
 import com.enigmacamp.reservationcampus.model.entity.User;
 import com.enigmacamp.reservationcampus.model.request.AuthRequestStudent;
 import com.enigmacamp.reservationcampus.model.response.CommonResponse;
@@ -41,19 +45,57 @@ public class AdminController {
                 .body(response);
     }
 
+// <<<<<<< src/main/java/com/enigmacamp/reservationcampus/controller/AdminController.java
+//     @DeleteMapping("/{id}")
+//     public ResponseEntity<Profile> deleteStudent(@PathVariable String id){
+//         adminService.deleteStudent(id);
+//         return ResponseEntity
+//                 .status(HttpStatus.OK)
+//                 .build();
+//     }
+
+    @DeleteMapping(APIPath.USER + "/{id}")
+    public ResponseEntity<User> deleteUserAccount(@PathVariable String id){
+        String message = String.format(Message.MESSAGE_DELETE);
+        userService.deleteUserAccount(id);
+
+        CommonResponse<String> response = CommonResponse.<String>builder()
+                .statusCode(HttpStatus.OK.value())
+                .message(message)
+                .build();
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(null);
+    }
+
+// =======
+// >>>>>>> src/main/java/com/enigmacamp/reservationcampus/controller/AdminController.java
     @GetMapping(APIPath.USER)
     public ResponseEntity<?> getAllUser(){
         String message = String.format(Message.MESSAGE_READ);
         List<User> result = userService.getAllUsers();
 
         CommonResponse<List<User>> response = CommonResponse.<List<User>>builder()
-               .statusCode(HttpStatus.OK.value())
-               .message(message)
-               .data(result)
-               .build();
+<<<<<<< src/main/java/com/enigmacamp/reservationcampus/controller/AdminController.java
+                .statusCode(HttpStatus.OK.value())
+                .message(message)
+                .data(result)
+                .build();
         return ResponseEntity
-               .status(HttpStatus.OK)
-               .contentType(MediaType.APPLICATION_JSON)
-               .body(response);
+                .status(HttpStatus.OK)
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(response);
     }
+
+// =======
+//                .statusCode(HttpStatus.OK.value())
+//                .message(message)
+//                .data(result)
+//                .build();
+//         return ResponseEntity
+//                .status(HttpStatus.OK)
+//                .contentType(MediaType.APPLICATION_JSON)
+//                .body(response);
+//     }
+// >>>>>>> src/main/java/com/enigmacamp/reservationcampus/controller/AdminController.java
 }

@@ -49,9 +49,12 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public void deleteUserAccount(String id) {
+        userRepository.deleteById(id);
+    }
+
+    @Override
     public List<User> getAllUsers() {
         return userRepository.findAll();
     }
-
-
 }

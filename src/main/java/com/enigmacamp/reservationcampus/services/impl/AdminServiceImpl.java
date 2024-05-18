@@ -60,4 +60,16 @@ public class AdminServiceImpl implements AdminService {
             throw new ResponseStatusException(HttpStatus.CONFLICT, "EMAIL ALREADY EXITS");
         }
     }
+
+    @Override
+    public void deleteStudent(String userId) {
+        User user = userRepository.findById(userId).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+        System.out.println(user);
+        if (user != null){
+            profileService.deleteProfile(user.getId());
+        }
+        userRepository.deleteById(userId);
+    }
+
+
 }

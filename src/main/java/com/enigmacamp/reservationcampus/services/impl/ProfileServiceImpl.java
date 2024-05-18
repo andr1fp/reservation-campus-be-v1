@@ -48,8 +48,12 @@ public class ProfileServiceImpl implements ProfileService {
 
 
     @Override
-    public void deleteProfile(String id) {
-        profileRepository.deleteById(id);
+    public Profile deleteProfile(String id) {
+        Profile profile = profileRepository.findById(id).orElse(null);
+        if (profile != null) {
+            profileRepository.delete(profile);
+        }
+        return profile;
     }
 
     @Override
