@@ -33,5 +33,4 @@ public class AnalyticsController {
     public ResponseEntity<Map<String, Long>> getTransactionCountByStatus(){
         return ResponseEntity.ok(analyticsService.getTransactionCountByStatus());
     }
-
 }

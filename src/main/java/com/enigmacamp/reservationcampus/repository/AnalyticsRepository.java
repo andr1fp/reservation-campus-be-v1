@@ -16,6 +16,6 @@ public interface AnalyticsRepository extends JpaRepository<Facility, String> {
     @Query("SELECT f.availability.name, COUNT(f) FROM Facility f GROUP BY f.availability.name")
     List<Object[]> countFacilitiesByAvailability();
 
-    @Query("SELECT t.status.name, COUNT(t) FROM Transaction t GROUP BY t.status.name")
+    @Query("SELECT t.status.status, COUNT(t) FROM Transaction t GROUP BY t.status.status")
     List<Object[]> countTransactionsByStatus();
 }
