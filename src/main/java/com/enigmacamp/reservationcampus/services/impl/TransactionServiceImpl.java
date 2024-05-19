@@ -50,13 +50,6 @@ public class TransactionServiceImpl implements TransactionService {
         StatusReservation status = statusRepository.findByStatus(EStatusReservation.STATUS_PROCESSED);
         Penalties penalties = penaltiesRepository.findByName(EPenalties.NOT_PENALTY);
 
-        // Check availability of each facility in the request
-        for (TransactionDetailDTO detailDTO : transactionRequest.getTransactionDetail()) {
-            if (!isFacilityAvailable(detailDTO.getId(), transactionRequest.getDateReservation(), transactionRequest.getDateReturn())) {
-                throw new RuntimeException("Facility is not available for the selected dates");
-            }
-        }
-
         Transaction transaction = new Transaction();
         transaction.setSubject(transactionRequest.getSubject());
         transaction.setDocument(transactionRequest.getDocument());
@@ -71,12 +64,18 @@ public class TransactionServiceImpl implements TransactionService {
 
         List<TransactionDetail> transactionDetailList = new ArrayList<>();
         for (TransactionDetailDTO detailDTO : transactionRequest.getTransactionDetail()) {
+            Facility facility = facilityService.getFacilityById(detailDTO.getIdFac());
+
+            // Check if requested quantity exceeds available quantity
+            if (detailDTO.getQuantity() > facility.getQuantity()) {
+                throw new RuntimeException("Requested quantity exceeds available quantity for facility: " + facility.getName());
+            }
+
             TransactionDetail detail = new TransactionDetail();
             detail.setTransaction(savedTransaction);
             detail.setId(detailDTO.getId());
             detail.setPrice(detailDTO.getPrice());
             detail.setQuantity(detailDTO.getQuantity());
-            Facility facility = facilityService.getFacilityById(detailDTO.getIdFac());
             detail.setFacility(facility);
 
             // Reduce facility stock
@@ -89,6 +88,7 @@ public class TransactionServiceImpl implements TransactionService {
         savedTransaction.setTransactionDetail(transactionDetailList);
         return savedTransaction;
     }
+
 
     private boolean isFacilityAvailable(String facilityId, Date startDate, Date endDate) {
         List<Transaction> reservations = transactionRepository.findReservationsForFacilityWithinDates(facilityId, startDate, endDate);
