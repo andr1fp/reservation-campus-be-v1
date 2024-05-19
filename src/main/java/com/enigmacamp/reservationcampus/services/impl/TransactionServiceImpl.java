@@ -107,9 +107,13 @@ public class TransactionServiceImpl implements TransactionService {
         return transactionRepository.findAll(pageable).map(this::convertToDTO);
     }
 
-    @Override
-    public Page<TransactionDTO> findTransactionsbySubject(String subject, Pageable pageable){
-        return transactionRepository.findBySubject(subject, pageable).map(this::convertToDTO);
+//    @Override
+//    public Page<TransactionDTO> findTransactionsbySubject(String subject, Pageable pageable){
+//        return transactionRepository.findBySubject(subject, pageable).map(this::convertToDTO);
+//    }
+
+    public Page<TransactionDTO> findTransactionsByProfileName(String name, Pageable pageable) {
+        return transactionRepository.findByProfileFullName(name, pageable).map(this::convertToDTO);
     }
 
 //    @Override

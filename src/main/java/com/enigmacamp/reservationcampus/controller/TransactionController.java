@@ -51,11 +51,11 @@ public class TransactionController {
 
 
     @GetMapping("/{name}")
-    public ResponseEntity<?> getTransactionBySubject(@PathVariable("name") String name,
+    public ResponseEntity<?> getTransactionByProfileName(@PathVariable("name") String name,
                                                   @RequestParam(name = "page", defaultValue = "0") int page,
                                                   @RequestParam(name = "size", defaultValue = "6") int size) {
         Pageable pageable = PageRequest.of(page, size);
-        Page<TransactionDTO> pageResult = transactionService.findTransactionsbySubject(name, pageable);
+        Page<TransactionDTO> pageResult = transactionService.findTransactionsByProfileName(name, pageable);
         PageResponseWrapper<TransactionDTO> result = new PageResponseWrapper<>(pageResult);
         CommonResponse<PageResponseWrapper<TransactionDTO>> response = CommonResponse.<PageResponseWrapper<TransactionDTO>>builder()
                 .statusCode(HttpStatus.OK.value())

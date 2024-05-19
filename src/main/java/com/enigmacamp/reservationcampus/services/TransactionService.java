@@ -17,7 +17,9 @@ public interface TransactionService {
 
     Page<TransactionDTO> getAllTransaction(Pageable pageable);
 
-    Page<TransactionDTO> findTransactionsbySubject(String name, Pageable pageable);
+//    Page<TransactionDTO> findTransactionsbySubject(String name, Pageable pageable);
+
+    Page<TransactionDTO> findTransactionsByProfileName(String name, Pageable pageable);
 
     Transaction updateTransaction(Transaction transaction);
 
