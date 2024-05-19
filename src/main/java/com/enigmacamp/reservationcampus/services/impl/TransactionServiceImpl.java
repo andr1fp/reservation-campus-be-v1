@@ -113,7 +113,7 @@ public class TransactionServiceImpl implements TransactionService {
 //    }
 
     public Page<TransactionDTO> findTransactionsByProfileName(String name, Pageable pageable) {
-        return transactionRepository.findByProfileFullName(name, pageable).map(this::convertToDTO);
+        return transactionRepository.findByProfileFullNameIgnoreCase(name, pageable).map(this::convertToDTO);
     }
 
 //    @Override
