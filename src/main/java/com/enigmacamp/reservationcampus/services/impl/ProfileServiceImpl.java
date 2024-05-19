@@ -80,7 +80,9 @@ public class ProfileServiceImpl implements ProfileService {
             User user =  profile.getUser();
             if (user != null){
                 user.setEmail(authRequestStudent.getEmail());
-                user.setPassword(passwordEncoder.encode(authRequestStudent.getPassword()));
+                if (authRequestStudent.getPassword() != null && !authRequestStudent.getPassword().isEmpty()) {
+                    user.setPassword(passwordEncoder.encode(authRequestStudent.getPassword()));
+                }
                 userRepository.save(user);
             }
 
