@@ -24,5 +24,7 @@ public interface TransactionRepository extends JpaRepository<Transaction, String
 
     Page<Transaction> findBySubject(String subject, Pageable pageable);
     Page<Transaction> findAll(Pageable pageable);
+    Page<Transaction> findByUserId(String userId, Pageable pageable);
+
 }
 

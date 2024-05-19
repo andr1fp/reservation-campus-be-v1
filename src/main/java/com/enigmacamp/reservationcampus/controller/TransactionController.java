@@ -111,7 +111,6 @@ public class TransactionController {
         return ResponseEntity.status(HttpStatus.OK)
                 .contentType(MediaType.APPLICATION_JSON)
                 .body(response);
-
     }
 
     @DeleteMapping(APIPath.TRANSACTION + "/{id}")
@@ -151,6 +150,5 @@ public class TransactionController {
         return ResponseEntity.status(HttpStatus.OK)
                 .contentType(MediaType.APPLICATION_JSON)
                 .body(response);
-
     }
 }

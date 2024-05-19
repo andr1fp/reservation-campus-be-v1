@@ -265,12 +265,13 @@ public class FacilityController {
     @GetMapping("/name/{name}")
     public ResponseEntity<CommonResponse<PageResponseWrapper<FacilityDataResponse>>> getFacilitiesByName(
             @PathVariable String name,
-            @RequestParam Date startDate,
-            @RequestParam Date endDate,
             @RequestParam(name = "page", defaultValue = "0") int page,
             @RequestParam(name = "size", defaultValue = "6") int size) {
 
         Pageable pageable = PageRequest.of(page, size);
+        Date startDate = new Date(System.currentTimeMillis());
+        Date endDate = Date.valueOf(startDate.toLocalDate().plusDays(7));
+
 
         Page<Facility> availableFacilities = facilityService.getAvailableFacilitiesByName(name, startDate, endDate, pageable);
         Page<Facility> unavailableFacilities = facilityService.getUnavailableFacilitiesByName(name, startDate, endDate, pageable);
@@ -291,12 +292,12 @@ public class FacilityController {
     @GetMapping("/type/{typeId}")
     public ResponseEntity<CommonResponse<PageResponseWrapper<FacilityDataResponse>>> getFacilitiesByType(
             @PathVariable String typeId,
-            @RequestParam Date startDate,
-            @RequestParam Date endDate,
             @RequestParam(name = "page", defaultValue = "0") int page,
             @RequestParam(name = "size", defaultValue = "6") int size) {
 
         Pageable pageable = PageRequest.of(page, size);
+        Date startDate = new Date(System.currentTimeMillis());
+        Date endDate = Date.valueOf(startDate.toLocalDate().plusDays(7));
 
         Page<Facility> availableFacilities = facilityService.getAvailableFacilitiesByType(typeId, startDate, endDate, pageable);
         Page<Facility> unavailableFacilities = facilityService.getUnavailableFacilitiesByType(typeId, startDate, endDate, pageable);
