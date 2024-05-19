@@ -85,19 +85,33 @@ public class TransactionController {
 
     @PostMapping(APIPath.SUBMISSION)
     public ResponseEntity<?> saveTransaction(@RequestBody TransactionRequest transactionRequest) {
-        String message = String.format(Message.MESSAGE_SAVE_SUBMISSION);
-        System.out.println(transactionRequest);
-        Transaction result = transactionService.saveTransaction(transactionRequest);
+        try {
+            String message = String.format(Message.MESSAGE_SAVE_SUBMISSION);
+            System.out.println(transactionRequest);
+            Transaction result = transactionService.saveTransaction(transactionRequest);
 
-        CommonResponse<Transaction> response = CommonResponse.<Transaction>builder()
-                .statusCode(HttpStatus.OK.value())
-                .message(message)
-                .data(result)
-                .build();
-        return ResponseEntity.status(HttpStatus.OK)
-                .contentType(MediaType.APPLICATION_JSON)
-                .body(response);
+            CommonResponse<Transaction> response = CommonResponse.<Transaction>builder()
+                    .statusCode(HttpStatus.OK.value())
+                    .message(message)
+                    .data(result)
+                    .build();
+            return ResponseEntity.status(HttpStatus.OK)
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .body(response);
+        } catch (RuntimeException ex) {
+            // Handle exception
+            String errorMessage = "Failed to save transaction: " + ex.getMessage();
+            CommonResponse<String> errorResponse = CommonResponse.<String>builder()
+                    .statusCode(HttpStatus.BAD_REQUEST.value())
+                    .message(errorMessage)
+                    .data(null)
+                    .build();
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .body(errorResponse);
+        }
     }
+
 
     @PutMapping
     public ResponseEntity<?> updateTransaction(@RequestBody Transaction transaction) {
