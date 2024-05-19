@@ -63,6 +63,7 @@ class TransactionServiceImplTest {
 
         profile = new Profile();
         profile.setId("3bf9ca19-360d-4488-9b20-9e5e14ec04be");
+        profile.setFullName("John Doe");
 
         facility = new Facility();
         facility.setId("120c2fa2-5daa-4c63-a498-bb5cf907f4bb");
@@ -75,6 +76,7 @@ class TransactionServiceImplTest {
         penalties.setName(EPenalties.NOT_PENALTY);
 
         TransactionDetailDTO detailDTO = new TransactionDetailDTO();
+        detailDTO.setId("detail-1");
         detailDTO.setIdFac(facility.getId());
         detailDTO.setQuantity(1);
         detailDTO.setPrice(100);
@@ -85,7 +87,7 @@ class TransactionServiceImplTest {
         transactionRequest = TransactionRequest.builder()
                 .id_profile(profile.getId())
                 .subject("minjam")
-                .document("dokomen.doc")
+                .document("dokumen.doc")
                 .dateReservation(Date.valueOf(LocalDate.now().plusDays(1)))
                 .dateReturn(Date.valueOf(LocalDate.now().plusDays(2)))
                 .transactionDetail(detailDTOList)
@@ -109,7 +111,8 @@ class TransactionServiceImplTest {
     @Test
     void saveTransaction_facilityNotAvailable() {
         when(facilityService.getFacilityById(anyString())).thenReturn(facility);
-        facility.setQuantity(0);  // Set facility quantity to 0 to simulate unavailability
+        when(transactionRepository.findReservationsForFacilityWithinDates(anyString(), any(Date.class), any(Date.class)))
+                .thenReturn(List.of(new Transaction()));  // Simulate facility is not available
 
         RuntimeException exception = assertThrows(RuntimeException.class, () -> {
             transactionService.saveTransaction(transactionRequest);
@@ -122,6 +125,12 @@ class TransactionServiceImplTest {
     void getTransactionById_success() {
         Transaction transaction = new Transaction();
         transaction.setId("1");
+        transaction.setProfile(profile);  // Ensure profile is set
+
+        // Ensure transactionDetail is set
+        List<TransactionDetail> transactionDetails = new ArrayList<>();
+        transaction.setTransactionDetail(transactionDetails);
+
         when(transactionRepository.findById(anyString())).thenReturn(Optional.of(transaction));
 
         assertDoesNotThrow(() -> {
@@ -161,4 +170,3 @@ class TransactionServiceImplTest {
         });
     }
 }
-

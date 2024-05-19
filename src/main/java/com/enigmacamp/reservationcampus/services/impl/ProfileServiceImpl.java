@@ -79,8 +79,12 @@ public class ProfileServiceImpl implements ProfileService {
 
             User user =  profile.getUser();
             if (user != null){
-                user.setEmail(authRequestStudent.getEmail());
-                user.setPassword(passwordEncoder.encode(authRequestStudent.getPassword()));
+                if (authRequestStudent.getEmail() != null && !authRequestStudent.getEmail().isEmpty()) {
+                    user.setEmail(authRequestStudent.getEmail());
+                }
+                if (authRequestStudent.getPassword() != null && !authRequestStudent.getPassword().isEmpty()) {
+                    user.setPassword(passwordEncoder.encode(authRequestStudent.getPassword()));
+                }
                 userRepository.save(user);
             }
 
@@ -89,6 +93,7 @@ public class ProfileServiceImpl implements ProfileService {
             throw new RuntimeException("Profile not found");
         }
     }
+
 
     @Override
     public List<Profile> getProfileByName(String name) {

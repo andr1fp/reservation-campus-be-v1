@@ -68,13 +68,26 @@ public class UserServiceImpl implements UserService {
         return null;
     }
 
+//    @Override
+//    public User editUser(String id, User updatedUser) {
+//        User existingUser = userRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+//        existingUser.setEmail(updatedUser.getEmail());
+//        existingUser.setPassword((passwordEncoder.encode(updatedUser.getPassword())));
+//        return userRepository.save(existingUser);
+//    }
+
     @Override
     public User editUser(String id, User updatedUser) {
         User existingUser = userRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
-        existingUser.setEmail(updatedUser.getEmail());
-        existingUser.setPassword((passwordEncoder.encode(updatedUser.getPassword())));
+        if (updatedUser.getEmail() != null && !updatedUser.getEmail().isEmpty()) {
+            existingUser.setEmail(updatedUser.getEmail());
+        }
+        if (updatedUser.getPassword() != null && !updatedUser.getPassword().isEmpty()) {
+            existingUser.setPassword(passwordEncoder.encode(updatedUser.getPassword()));
+        }
         return userRepository.save(existingUser);
     }
+
 
 
 }

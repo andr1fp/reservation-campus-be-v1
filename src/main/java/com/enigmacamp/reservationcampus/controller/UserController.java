@@ -29,6 +29,7 @@ public class UserController {
         return ResponseEntity.ok(updatedProfile);
     }
 
+    // Update User
     @PutMapping("/{id}")
     public ResponseEntity<?> updateUser(@PathVariable("id") String id, @RequestBody User user) {
         String message = String.format(Message.MESSAGE_UPDATE);
