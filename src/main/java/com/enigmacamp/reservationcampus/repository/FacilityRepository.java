@@ -16,37 +16,43 @@ public interface FacilityRepository extends JpaRepository<Facility, String> {
     @Query("SELECT f FROM Facility f WHERE f.id NOT IN (" +
             "SELECT td.facility.id FROM TransactionDetail td " +
             "JOIN td.transaction t " +
-            "WHERE t.dateReservation <= :endDate AND t.dateReturn >= :startDate)")
+            "WHERE t.dateReservation <= :endDate AND t.dateReturn >= :startDate " +
+            "AND (t.status IS NULL OR t.status.status IN ('STATUS_REJECTED', 'STATUS_CANCELED')))")
     Page<Facility> findAvailableFacilities(Date startDate, Date endDate, Pageable pageable);
 
     @Query("SELECT f FROM Facility f WHERE f.id IN (" +
             "SELECT td.facility.id FROM TransactionDetail td " +
             "JOIN td.transaction t " +
-            "WHERE t.dateReservation <= :endDate AND t.dateReturn >= :startDate)")
+            "WHERE t.dateReservation <= :endDate AND t.dateReturn >= :startDate " +
+            "AND (t.status IS NOT NULL AND t.status.status NOT IN ('STATUS_REJECTED', 'STATUS_CANCELED')))")
     Page<Facility> findUnavailableFacilities(Date startDate, Date endDate, Pageable pageable);
 
     @Query("SELECT f FROM Facility f WHERE f.name LIKE %:name% AND f.id NOT IN (" +
             "SELECT td.facility.id FROM TransactionDetail td " +
             "JOIN td.transaction t " +
-            "WHERE t.dateReservation <= :endDate AND t.dateReturn >= :startDate)")
+            "WHERE t.dateReservation <= :endDate AND t.dateReturn >= :startDate " +
+            "AND (t.status IS NULL OR t.status.status IN ('STATUS_REJECTED', 'STATUS_CANCELED')))")
     Page<Facility> findAvailableFacilitiesByName(String name, Date startDate, Date endDate, Pageable pageable);
 
     @Query("SELECT f FROM Facility f WHERE f.name LIKE %:name% AND f.id IN (" +
             "SELECT td.facility.id FROM TransactionDetail td " +
             "JOIN td.transaction t " +
-            "WHERE t.dateReservation <= :endDate AND t.dateReturn >= :startDate)")
+            "WHERE t.dateReservation <= :endDate AND t.dateReturn >= :startDate " +
+            "AND (t.status IS NOT NULL AND t.status.status NOT IN ('STATUS_REJECTED', 'STATUS_CANCELED')))")
     Page<Facility> findUnavailableFacilitiesByName(String name, Date startDate, Date endDate, Pageable pageable);
 
     @Query("SELECT f FROM Facility f WHERE f.typeFacilities.id = :typeId AND f.id NOT IN (" +
             "SELECT td.facility.id FROM TransactionDetail td " +
             "JOIN td.transaction t " +
-            "WHERE t.dateReservation <= :endDate AND t.dateReturn >= :startDate)")
+            "WHERE t.dateReservation <= :endDate AND t.dateReturn >= :startDate " +
+            "AND (t.status IS NULL OR t.status.status IN ('STATUS_REJECTED', 'STATUS_CANCELED')))")
     Page<Facility> findAvailableFacilitiesByType(String typeId, Date startDate, Date endDate, Pageable pageable);
 
     @Query("SELECT f FROM Facility f WHERE f.typeFacilities.id = :typeId AND f.id IN (" +
             "SELECT td.facility.id FROM TransactionDetail td " +
             "JOIN td.transaction t " +
-            "WHERE t.dateReservation <= :endDate AND t.dateReturn >= :startDate)")
+            "WHERE t.dateReservation <= :endDate AND t.dateReturn >= :startDate " +
+            "AND (t.status IS NOT NULL AND t.status.status NOT IN ('STATUS_REJECTED', 'STATUS_CANCELED')))")
     Page<Facility> findUnavailableFacilitiesByType(String typeId, Date startDate, Date endDate, Pageable pageable);
 
     FacilityResponse getFacilityById(String id);
