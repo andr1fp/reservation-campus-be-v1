@@ -1,5 +1,6 @@
 package com.enigmacamp.reservationcampus.model.request;
 
+import com.enigmacamp.reservationcampus.model.entity.TransactionDetail;
 import com.enigmacamp.reservationcampus.model.response.TransactionDetailDTO;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

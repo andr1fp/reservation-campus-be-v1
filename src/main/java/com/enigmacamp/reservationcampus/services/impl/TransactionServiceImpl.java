@@ -73,9 +73,10 @@ public class TransactionServiceImpl implements TransactionService {
         for (TransactionDetailDTO detailDTO : transactionRequest.getTransactionDetail()) {
             TransactionDetail detail = new TransactionDetail();
             detail.setTransaction(savedTransaction);
+            detail.setId(detailDTO.getId());
             detail.setPrice(detailDTO.getPrice());
             detail.setQuantity(detailDTO.getQuantity());
-            Facility facility = facilityService.getFacilityById(detailDTO.getId());
+            Facility facility = facilityService.getFacilityById(detailDTO.getIdFac());
             detail.setFacility(facility);
 
             // Reduce facility stock
@@ -185,6 +186,10 @@ public class TransactionServiceImpl implements TransactionService {
         transaction.setStatus(status);
         transactionRepository.save(transaction);
     }
+
+//    public Page<TransactionDTO> findTransactionsByUserId(String userId, Pageable pageable) {
+//        return transactionRepository.findByUserId(userId, pageable).map(this::convertToDTO);
+//    }
 
     private TransactionDTO convertToDTO(Transaction transaction) {
         Profile profile = profileService.getProfileById(transaction.getProfile().getId());

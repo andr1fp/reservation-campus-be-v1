@@ -26,4 +26,6 @@ public interface TransactionService {
     void cancelTransaction(String id);
 
     void updateTransactionStatus(String id, UpdateStatusRequest request);
+
+//    Page<TransactionDTO> findTransactionsByUserId(String userId, Pageable pageable);
 }
