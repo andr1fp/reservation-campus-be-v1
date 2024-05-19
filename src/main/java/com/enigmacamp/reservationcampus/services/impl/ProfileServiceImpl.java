@@ -79,7 +79,9 @@ public class ProfileServiceImpl implements ProfileService {
 
             User user =  profile.getUser();
             if (user != null){
-                user.setEmail(authRequestStudent.getEmail());
+                if (authRequestStudent.getEmail() != null && !authRequestStudent.getEmail().isEmpty()) {
+                    user.setEmail(authRequestStudent.getEmail());
+                }
                 if (authRequestStudent.getPassword() != null && !authRequestStudent.getPassword().isEmpty()) {
                     user.setPassword(passwordEncoder.encode(authRequestStudent.getPassword()));
                 }
