@@ -14,12 +14,13 @@ import java.util.Map;
 public class AnalyticsServiceImpl implements AnalyticsService {
 
     private final AnalyticsRepository analyticsRepository;
+
     @Override
     public Map<String, Long> getFaciltiesCountByType() {
         List<Object[]> results = analyticsRepository.countFacilitiesByType();
         Map<String, Long> countByType = new HashMap<>();
         for (Object[] result : results) {
-            countByType.put((String) result[0], (Long) result[1]);
+            countByType.put(result[0].toString(), (Long) result[1]);
         }
         return countByType;
     }
@@ -29,7 +30,7 @@ public class AnalyticsServiceImpl implements AnalyticsService {
         List<Object[]> results = analyticsRepository.countFacilitiesByAvailability();
         Map<String, Long> countByAvailability = new HashMap<>();
         for (Object[] result : results) {
-            countByAvailability.put((String) result[0], (Long) result[1]);
+            countByAvailability.put(result[0].toString(), (Long) result[1]);
         }
         return countByAvailability;
     }
@@ -39,7 +40,7 @@ public class AnalyticsServiceImpl implements AnalyticsService {
         List<Object[]> results = analyticsRepository.countTransactionsByStatus();
         Map<String, Long> countByStatus = new HashMap<>();
         for (Object[] result : results) {
-            countByStatus.put((String) result[0], (Long) result[1]);
+            countByStatus.put(result[0].toString(), (Long) result[1]);
         }
         return countByStatus;
     }
