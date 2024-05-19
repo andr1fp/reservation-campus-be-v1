@@ -76,10 +76,4 @@ public class AdminController {
                 .body(response);
     }
 
-
-//    @PutMapping(APIPath.STUDENT + "/{id}")
-//    public ResponseEntity<Profile> editUserProfileById(@PathVariable String id, @RequestBody AuthRequestStudent authRequestStudent) {
-//        Profile updatedProfile = profileService.updateProfileById(id, authRequestStudent);
-//        return ResponseEntity.ok(updatedProfile);
-//    }
 }

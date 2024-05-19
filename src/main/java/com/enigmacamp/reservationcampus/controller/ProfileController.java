@@ -69,20 +69,20 @@ public class ProfileController {
     }
 
 
-//    @PutMapping
-//    public ResponseEntity<CommonResponse<Profile>> updateProfile(@RequestBody Profile updateProfile){
-//        String message = String.format(Message.MESSAGE_UPDATE);
-//        Profile result = profileService.updateProfile(updateProfile);
-//
-//        CommonResponse<Profile> response = CommonResponse.<Profile>builder()
-//                .statusCode(HttpStatus.OK.value())
-//                .message(message)
-//                .data(result)
-//                .build();
-//        return ResponseEntity.status(HttpStatus.OK)
-//                .contentType(MediaType.APPLICATION_JSON)
-//                .body(response);
-//    }
+    @PutMapping
+    public ResponseEntity<CommonResponse<Profile>> updateProfile(@RequestBody Profile updateProfile){
+        String message = String.format(Message.MESSAGE_UPDATE);
+        Profile result = profileService.updateProfile(updateProfile);
+
+        CommonResponse<Profile> response = CommonResponse.<Profile>builder()
+                .statusCode(HttpStatus.OK.value())
+                .message(message)
+                .data(result)
+                .build();
+        return ResponseEntity.status(HttpStatus.OK)
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(response);
+    }
 
 
     @GetMapping("/{id}")

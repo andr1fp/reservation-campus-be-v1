@@ -94,6 +94,7 @@ public class ProfileServiceImpl implements ProfileService {
         }
     }
 
+
     @Override
     public List<Profile> getProfileByName(String name) {
         return profileRepository.findByFullNameContainsIgnoreCase(name);
