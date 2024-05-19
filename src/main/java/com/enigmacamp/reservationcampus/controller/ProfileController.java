@@ -35,8 +35,8 @@ public class ProfileController {
     private final UserService userService;
     private final ImageStorageService imageStorageService;
 
-    @PutMapping("/add-with-avatar")
-    public ResponseEntity<CommonResponse<Profile>> updateAvatar(@RequestParam ("photo") MultipartFile photo,
+    @PutMapping("/add")
+    public ResponseEntity<CommonResponse<Profile>> updateProfileAvatar(@RequestParam ("photo") MultipartFile photo,
                                                                 @RequestParam("id_profile") String id_profile,
                                                                 @RequestParam("nim") Integer nim,
                                                                 @RequestParam("fullName") String fullName,
@@ -69,20 +69,20 @@ public class ProfileController {
     }
 
 
-    @PutMapping
-    public ResponseEntity<CommonResponse<Profile>> updateProfile(@RequestBody Profile updateProfile){
-        String message = String.format(Message.MESSAGE_UPDATE);
-        Profile result = profileService.updateProfile(updateProfile);
-
-        CommonResponse<Profile> response = CommonResponse.<Profile>builder()
-                .statusCode(HttpStatus.OK.value())
-                .message(message)
-                .data(result)
-                .build();
-        return ResponseEntity.status(HttpStatus.OK)
-                .contentType(MediaType.APPLICATION_JSON)
-                .body(response);
-    }
+//    @PutMapping
+//    public ResponseEntity<CommonResponse<Profile>> updateProfile(@RequestBody Profile updateProfile){
+//        String message = String.format(Message.MESSAGE_UPDATE);
+//        Profile result = profileService.updateProfile(updateProfile);
+//
+//        CommonResponse<Profile> response = CommonResponse.<Profile>builder()
+//                .statusCode(HttpStatus.OK.value())
+//                .message(message)
+//                .data(result)
+//                .build();
+//        return ResponseEntity.status(HttpStatus.OK)
+//                .contentType(MediaType.APPLICATION_JSON)
+//                .body(response);
+//    }
 
 
     @GetMapping("/{id}")

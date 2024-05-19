@@ -36,7 +36,7 @@ public class TransactionController {
     }
 
 
-    @GetMapping( APIPath.TRANSACTION + "/detail/{id}")
+    @GetMapping(APIPath.TRANSACTION + "/detail/{id}")
     public ResponseEntity<?> getTransaction(@PathVariable("id") String id) {
         TransactionDTO result = transactionService.getTransactionById(id);
         CommonResponse<TransactionDTO> response = CommonResponse.<TransactionDTO>builder()

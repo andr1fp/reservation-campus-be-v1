@@ -92,20 +92,20 @@ public class FacilityController {
                 .body(response);
     }
 
-    @PutMapping
-    public ResponseEntity<CommonResponse<Facility>> updateFacility(@RequestBody Facility facility){
-        String message = String.format(Message.MESSAGE_UPDATE);
-        Facility result = facilityService.updateFacility(facility);
-
-        CommonResponse<Facility> response = CommonResponse.<Facility>builder()
-                .statusCode(HttpStatus.OK.value())
-                .message(message)
-                .data(result)
-                .build();
-        return ResponseEntity
-                .status(HttpStatus.OK)
-                .body(response);
-    }
+//    @PutMapping
+//    public ResponseEntity<CommonResponse<Facility>> updateFacility(@RequestBody Facility facility){
+//        String message = String.format(Message.MESSAGE_UPDATE);
+//        Facility result = facilityService.updateFacility(facility);
+//
+//        CommonResponse<Facility> response = CommonResponse.<Facility>builder()
+//                .statusCode(HttpStatus.OK.value())
+//                .message(message)
+//                .data(result)
+//                .build();
+//        return ResponseEntity
+//                .status(HttpStatus.OK)
+//                .body(response);
+//    }
 
 
 //    @GetMapping
