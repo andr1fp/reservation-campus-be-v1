@@ -29,6 +29,10 @@ public class AnalyticsServiceImpl implements AnalyticsService {
     public Map<String, Long> getFaciltiesAvailability() {
         List<Object[]> results = analyticsRepository.countFacilitiesByAvailability();
         Map<String, Long> countByAvailability = new HashMap<>();
+
+        countByAvailability.put("AVAILABILITY_YES", 0L);
+        countByAvailability.put("AVAILABILITY_NO", 0L);
+
         for (Object[] result : results) {
             countByAvailability.put(result[0].toString(), (Long) result[1]);
         }

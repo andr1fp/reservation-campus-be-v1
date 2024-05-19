@@ -26,7 +26,8 @@ public class AnalyticsController {
 
     @GetMapping(APIPath.FACILITIES + "/countByAvailability")
     public ResponseEntity<Map<String, Long>> getFacilityCountByAvailability(){
-        return ResponseEntity.ok(analyticsService.getFaciltiesAvailability());
+        Map<String, Long> counts = analyticsService.getFaciltiesAvailability();
+        return ResponseEntity.ok(counts);
     }
 
     @GetMapping(APIPath.TRANSACTION + "/countByStatus")
