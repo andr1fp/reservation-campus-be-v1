@@ -40,4 +40,6 @@ public interface FacilityService {
 
     void deleteFacility(String id);
 
+//    void updateAvailabilityWhenQuantityIsZero();
+
 }

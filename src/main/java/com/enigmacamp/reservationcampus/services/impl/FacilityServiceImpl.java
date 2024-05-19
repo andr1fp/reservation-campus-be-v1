@@ -7,6 +7,7 @@ import com.enigmacamp.reservationcampus.model.request.FacilityRequest;
 import com.enigmacamp.reservationcampus.model.response.FacilityResponse;
 import com.enigmacamp.reservationcampus.repository.FacilityRepository;
 import com.enigmacamp.reservationcampus.services.FacilityService;
+import com.enigmacamp.reservationcampus.utils.constant.EAvailability;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -128,4 +129,9 @@ public class FacilityServiceImpl implements FacilityService {
     public void deleteFacility(String id) {
         facilityRepository.deleteById(id);
     }
+
+//    @Override
+//    public void updateAvailabilityWhenQuantityIsZero() {
+//        facilityRepository.updateAvailabilityWhenQuantityIsZero(EAvailability.AVAILABILITY_NO);
+//    }
 }

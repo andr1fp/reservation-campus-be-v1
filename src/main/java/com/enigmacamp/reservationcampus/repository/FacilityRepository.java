@@ -1,11 +1,16 @@
 package com.enigmacamp.reservationcampus.repository;
 
 import com.enigmacamp.reservationcampus.model.entity.Facility;
+import com.enigmacamp.reservationcampus.model.entity.constant.Availability;
 import com.enigmacamp.reservationcampus.model.response.FacilityResponse;
+import com.enigmacamp.reservationcampus.utils.constant.EAvailability;
+import jakarta.transaction.Transactional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.sql.Date;
@@ -56,4 +61,8 @@ public interface FacilityRepository extends JpaRepository<Facility, String> {
     Page<Facility> findUnavailableFacilitiesByType(String typeId, Date startDate, Date endDate, Pageable pageable);
 
     FacilityResponse getFacilityById(String id);
+
+//    @Modifying
+//    @Query("UPDATE Facility f SET f.availability.name = :availability WHERE f.quantity = 0")
+//    void updateAvailabilityWhenQuantityIsZero(@Param("availability") EAvailability availability);
 }

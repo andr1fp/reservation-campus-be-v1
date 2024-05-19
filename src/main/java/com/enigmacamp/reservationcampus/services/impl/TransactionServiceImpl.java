@@ -36,7 +36,6 @@ public class TransactionServiceImpl implements TransactionService {
     private final PenaltiesRepository penaltiesRepository;
     private final AvailabilityRepository availabilityRepository;
     private final AvailabilityService availabilityService;
-    private final Availability availability;
 
     @Override
     @Transactional
@@ -84,8 +83,11 @@ public class TransactionServiceImpl implements TransactionService {
             // Reduce facility stock
             facility.setQuantity(facility.getQuantity() - detailDTO.getQuantity());
             if (facility.getQuantity() == 0) {
-                // Update facility availability to "not available"
-                facility.setAvailability(availabilityRepository.findByName(EAvailability.AVAILABILITY_NO)); // Menggunakan EAvailability di sini
+                // Mencari ketersediaan fasilitas
+                Availability availability = availabilityRepository.findByName(EAvailability.AVAILABILITY_NO);
+                // Menetapkan status ketersediaan fasilitas
+                facility.setAvailability(availability);
+                // Menyimpan perubahan pada fasilitas
             }
             facilityService.updateFacility(facility);
 
