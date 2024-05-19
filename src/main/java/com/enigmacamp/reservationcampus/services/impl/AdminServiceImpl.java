@@ -35,7 +35,7 @@ public class AdminServiceImpl implements AdminService {
             // TODO 1 : SET ROLE
             Role role = roleService.getOrSave(ERole.ROLE_STUDENT);
 
-            // TODO 2 : SET CREDENTIALS / USER
+            // TODO 2 : SET CREDENTIALS / USERS
             User user = User.builder()
                     .email(authRequestStudent.getEmail().toLowerCase())
                     .password(passwordEncoder.encode(authRequestStudent.getPassword()))

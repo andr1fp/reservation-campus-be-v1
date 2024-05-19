@@ -16,11 +16,14 @@ public class APIPath {
     public static final String FACILITIES = "/facilities";
     public static final String DETAIL = "/detail";
 
+    public static final String ALL = "/all";
     public static final String ADD = "/add";
     public static final String UPDATE = "/update";
     public static final String DELETE = "/delete";
+    public static final String CANCEL = "/cancel";
 
-    public static final String USER = "/users";
+    public static final String USER = "/user";
+    public static final String USERS = "/users";
     public static final String AVAILABILITY = "/availability";
     public static final String STATUS_RESERVATION = "/status-reserv";
     public static final String PENALTY = "/penalty";

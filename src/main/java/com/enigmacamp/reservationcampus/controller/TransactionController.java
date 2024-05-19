@@ -50,8 +50,8 @@ public class TransactionController {
     }
 
 
-    @GetMapping(APIPath.TRANSACTION + "/{name}")
-    public ResponseEntity<?> getTransactionBy(@PathVariable("name") String name,
+    @GetMapping("/{name}")
+    public ResponseEntity<?> getTransactionBySubject(@PathVariable("name") String name,
                                                   @RequestParam(name = "page", defaultValue = "0") int page,
                                                   @RequestParam(name = "size", defaultValue = "6") int size) {
         Pageable pageable = PageRequest.of(page, size);
@@ -67,7 +67,7 @@ public class TransactionController {
                 .body(response);
     }
 
-    @GetMapping(APIPath.TRANSACTION)
+    @GetMapping(APIPath.ALL)
     public ResponseEntity<?> getAllTransaction(@RequestParam(name = "page", defaultValue = "0") int page,
                                                @RequestParam(name = "size", defaultValue = "6") int size) {
         Pageable pageable = PageRequest.of(page, size);
@@ -83,7 +83,7 @@ public class TransactionController {
                 .body(response);
     }
 
-    @PostMapping(APIPath.TRANSACTION)
+    @PostMapping(APIPath.SUBMISSION)
     public ResponseEntity<?> saveTransaction(@RequestBody TransactionRequest transactionRequest) {
         String message = String.format(Message.MESSAGE_SAVE_SUBMISSION);
         System.out.println(transactionRequest);
@@ -99,7 +99,7 @@ public class TransactionController {
                 .body(response);
     }
 
-    @PutMapping(APIPath.TRANSACTION)
+    @PutMapping
     public ResponseEntity<?> updateTransaction(@RequestBody Transaction transaction) {
         String message = String.format(Message.MESSAGE_UPDATE);
         Transaction result = transactionService.updateTransaction(transaction);
@@ -113,7 +113,7 @@ public class TransactionController {
                 .body(response);
     }
 
-    @DeleteMapping(APIPath.TRANSACTION + "/{id}")
+    @DeleteMapping(APIPath.DELETE + "/{id}")
     public ResponseEntity<?> deleteTransaction(@PathVariable("id") String id) {
         String message = String.format(Message.MESSAGE_DELETE);
         transactionService.deleteTransaction(id);
@@ -126,7 +126,7 @@ public class TransactionController {
                 .body(response);
     }
 
-    @PutMapping(APIPath.TRANSACTION + "/{id}")
+    @PutMapping(APIPath.CANCEL + "/{id}")
     public ResponseEntity<?> cancelTransaction(@PathVariable("id") String id) {
         String message = String.format(Message.MESSAGE_CANCELED);
         transactionService.cancelTransaction(id);
@@ -139,7 +139,7 @@ public class TransactionController {
                 .body(response);
     }
 
-    @PutMapping(APIPath.TRANSACTION + APIPath.STATUS_RESERVATION + "/{id}")
+    @PutMapping(APIPath.STATUS_RESERVATION + "/{id}")
     public ResponseEntity<?> changeStatusTransaction(@PathVariable String id, @RequestBody UpdateStatusRequest updateStatusRequest) {
         String message = String.format(Message.MESSAGE_UPDATE);
         transactionService.updateTransactionStatus(id, updateStatusRequest);
@@ -152,11 +152,11 @@ public class TransactionController {
                 .body(response);
     }
 
-    @GetMapping("/user/{userId}")
+    @GetMapping(APIPath.USER + "/{userId}")
     public ResponseEntity<PageResponseWrapper<TransactionDTO>> getTransactionsByUserId(
             @PathVariable("userId") String userId,
             @RequestParam(name = "page", defaultValue = "0") int page,
-            @RequestParam(name = "size", defaultValue = "10") int size) {
+            @RequestParam(name = "size", defaultValue = "6") int size) {
 
         Pageable pageable = PageRequest.of(page, size);
         Page<TransactionDTO> transactionPage = transactionService.findTransactionsByUserId(userId, pageable);
@@ -167,5 +167,4 @@ public class TransactionController {
                 .contentType(MediaType.APPLICATION_JSON)
                 .body(response);
     }
-
 }

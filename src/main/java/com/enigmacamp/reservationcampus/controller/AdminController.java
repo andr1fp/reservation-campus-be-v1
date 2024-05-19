@@ -3,7 +3,6 @@ package com.enigmacamp.reservationcampus.controller;
 
 import com.enigmacamp.reservationcampus.model.entity.Profile;
 import com.enigmacamp.reservationcampus.model.entity.User;
-import com.enigmacamp.reservationcampus.model.request.AuthRequestGeneral;
 import com.enigmacamp.reservationcampus.model.request.AuthRequestStudent;
 import com.enigmacamp.reservationcampus.model.response.CommonResponse;
 import com.enigmacamp.reservationcampus.model.response.RegisterResponse;
@@ -16,13 +15,12 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping(APIPath.API + APIPath.AUTH + APIPath.ADMIN)
+@RequestMapping(APIPath.API + APIPath.ADMIN)
 @RequiredArgsConstructor
 public class AdminController {
 
@@ -30,7 +28,7 @@ public class AdminController {
     private final UserService userService;
     private final ProfileService profileService;
 
-    @PostMapping(APIPath.STUDENT)
+    @PostMapping(APIPath.USERS + APIPath.STUDENT)
     public ResponseEntity<?> registerStudent(@RequestBody AuthRequestStudent authRequestStudent){
         RegisterResponse registerResponse = adminService.registerStudent(authRequestStudent);
 
@@ -44,7 +42,7 @@ public class AdminController {
                 .body(response);
     }
 
-    @GetMapping(APIPath.USER)
+    @GetMapping(APIPath.USERS)
     public ResponseEntity<?> getAllUser(){
         String message = String.format(Message.MESSAGE_READ);
         List<User> result = userService.getAllUsers();
@@ -61,7 +59,7 @@ public class AdminController {
     }
 
 
-    @DeleteMapping(APIPath.USER + "/{id}")
+    @DeleteMapping(APIPath.USERS + "/{id}")
     public ResponseEntity<CommonResponse<Profile>> deleteProfile(@PathVariable String id) {
         // Hapus profile dan user yang terkait
         Profile profile = profileService.deleteProfile(id);
@@ -78,7 +76,7 @@ public class AdminController {
                 .body(response);
     }
 
-    @PutMapping(APIPath.USER + "/{id}")
+    @PutMapping(APIPath.USERS + "/{id}")
     public ResponseEntity<?> updateUser(@PathVariable("id") String id, @RequestBody User user) {
         String message = String.format(Message.MESSAGE_UPDATE);
         User userUpdate = userService.editUser(id, user);
@@ -95,9 +93,8 @@ public class AdminController {
     }
 
     @PutMapping(APIPath.STUDENT + "/{id}")
-    public ResponseEntity<Profile> editStudentById(@PathVariable String id, @RequestBody AuthRequestStudent authRequestStudent) {
+    public ResponseEntity<Profile> editUserProfileById(@PathVariable String id, @RequestBody AuthRequestStudent authRequestStudent) {
         Profile updatedProfile = profileService.updateProfileById(id, authRequestStudent);
         return ResponseEntity.ok(updatedProfile);
     }
-
 }

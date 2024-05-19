@@ -26,7 +26,7 @@ import java.util.Date;
 import java.util.List;
 
 @RestController
-@RequestMapping(APIPath.API + APIPath.AUTH + APIPath.PROFILE)
+@RequestMapping(APIPath.API + APIPath.PROFILE)
 @RequiredArgsConstructor
 public class ProfileController {
 
@@ -35,7 +35,7 @@ public class ProfileController {
     private final UserService userService;
     private final ImageStorageService imageStorageService;
 
-    @PutMapping("/add")
+    @PutMapping("/update")
     public ResponseEntity<CommonResponse<Profile>> updateProfileAvatar(@RequestParam ("photo") MultipartFile photo,
                                                                 @RequestParam("id_profile") String id_profile,
                                                                 @RequestParam("nim") Integer nim,

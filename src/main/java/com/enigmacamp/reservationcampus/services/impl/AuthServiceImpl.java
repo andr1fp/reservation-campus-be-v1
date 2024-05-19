@@ -46,7 +46,7 @@ public class AuthServiceImpl implements AuthService  {
             // TODO 1 : SET ROLE
             Role role = roleService.getOrSave(ERole.ROLE_ADMIN);
 
-            // TODO 2 : SET CREDENTIALS / USER
+            // TODO 2 : SET CREDENTIALS / USERS
             User user = User.builder()
                     .email(authRequestAdmin.getEmail().toLowerCase())
                     .password(passwordEncoder.encode(authRequestAdmin.getPassword()))
@@ -72,7 +72,7 @@ public class AuthServiceImpl implements AuthService  {
             // TODO 1 : SET ROLE
             Role role = roleService.getOrSave(ERole.ROLE_GENERAL);
 
-            // TODO 2 : SET CREDENTIALS / USER
+            // TODO 2 : SET CREDENTIALS / USERS
             User user = User.builder()
                    .email(authRequestGeneral.getEmail().toLowerCase())
                    .password(passwordEncoder.encode(authRequestGeneral.getPassword()))

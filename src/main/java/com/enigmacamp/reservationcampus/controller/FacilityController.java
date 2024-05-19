@@ -138,76 +138,76 @@ public class FacilityController {
                .body(response);
     }
 
-    @PostMapping
-    public ResponseEntity<FacilityRequest> uploadFacility(@RequestParam("name") String name,
-                                                         @RequestParam("picture") MultipartFile picture,
-                                                         @RequestParam("quantity") Integer quantity,
-                                                         @RequestParam("information") String information,
-                                                         @RequestParam("price") Integer price,
-                                                         @RequestParam("typeFacilities") String id_facility,
-                                                         @RequestParam("availability") String id_availability) throws IOException {
-        FacilityRequest facilityRequest = new FacilityRequest();
-        facilityRequest.setName(name);
-        facilityRequest.setInformation(information);
-        facilityRequest.setPrice(price);
-        facilityRequest.setQuantity(quantity);
-        facilityRequest.setTypeFacilities(id_facility);
-        facilityRequest.setAvailability(id_availability);
-        String originalFilename = picture.getOriginalFilename();
-        String extension = originalFilename.substring(originalFilename.lastIndexOf(".")).toLowerCase();
-        if(!extension.equals(".jpg")){
-            extension = ".jpg";
-        }
-        String newFileName = name + extension;
-        facilityRequest.setPicture(picture.getName());
-        if(!Files.exists(uploadPath)){
-            Files.createDirectories(uploadPath);
-        }
-        Path filePath = uploadPath.resolve(newFileName);
-        Files.copy(picture.getInputStream(), filePath);
+//    @PostMapping
+//    public ResponseEntity<FacilityRequest> uploadFacility(@RequestParam("name") String name,
+//                                                         @RequestParam("picture") MultipartFile picture,
+//                                                         @RequestParam("quantity") Integer quantity,
+//                                                         @RequestParam("information") String information,
+//                                                         @RequestParam("price") Integer price,
+//                                                         @RequestParam("typeFacilities") String id_facility,
+//                                                         @RequestParam("availability") String id_availability) throws IOException {
+//        FacilityRequest facilityRequest = new FacilityRequest();
+//        facilityRequest.setName(name);
+//        facilityRequest.setInformation(information);
+//        facilityRequest.setPrice(price);
+//        facilityRequest.setQuantity(quantity);
+//        facilityRequest.setTypeFacilities(id_facility);
+//        facilityRequest.setAvailability(id_availability);
+//        String originalFilename = picture.getOriginalFilename();
+//        String extension = originalFilename.substring(originalFilename.lastIndexOf(".")).toLowerCase();
+//        if(!extension.equals(".jpg")){
+//            extension = ".jpg";
+//        }
+//        String newFileName = name + extension;
+//        facilityRequest.setPicture(picture.getName());
+//        if(!Files.exists(uploadPath)){
+//            Files.createDirectories(uploadPath);
+//        }
+//        Path filePath = uploadPath.resolve(newFileName);
+//        Files.copy(picture.getInputStream(), filePath);
+//
+//        return new ResponseEntity<>(facilityService.saveFacility(facilityRequest), HttpStatus.CREATED);
+//    }
 
-        return new ResponseEntity<>(facilityService.saveFacility(facilityRequest), HttpStatus.CREATED);
-    }
-
-    @PutMapping("edit/{id}")
-    public ResponseEntity<FacilityRequest> editFacility(@PathVariable String id,
-                                                        @RequestParam("name") String name,
-                                                          @RequestParam("picture") MultipartFile picture,
-                                                          @RequestParam("quantity") Integer quantity,
-                                                          @RequestParam("information") String information,
-                                                          @RequestParam("price") Integer price,
-                                                          @RequestParam("id_facility") String id_facility,
-                                                          @RequestParam("id_availability") String id_availability) throws IOException {
-        FacilityRequest facilityRequest = new FacilityRequest();
-        facilityRequest.setName(name);
-        facilityRequest.setInformation(information);
-        facilityRequest.setPrice(price);
-        facilityRequest.setQuantity(quantity);
-        facilityRequest.setTypeFacilities(id_facility);
-        facilityRequest.setAvailability(id_availability);
-
-        if (picture != null && !picture.isEmpty()) {
-            String originalFilename = picture.getOriginalFilename();
-            String extension = originalFilename.substring(originalFilename.lastIndexOf(".")).toLowerCase();
-            if(!extension.equals(".jpg")){
-                extension = ".jpg";
-            }
-            String newFileName = name + extension;
-
-            facilityRequest.setPicture(newFileName); // Perbarui nama gambar
-
-            // Simpan gambar yang baru
-            if (!Files.exists(uploadPath)) {
-                Files.createDirectories(uploadPath);
-            }
-            Path filePath = uploadPath.resolve(newFileName);
-            Files.copy(picture.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING); // Ganti gambar yang ada
-        }
-        facilityService.saveFacility(facilityRequest);
-
-        // Beri respons sukses
-        return new ResponseEntity<>(HttpStatus.OK);
-    }
+//    @PutMapping("edit/{id}")
+//    public ResponseEntity<FacilityRequest> editFacility(@PathVariable String id,
+//                                                        @RequestParam("name") String name,
+//                                                          @RequestParam("picture") MultipartFile picture,
+//                                                          @RequestParam("quantity") Integer quantity,
+//                                                          @RequestParam("information") String information,
+//                                                          @RequestParam("price") Integer price,
+//                                                          @RequestParam("id_facility") String id_facility,
+//                                                          @RequestParam("id_availability") String id_availability) throws IOException {
+//        FacilityRequest facilityRequest = new FacilityRequest();
+//        facilityRequest.setName(name);
+//        facilityRequest.setInformation(information);
+//        facilityRequest.setPrice(price);
+//        facilityRequest.setQuantity(quantity);
+//        facilityRequest.setTypeFacilities(id_facility);
+//        facilityRequest.setAvailability(id_availability);
+//
+//        if (picture != null && !picture.isEmpty()) {
+//            String originalFilename = picture.getOriginalFilename();
+//            String extension = originalFilename.substring(originalFilename.lastIndexOf(".")).toLowerCase();
+//            if(!extension.equals(".jpg")){
+//                extension = ".jpg";
+//            }
+//            String newFileName = name + extension;
+//
+//            facilityRequest.setPicture(newFileName); // Perbarui nama gambar
+//
+//            // Simpan gambar yang baru
+//            if (!Files.exists(uploadPath)) {
+//                Files.createDirectories(uploadPath);
+//            }
+//            Path filePath = uploadPath.resolve(newFileName);
+//            Files.copy(picture.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING); // Ganti gambar yang ada
+//        }
+//        facilityService.saveFacility(facilityRequest);
+//
+//        // Beri respons sukses
+//        return new ResponseEntity<>(HttpStatus.OK);
+//    }
 
     //GET All Facilities
     @GetMapping("/all")
