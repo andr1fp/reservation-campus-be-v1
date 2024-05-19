@@ -10,6 +10,7 @@ import com.enigmacamp.reservationcampus.repository.*;
 import com.enigmacamp.reservationcampus.repository.constant.AvailabilityRepository;
 import com.enigmacamp.reservationcampus.repository.constant.StatusRepository;
 import com.enigmacamp.reservationcampus.services.*;
+import com.enigmacamp.reservationcampus.services.constant.AvailabilityService;
 import com.enigmacamp.reservationcampus.utils.constant.*;
 import com.enigmacamp.reservationcampus.utils.exception.DataNotFoundException;
 import lombok.RequiredArgsConstructor;
@@ -34,6 +35,8 @@ public class TransactionServiceImpl implements TransactionService {
     private final StatusRepository statusRepository;
     private final PenaltiesRepository penaltiesRepository;
     private final AvailabilityRepository availabilityRepository;
+    private final AvailabilityService availabilityService;
+    private final Availability availability;
 
     @Override
     @Transactional
@@ -80,6 +83,10 @@ public class TransactionServiceImpl implements TransactionService {
 
             // Reduce facility stock
             facility.setQuantity(facility.getQuantity() - detailDTO.getQuantity());
+            if (facility.getQuantity() == 0) {
+                // Update facility availability to "not available"
+                facility.setAvailability(availabilityRepository.findByName(EAvailability.AVAILABILITY_NO)); // Menggunakan EAvailability di sini
+            }
             facilityService.updateFacility(facility);
 
             transactionDetailList.add(transactionDetailService.saveTransactionDetail(detail));
@@ -88,6 +95,7 @@ public class TransactionServiceImpl implements TransactionService {
         savedTransaction.setTransactionDetail(transactionDetailList);
         return savedTransaction;
     }
+
 
 
     private boolean isFacilityAvailable(String facilityId, Date startDate, Date endDate) {
