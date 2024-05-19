@@ -187,9 +187,9 @@ public class TransactionServiceImpl implements TransactionService {
         transactionRepository.save(transaction);
     }
 
-//    public Page<TransactionDTO> findTransactionsByUserId(String userId, Pageable pageable) {
-//        return transactionRepository.findByUserId(userId, pageable).map(this::convertToDTO);
-//    }
+    public Page<TransactionDTO> findTransactionsByUserId(String userId, Pageable pageable) {
+        return transactionRepository.findByUserId(userId, pageable).map(this::convertToDTO);
+    }
 
     private TransactionDTO convertToDTO(Transaction transaction) {
         Profile profile = profileService.getProfileById(transaction.getProfile().getId());

@@ -21,10 +21,8 @@ public class Profile {
     @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
 
-//    @Column(nullable = false)
     private Integer NIM;
 
-//    @Column(nullable = false)
     private String fullName;
 
     @Column(name = "dateofbirth")

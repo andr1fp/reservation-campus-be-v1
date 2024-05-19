@@ -41,9 +41,7 @@ public class Transaction {
     @Column(name = "date_return")
     private Date dateReturn;
 
-//    @ManyToOne
-//    @JoinColumn(name = "id_user")
-//    private User user;
+
 
     @ManyToOne
     @JoinColumn(name = "id_profile")

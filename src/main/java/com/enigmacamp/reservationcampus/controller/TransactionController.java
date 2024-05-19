@@ -23,7 +23,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping(APIPath.API + APIPath.SUBMISSION)
+@RequestMapping(APIPath.API + APIPath.TRANSACTION)
 public class TransactionController {
 
     TransactionDetailService transactionDetailService;
@@ -36,7 +36,7 @@ public class TransactionController {
     }
 
 
-    @GetMapping(APIPath.TRANSACTION + "/detail/{id}")
+    @GetMapping(APIPath.DETAIL + "/{id}")
     public ResponseEntity<?> getTransaction(@PathVariable("id") String id) {
         TransactionDTO result = transactionService.getTransactionById(id);
         CommonResponse<TransactionDTO> response = CommonResponse.<TransactionDTO>builder()
@@ -51,7 +51,7 @@ public class TransactionController {
 
 
     @GetMapping(APIPath.TRANSACTION + "/{name}")
-    public ResponseEntity<?> getTransactionByName(@PathVariable("name") String name,
+    public ResponseEntity<?> getTransactionBy(@PathVariable("name") String name,
                                                   @RequestParam(name = "page", defaultValue = "0") int page,
                                                   @RequestParam(name = "size", defaultValue = "6") int size) {
         Pageable pageable = PageRequest.of(page, size);
@@ -151,4 +151,21 @@ public class TransactionController {
                 .contentType(MediaType.APPLICATION_JSON)
                 .body(response);
     }
+
+    @GetMapping("/user/{userId}")
+    public ResponseEntity<PageResponseWrapper<TransactionDTO>> getTransactionsByUserId(
+            @PathVariable("userId") String userId,
+            @RequestParam(name = "page", defaultValue = "0") int page,
+            @RequestParam(name = "size", defaultValue = "10") int size) {
+
+        Pageable pageable = PageRequest.of(page, size);
+        Page<TransactionDTO> transactionPage = transactionService.findTransactionsByUserId(userId, pageable);
+
+        PageResponseWrapper<TransactionDTO> response = new PageResponseWrapper<>(transactionPage);
+
+        return ResponseEntity.status(HttpStatus.OK)
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(response);
+    }
+
 }

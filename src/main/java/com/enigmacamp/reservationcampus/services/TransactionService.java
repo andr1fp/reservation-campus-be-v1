@@ -27,5 +27,5 @@ public interface TransactionService {
 
     void updateTransactionStatus(String id, UpdateStatusRequest request);
 
-//    Page<TransactionDTO> findTransactionsByUserId(String userId, Pageable pageable);
+    Page<TransactionDTO> findTransactionsByUserId(String userId, Pageable pageable);
 }
