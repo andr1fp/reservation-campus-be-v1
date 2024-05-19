@@ -76,25 +76,4 @@ public class AdminController {
                 .body(response);
     }
 
-    @PutMapping(APIPath.USERS + "/{id}")
-    public ResponseEntity<?> updateUser(@PathVariable("id") String id, @RequestBody User user) {
-        String message = String.format(Message.MESSAGE_UPDATE);
-        User userUpdate = userService.editUser(id, user);
-
-        CommonResponse<User> response = CommonResponse.<User>builder()
-                .statusCode(HttpStatus.OK.value())
-                .message(message)
-                .data(userUpdate)
-                .build();
-        return ResponseEntity
-                .status(HttpStatus.OK)
-                .contentType(MediaType.APPLICATION_JSON)
-                .body(response);
-    }
-
-    @PutMapping(APIPath.STUDENT + "/{id}")
-    public ResponseEntity<Profile> editUserProfileById(@PathVariable String id, @RequestBody AuthRequestStudent authRequestStudent) {
-        Profile updatedProfile = profileService.updateProfileById(id, authRequestStudent);
-        return ResponseEntity.ok(updatedProfile);
-    }
 }
