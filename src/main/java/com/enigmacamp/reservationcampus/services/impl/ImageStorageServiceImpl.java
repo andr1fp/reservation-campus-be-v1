@@ -44,7 +44,7 @@ public class ImageStorageServiceImpl implements ImageStorageService {
         assert fileName != null;
 
         Path targetLocation = this.fileStorageLocation.resolve(fileName);
-        try{
+        try {
             if (fileName.contains("..")) {
                 throw new RuntimeException("Sorry! Filename contains invalid path sequence " + fileName);
             }
@@ -53,8 +53,9 @@ public class ImageStorageServiceImpl implements ImageStorageService {
             }
             Files.copy(picture.getInputStream(), targetLocation, StandardCopyOption.REPLACE_EXISTING);
             return fileName;
-        }catch (Exception e) {
-            throw new RuntimeException("Erorr occurred while storing file " + fileName, e);
+        } catch (Exception e) {
+            throw new RuntimeException("Error occurred while storing file " + fileName, e);
         }
     }
+
 }

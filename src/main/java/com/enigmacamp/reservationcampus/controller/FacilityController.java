@@ -62,6 +62,49 @@ public class FacilityController {
                 .body(response);
     }
 
+    @PostMapping
+    public ResponseEntity<CommonResponse<FacilityRequest>> uploadFacility(@RequestParam("name") String name,
+                                                          @RequestParam("picture") MultipartFile picture,
+                                                          @RequestParam("quantity") Integer quantity,
+                                                          @RequestParam("information") String information,
+                                                          @RequestParam("price") Integer price,
+                                                          @RequestParam("typeFacilities") String id_facility,
+                                                          @RequestParam("availability") String id_availability) throws IOException {
+        FacilityRequest facilityRequest = new FacilityRequest();
+        facilityRequest.setName(name);
+        facilityRequest.setInformation(information);
+        facilityRequest.setPrice(price);
+        facilityRequest.setQuantity(quantity);
+        facilityRequest.setTypeFacilities(id_facility);
+        facilityRequest.setAvailability(id_availability);
+        String originalFilename = picture.getOriginalFilename();
+        String extension = originalFilename.substring(originalFilename.lastIndexOf(".")).toLowerCase();
+        if(!extension.equals(".jpg")){
+            extension = ".jpg";
+        }
+        String newFileName = name + extension;
+        facilityRequest.setPicture(newFileName);
+        if(!Files.exists(uploadPath)){
+            Files.createDirectories(uploadPath);
+        }
+        Path filePath = uploadPath.resolve(newFileName);
+        Files.copy(picture.getInputStream(), filePath);
+
+//        return new ResponseEntity<>(facilityService.saveFacility(facilityRequest), HttpStatus.CREATED);
+
+        String message = String.format(Message.MESSAGE_INSERT);
+        FacilityRequest facilityReq = facilityService.saveFacility(facilityRequest);
+
+        CommonResponse<FacilityRequest> response = CommonResponse.<FacilityRequest>builder()
+                .statusCode(HttpStatus.CREATED.value())
+                .message(message)
+                .data(facilityReq)
+                .build();
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(response);
+    }
+
     @GetMapping("/detail/{id}")
     public ResponseEntity<CommonResponse<Facility>> getFacility(@PathVariable("id") String id) {
         String message = String.format("Success");
@@ -86,6 +129,60 @@ public class FacilityController {
                 .statusCode(HttpStatus.OK.value())
                 .message(message)
                 .data(facilityResponse)
+                .build();
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(response);
+    }
+
+    @PutMapping("/update/{id}")
+    public ResponseEntity<CommonResponse<FacilityRequest>> editFacility(@PathVariable String id,
+                                                        @RequestParam(value = "name", required = false) String name,
+                                                        @RequestParam(value = "picture", required = false) MultipartFile picture,
+                                                        @RequestParam(value = "quantity", required = false) Integer quantity,
+                                                        @RequestParam(value = "information", required = false) String information,
+                                                        @RequestParam(value = "price", required = false) Integer price,
+                                                        @RequestParam(value = "id_facility", required = false) String id_facility,
+                                                        @RequestParam(value = "id_availability", required = false) String id_availability) throws IOException {
+        FacilityRequest facilityRequest = new FacilityRequest();
+        facilityRequest.setName(name);
+        facilityRequest.setInformation(information);
+        facilityRequest.setPrice(price);
+        facilityRequest.setQuantity(quantity);
+        facilityRequest.setTypeFacilities(id_facility);
+        facilityRequest.setAvailability(id_availability);
+
+        if (picture != null && !picture.isEmpty()) {
+            String originalFilename = picture.getOriginalFilename();
+            String extension = originalFilename.substring(originalFilename.lastIndexOf(".")).toLowerCase();
+            if(!extension.equals(".jpg")){
+                extension = ".jpg";
+            }
+            String newFileName = name + extension;
+
+            facilityRequest.setPicture(newFileName); // Perbarui nama gambar
+
+            // Simpan gambar yang baru
+            if (!Files.exists(uploadPath)) {
+                Files.createDirectories(uploadPath);
+            }
+            Path filePath = uploadPath.resolve(newFileName);
+            Files.copy(picture.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING); // Ganti gambar yang ada
+        }
+
+
+//        facilityService.saveFacility(facilityRequest);
+//
+//        // Beri respons sukses
+//        return new ResponseEntity<>(HttpStatus.OK);
+
+        String message = String.format(Message.MESSAGE_UPDATE);
+        FacilityRequest facilityReq = facilityService.saveFacility(facilityRequest);
+
+        CommonResponse<FacilityRequest> response = CommonResponse.<FacilityRequest>builder()
+                .statusCode(HttpStatus.OK.value())
+                .message(message)
+                .data(facilityReq)
                 .build();
         return ResponseEntity
                 .status(HttpStatus.OK)
@@ -127,87 +224,22 @@ public class FacilityController {
     @DeleteMapping("/{id}")
     public ResponseEntity<CommonResponse<Facility>> deleteFacility(@PathVariable String id){
         String message = String.format(Message.MESSAGE_DELETE);
+        Facility facility = facilityService.getFacilityById(id);
         facilityService.deleteFacility(id);
 
         CommonResponse<Facility> response = CommonResponse.<Facility>builder()
                .statusCode(HttpStatus.OK.value())
                .message(message)
+                .data(facility)
                .build();
         return ResponseEntity
                .status(HttpStatus.OK)
                .body(response);
     }
 
-//    @PostMapping
-//    public ResponseEntity<FacilityRequest> uploadFacility(@RequestParam("name") String name,
-//                                                         @RequestParam("picture") MultipartFile picture,
-//                                                         @RequestParam("quantity") Integer quantity,
-//                                                         @RequestParam("information") String information,
-//                                                         @RequestParam("price") Integer price,
-//                                                         @RequestParam("typeFacilities") String id_facility,
-//                                                         @RequestParam("availability") String id_availability) throws IOException {
-//        FacilityRequest facilityRequest = new FacilityRequest();
-//        facilityRequest.setName(name);
-//        facilityRequest.setInformation(information);
-//        facilityRequest.setPrice(price);
-//        facilityRequest.setQuantity(quantity);
-//        facilityRequest.setTypeFacilities(id_facility);
-//        facilityRequest.setAvailability(id_availability);
-//        String originalFilename = picture.getOriginalFilename();
-//        String extension = originalFilename.substring(originalFilename.lastIndexOf(".")).toLowerCase();
-//        if(!extension.equals(".jpg")){
-//            extension = ".jpg";
-//        }
-//        String newFileName = name + extension;
-//        facilityRequest.setPicture(picture.getName());
-//        if(!Files.exists(uploadPath)){
-//            Files.createDirectories(uploadPath);
-//        }
-//        Path filePath = uploadPath.resolve(newFileName);
-//        Files.copy(picture.getInputStream(), filePath);
-//
-//        return new ResponseEntity<>(facilityService.saveFacility(facilityRequest), HttpStatus.CREATED);
-//    }
 
-//    @PutMapping("edit/{id}")
-//    public ResponseEntity<FacilityRequest> editFacility(@PathVariable String id,
-//                                                        @RequestParam("name") String name,
-//                                                          @RequestParam("picture") MultipartFile picture,
-//                                                          @RequestParam("quantity") Integer quantity,
-//                                                          @RequestParam("information") String information,
-//                                                          @RequestParam("price") Integer price,
-//                                                          @RequestParam("id_facility") String id_facility,
-//                                                          @RequestParam("id_availability") String id_availability) throws IOException {
-//        FacilityRequest facilityRequest = new FacilityRequest();
-//        facilityRequest.setName(name);
-//        facilityRequest.setInformation(information);
-//        facilityRequest.setPrice(price);
-//        facilityRequest.setQuantity(quantity);
-//        facilityRequest.setTypeFacilities(id_facility);
-//        facilityRequest.setAvailability(id_availability);
-//
-//        if (picture != null && !picture.isEmpty()) {
-//            String originalFilename = picture.getOriginalFilename();
-//            String extension = originalFilename.substring(originalFilename.lastIndexOf(".")).toLowerCase();
-//            if(!extension.equals(".jpg")){
-//                extension = ".jpg";
-//            }
-//            String newFileName = name + extension;
-//
-//            facilityRequest.setPicture(newFileName); // Perbarui nama gambar
-//
-//            // Simpan gambar yang baru
-//            if (!Files.exists(uploadPath)) {
-//                Files.createDirectories(uploadPath);
-//            }
-//            Path filePath = uploadPath.resolve(newFileName);
-//            Files.copy(picture.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING); // Ganti gambar yang ada
-//        }
-//        facilityService.saveFacility(facilityRequest);
-//
-//        // Beri respons sukses
-//        return new ResponseEntity<>(HttpStatus.OK);
-//    }
+
+
 
     //GET All Facilities
     @GetMapping("/all")

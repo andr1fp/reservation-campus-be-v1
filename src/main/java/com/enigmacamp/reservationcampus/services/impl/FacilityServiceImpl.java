@@ -59,7 +59,6 @@ public class FacilityServiceImpl implements FacilityService {
         facilityResponse.setName(facility1.getName());
         facilityResponse.setTypeFacilities(facility1.getTypeFacilities().getId());
         return facilityResponse;
-
     }
 
     @Override

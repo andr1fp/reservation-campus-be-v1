@@ -30,5 +30,7 @@ public interface TransactionRepository extends JpaRepository<Transaction, String
 
     @Query("SELECT t FROM Transaction t JOIN t.profile p JOIN p.user u WHERE u.id = :userId")
     Page<Transaction> findByUserId(@Param("userId") String userId, Pageable pageable);
+
+
 }
 

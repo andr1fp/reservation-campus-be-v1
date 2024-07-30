@@ -129,11 +129,16 @@ public class TransactionController {
 
     @DeleteMapping(APIPath.DELETE + "/{id}")
     public ResponseEntity<?> deleteTransaction(@PathVariable("id") String id) {
+
+        TransactionDTO result = transactionService.getTransactionById(id);
+
         String message = String.format(Message.MESSAGE_DELETE);
         transactionService.deleteTransaction(id);
+
         CommonResponse<TransactionDTO> response = CommonResponse.<TransactionDTO>builder()
                 .statusCode(HttpStatus.OK.value())
                 .message(message)
+                .data(result)
                 .build();
         return ResponseEntity.status(HttpStatus.OK)
                 .contentType(MediaType.APPLICATION_JSON)
@@ -142,11 +147,15 @@ public class TransactionController {
 
     @PutMapping(APIPath.CANCEL + "/{id}")
     public ResponseEntity<?> cancelTransaction(@PathVariable("id") String id) {
+        TransactionDTO result = transactionService.getTransactionById(id);
+
         String message = String.format(Message.MESSAGE_CANCELED);
         transactionService.cancelTransaction(id);
+
         CommonResponse<TransactionDTO> response = CommonResponse.<TransactionDTO>builder()
                 .statusCode(HttpStatus.OK.value())
                 .message(message)
+                .data(result)
                 .build();
         return ResponseEntity.status(HttpStatus.OK)
                 .contentType(MediaType.APPLICATION_JSON)

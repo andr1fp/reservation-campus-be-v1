@@ -2,8 +2,10 @@ package com.enigmacamp.reservationcampus.services.impl;
 
 import com.enigmacamp.reservationcampus.model.entity.*;
 import com.enigmacamp.reservationcampus.model.entity.constant.*;
+import com.enigmacamp.reservationcampus.model.request.FacilityRequest;
 import com.enigmacamp.reservationcampus.model.request.TransactionRequest;
 import com.enigmacamp.reservationcampus.model.request.UpdateStatusRequest;
+import com.enigmacamp.reservationcampus.model.response.FacilityResponse;
 import com.enigmacamp.reservationcampus.model.response.TransactionDTO;
 import com.enigmacamp.reservationcampus.model.response.TransactionDetailDTO;
 import com.enigmacamp.reservationcampus.repository.*;
@@ -29,9 +31,11 @@ import java.util.List;
 public class TransactionServiceImpl implements TransactionService {
 
     private final TransactionRepository transactionRepository;
+    private final TransactionDetailRepository transactionDetailRepository;
     private final TransactionDetailService transactionDetailService;
     private final ProfileService profileService;
     private final FacilityService facilityService;
+    private final FacilityRepository facilityRepository;
     private final StatusRepository statusRepository;
     private final PenaltiesRepository penaltiesRepository;
     private final AvailabilityRepository availabilityRepository;
@@ -180,6 +184,8 @@ public class TransactionServiceImpl implements TransactionService {
     public void deleteTransaction(String id) {
         Transaction transaction = transactionRepository.findById(id)
                 .orElseThrow(() -> new DataNotFoundException("Data not found"));
+        List<TransactionDetail> transactionDetails = transactionDetailRepository.findByTransactionId(id);
+        transactionDetailRepository.deleteAll(transactionDetails);
         transactionRepository.delete(transaction);
     }
 
@@ -190,6 +196,16 @@ public class TransactionServiceImpl implements TransactionService {
         StatusReservation status = statusRepository.findByStatus(EStatusReservation.STATUS_CANCELED);
         transaction.setStatus(status);
         transactionRepository.save(transaction);
+
+        // Cari dan ubah status ketersediaan fasilitas yang terkait menjadi tersedia
+        Availability availability = availabilityRepository.findByName(EAvailability.AVAILABILITY_YES);
+        List<TransactionDetail> transactionDetails = transactionDetailRepository.findByTransactionId(id);
+        for (TransactionDetail detail : transactionDetails) {
+            Facility facility = facilityRepository.getFacById(detail.getFacility().getId());
+            facility.setAvailability(availability);; // Atau status ketersediaan yang sesuai
+//            facilityRepository.save(facility);
+            facilityService.updateFacility(facility);
+        }
     }
 
     @Override

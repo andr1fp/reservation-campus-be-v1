@@ -61,6 +61,7 @@ public interface FacilityRepository extends JpaRepository<Facility, String> {
     Page<Facility> findUnavailableFacilitiesByType(String typeId, Date startDate, Date endDate, Pageable pageable);
 
     FacilityResponse getFacilityById(String id);
+    Facility getFacById(String id);
 
 //    @Modifying
 //    @Query("UPDATE Facility f SET f.availability.name = :availability WHERE f.quantity = 0")

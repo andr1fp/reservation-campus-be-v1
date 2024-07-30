@@ -33,6 +33,6 @@ public class TransactionDetailServiceImpl implements TransactionDetailService {
 
     @Override
     public void deleteTransactionDetail(String id) {
-
+        transactionDetailRepository.deleteById(id);
     }
 }
