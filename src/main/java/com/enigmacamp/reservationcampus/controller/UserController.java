@@ -45,5 +45,4 @@ public class UserController {
                 .contentType(MediaType.APPLICATION_JSON)
                 .body(response);
     }
-
 }

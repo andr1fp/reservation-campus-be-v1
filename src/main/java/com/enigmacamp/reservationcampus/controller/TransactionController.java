@@ -147,10 +147,10 @@ public class TransactionController {
 
     @PutMapping(APIPath.CANCEL + "/{id}")
     public ResponseEntity<?> cancelTransaction(@PathVariable("id") String id) {
-        TransactionDTO result = transactionService.getTransactionById(id);
 
         String message = String.format(Message.MESSAGE_CANCELED);
         transactionService.cancelTransaction(id);
+        TransactionDTO result = transactionService.getTransactionById(id);
 
         CommonResponse<TransactionDTO> response = CommonResponse.<TransactionDTO>builder()
                 .statusCode(HttpStatus.OK.value())
@@ -166,8 +166,11 @@ public class TransactionController {
     public ResponseEntity<?> changeStatusTransaction(@PathVariable String id, @RequestBody UpdateStatusRequest updateStatusRequest) {
         String message = String.format(Message.MESSAGE_UPDATE);
         transactionService.updateTransactionStatus(id, updateStatusRequest);
+        TransactionDTO result = transactionService.getTransactionById(id);
+
         CommonResponse<TransactionDTO> response = CommonResponse.<TransactionDTO>builder()
                 .statusCode(HttpStatus.OK.value())
+                .data(result)
                 .message(message)
                 .build();
         return ResponseEntity.status(HttpStatus.OK)

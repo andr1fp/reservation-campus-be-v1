@@ -115,9 +115,10 @@ public class ProfileController {
                 .body(response);
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping(APIPath.ADMIN + "/{id}")
     public ResponseEntity<CommonResponse<Profile>> deleteProfile(@PathVariable String id) {
         // Hapus profile dan user yang terkait
+        Profile data = profileService.getProfileById(id);
         Profile profile = profileService.deleteProfile(id);
         userService.deleteUser(profile.getUser().getId());
 
@@ -125,7 +126,7 @@ public class ProfileController {
         CommonResponse<Profile> response = CommonResponse.<Profile>builder()
                 .statusCode(HttpStatus.OK.value())
                 .message(message)
-                .data(profile)
+                .data(data)
                 .build();
         return ResponseEntity.status(HttpStatus.OK)
                 .contentType(MediaType.APPLICATION_JSON)
